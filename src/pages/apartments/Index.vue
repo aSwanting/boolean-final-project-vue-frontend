@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2 class="text-center">Apartments</h2>
-        <table class="table">
+        <table class="table" v-if="apartments.length >= 1">
 
             <thead>
                 <tr>
@@ -22,12 +22,17 @@
                 </tr>
             </tbody>
         </table>
+        <Loading v-if="apartments.length < 1"></Loading>
     </div>
 </template>
 
 <script>
 import axios from 'axios';
+import Loading from '../../components/Loading.vue'
 export default {
+    components: {
+        Loading
+    },
     data() {
         return {
             apartments: [],
