@@ -22,7 +22,7 @@
                 </tr>
             </tbody>
         </table>
-        <Loading v-if="apartments.length < 1"></Loading>
+        <Loading v-else></Loading>
     </div>
 </template>
 
