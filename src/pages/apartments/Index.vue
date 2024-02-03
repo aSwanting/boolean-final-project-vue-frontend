@@ -1,37 +1,35 @@
 <template>
-    <div>
-        <h2 class="text-center">Apartments</h2>
-        <table class="table" v-if="apartments.length >= 1">
 
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Rooms</th>
-                    <th scope="col">Beds</th>
-                    <th scope="col">Square meters</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="apartment in apartments" :key="apartment.id">
-                    <th scope="row">{{ apartment.id }}</th>
-                    <td>{{ apartment.description }}</td>
-                    <td>{{ apartment.rooms }}</td>
-                    <td>{{ apartment.beds }}</td>
-                    <td>{{ apartment.square_meters }}</td>
-                </tr>
-            </tbody>
-        </table>
+    <!--  -->
+    <DefaultLayout>
+        <div class="container">
+            <h2 class="text-center">
+                Apartments
+            </h2>
+        </div> 
+        <div class="container">
+            <div class="grid">
+                <ApartmentCard class="card apartment-card" 
+                v-for="apartment in apartments" :apartment="apartment" :key="apartment.id"/>
+            </div>
+        </div>
         <Loading v-else></Loading>
-    </div>
+        
+    </DefaultLayout>
+    
+
 </template>
 
 <script>
 import axios from 'axios';
 import Loading from '../../components/Loading.vue'
+import DefaultLayout from '../../layouts/DefaultLayout.vue'
+import ApartmentCard from '../../components/ApartmentCard.vue'
 export default {
     components: {
-        Loading
+        Loading,
+        DefaultLayout,
+        ApartmentCard
     },
     data() {
         return {
@@ -43,13 +41,19 @@ export default {
         fetchApartments() {
             axios.get(`${this.BASE_URL}/apartments`)
                 .then((res) => {
-                    console.log(res.data)
+                    // console.log(res.data)
                     this.apartments = res.data.results
                 })
         }
     },
     created() {
         this.fetchApartments()
+    },
+    mounted() {
+        console.log('apartments.index montato')
+    },
+    unmounted() {
+        console.log('apartments.index unmount')
     }
 }
 </script>
