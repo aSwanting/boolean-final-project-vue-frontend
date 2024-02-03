@@ -1,4 +1,5 @@
 <template>
+
     <!--  -->
     <DefaultLayout>
         <div class="container">
@@ -12,10 +13,11 @@
                 v-for="apartment in apartments" :apartment="apartment" :key="apartment.id"/>
             </div>
         </div>
-        <Loading v-if="apartments.length < 1"></Loading>
+        <Loading v-else></Loading>
         
     </DefaultLayout>
-    <!-- <router-link :to="{ name: 'apartments.show', params: { slug: apartment.slug }}">{{ apartment.description }}</router-link> -->
+    
+
 </template>
 
 <script>
