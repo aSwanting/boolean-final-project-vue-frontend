@@ -13,7 +13,7 @@
                 v-for="apartment in apartments" :apartment="apartment" :key="apartment.id"/>
             </div>
         </div>
-        <Loading v-else></Loading>
+        <Loading v-if="apartments < 1"></Loading>
         
     </DefaultLayout>
     
