@@ -1,10 +1,13 @@
 <template>
     <AppHeader />
 
-    <slot></slot>
+    <main>
+        <slot></slot>
+    </main>
+    
 
     <footer>
-
+        <h1>Footerone</h1>
     </footer>
 
 </template>
