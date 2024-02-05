@@ -1,13 +1,13 @@
 <template>
     <div>
-        <h1>{{ apartment.description }}</h1>
+        <h1 v-if="apartment">{{ apartment.description }}</h1>
     </div>
 
     <div>
         <!-- <figure>
             <img :src="apartment.cover_image" alt="">
         </figure> -->
-       
+
         <!-- <ul class="services">
             <li v-for="(service, i) in apartment.services" :key="apartment.id">
                 <h3>
@@ -57,7 +57,7 @@ export default {
     unmounted() {
         console.log('show unmounted')
     }
-    
+
 }
 
 </script>
