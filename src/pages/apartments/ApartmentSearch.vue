@@ -2,14 +2,38 @@
   <div class="container">
     <h1>Search and Filter Apartments</h1>
     <div class="apartment-search">
+      <!-- location search -->
       <div class="location-search">
         <label for="apt-searchbar">Enter a location to search </label>
         <input
           type="search"
           id="apt-searchbar"
           placeholder="Via del Mandrione, Roma"
+          v-model="searchQuery"
+        />
+
+        <label for="search-radius">Search radius in km</label>
+        <input
+          class="query-input"
+          type="number"
+          name="search-radius"
+          id="search-radius"
+          v-model="searchRadius"
         />
       </div>
+      <div class="query-results">
+        <div class="query-result" v-for="result in searchResults">
+          <span @click="searchSuggested(result.address.freeformAddress)">{{
+            result.address.freeformAddress
+          }}</span>
+          <span>
+            {{ result.position.lat }},
+            {{ result.position.lon }}
+          </span>
+        </div>
+      </div>
+
+      <!-- advanced search -->
       <div class="advanced-search">
         <div>
           <label for="rooms">rooms </label>
@@ -101,8 +125,12 @@ import axios from "axios";
 export default {
   data() {
     return {
+      searchRadius: 20,
+      searchQuery: null,
+      searchResults: null,
       addressList: [],
       filteredList: [],
+      filterResults: [],
       rooms: 1,
       beds: 1,
       bathrooms: 1,
@@ -110,10 +138,77 @@ export default {
       checkedServices: [],
     };
   },
+  watch: {
+    searchQuery() {
+      this.tomtomSearch();
+    },
+  },
   methods: {
+    searchSuggested(suggestedAddress) {
+      this.searchQuery = suggestedAddress;
+      this.tomtomFilter();
+    },
+    async tomtomSearch() {
+      if (this.searchQuery) {
+        const response = await axios.get(
+          "https://api.tomtom.com/search/2/search/" +
+            this.searchQuery +
+            ".json?key=qD5AjlcGdPMFjUKdDAYqT7xYi3yIRo3c",
+          {
+            params: {
+              key: this.API_KEY,
+            },
+          }
+        );
+        this.searchResults = response.data.results;
+      }
+    },
+    async tomtomFilter() {
+      this.filteredList = [];
+      const lat = this.searchResults[0].position.lat;
+      const lon = this.searchResults[0].position.lon;
+      this.filterResults = [];
+      const totalItems = this.addressList.length;
+      const batchSize = 25;
+      let offset = 0;
+
+      while (offset < totalItems) {
+        const data = {
+          poiList: this.locationList.slice(offset, offset + batchSize),
+          geometryList: [
+            {
+              position: lat + "," + lon,
+              radius: this.searchRadius * 1000,
+              type: "CIRCLE",
+            },
+          ],
+        };
+
+        const response = await axios.post(
+          "https://api.tomtom.com/search/2/geometryFilter.json",
+          data,
+          {
+            params: {
+              key: "qD5AjlcGdPMFjUKdDAYqT7xYi3yIRo3c",
+            },
+          }
+        );
+
+        console.log(response.data.results);
+
+        this.filterResults.push(...response.data.results);
+
+        offset += batchSize;
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+      }
+      console.log(this.filterResults);
+      this.filteredList = this.filterResults;
+    },
     async fetchData() {
       const response = await axios.get("http://127.0.0.1:8000/api/apartments");
       this.addressList = response.data.results;
+      this.filteredList = this.addressList;
     },
     searchApartments() {
       this.checkedServices = [];
@@ -123,28 +218,36 @@ export default {
       this.filteredList = this.apartments();
     },
     apartments() {
-      this.addressList.forEach((address) => {
-        // services.forEach((service) => console.log(service));
-        address.services.forEach((service) => {
-          if (this.checkedServices.includes(service.name)) console.log("WOO");
-        });
-      });
-      // return this.addressList.filter((item) => {
-      //   if (item.services.name.includes(this.checkedServices.name))
-      //     console.log(item.id);
-      //   // console.log("services", item.services);
-      //   // console.log("checked services", this.checkedServices);
-      //   return (
-      //     item.rooms >= this.rooms &&
-      //     item.beds >= this.beds &&
-      //     item.bathrooms >= this.bathrooms &&
-      //     item.square_meters >= this.square_meters &&
-      //     item.services.includes(this.checkedServices)
-      //   );
+      // this.addressList.forEach((address) => {
+      //   // services.forEach((service) => console.log(service));
+      //   address.services.forEach((service) => {
+      //     if (this.checkedServices.includes(service.name)) {
+      //       console.log(address.name, service.name);
+      //     }
+      //   });
       // });
+      return this.addressList.filter((item) => {
+        return (
+          item.rooms >= this.rooms &&
+          item.beds >= this.beds &&
+          item.bathrooms >= this.bathrooms &&
+          item.square_meters >= this.square_meters
+        );
+      });
     },
   },
   computed: {
+    locationList() {
+      return this.addressList.map((address) => {
+        return {
+          ...address,
+          position: {
+            lat: address.latitude,
+            lon: address.longitude,
+          },
+        };
+      });
+    },
     services() {
       const serviceList = [];
       this.addressList.forEach((address) => {
@@ -230,6 +333,24 @@ export default {
       align-items: center;
       gap: 10px;
     }
+    .query-results {
+      border-block: 1px solid rgba(69, 126, 91, 0.151);
+      overflow: auto;
+      .query-result {
+        font-size: 12px;
+        margin: 8px 16px;
+        display: flex;
+        & :first-child {
+          cursor: pointer;
+          margin-right: auto;
+          transition: 200ms all;
+          &:hover {
+            color: rgb(31, 185, 152);
+            font-weight: 700;
+          }
+        }
+      }
+    }
     .advanced-search {
       padding: 10px;
       border-radius: 10px;
@@ -264,13 +385,12 @@ export default {
     .item-card {
       border: 2px solid rgba(0, 0, 0, 0.4);
       border-radius: 10px;
-      padding: 10px;
       .item-info {
         border: 1px solid rgba(0, 0, 0, 0.2);
         border-radius: 10px;
-        font-size: 14px;
-        padding: 10px;
+        padding: 5px;
         margin: 5px;
+        font-size: 14px;
         .field {
           font-weight: 800;
         }
