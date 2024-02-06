@@ -1,34 +1,49 @@
 <template>
-    <div>
-        <h1 v-if="apartment">{{ apartment.description }}</h1>
-    </div>
+    <Layout>
+        <div v-if="apartment" class="container">
+            <div class="section">
+                <!-- <div>
+                    <figure>
+                        <img :src="apartment.cover_image" alt="">
+                    </figure>
 
-    <div>
-        <!-- <figure>
-            <img :src="apartment.cover_image" alt="">
-        </figure> -->
+                </div> -->
+                <h1 class="section-title">{{ apartment.name }}</h1>
+                <div>
+                    <p>{{ apartment.description }}</p>
+                    <p>{{ apartment.address }}</p>
+                    <p>Rooms: {{ apartment.rooms }}</p>
+                    <p>Beds: {{ apartment.beds }}</p>
+                    <p>Bathroom: {{ apartment.bathrooms }}</p>
+                    <p>Square meters: {{ apartment.square_meters }}</p>
+                    <ul class="services">
+                        <li v-for="(service, i) in apartment.services" :key="apartment.id">
+                            {{ service.name }}
+                        </li>
+                    </ul>
+                </div>
 
-        <!-- <ul class="services">
-            <li v-for="(service, i) in apartment.services" :key="apartment.id">
-                <h3>
-                    {{ service.name }}
-                </h3>
-            </li>
-        </ul> -->
-    </div>
-    <div>
-        <!-- <figure v-for="(image, i) in apartment.images" :key="apartment.id">
-            <img :src="image.link" alt="">
-        </figure> -->
-    </div>
+                <div>
+                    <!-- <figure v-for="(image, i) in apartment.images" :key="apartment.id">
+                    <img :src="image.link" alt="">
+                </figure> -->
+                </div>
+            </div>
+        </div>
+        <Loading v-else></Loading>
+    </Layout>
 </template>
 <script>
 import axios from 'axios'
-import Section from '../../components/Section.vue'
+// import Section from '../../components/Section.vue'
+import Layout from '../../layouts/DefaultLayout.vue'
+import Loading from '../../components/Loading.vue'
 
 export default {
     components: {
-        Section,
+        // Section,
+        Layout,
+        Loading
     },
     props: {
         slug: String
@@ -61,4 +76,17 @@ export default {
 }
 
 </script>
-<style></style>
+<style lang="scss" scoped>
+.section-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.section {
+    margin: 60px 0;
+}
+
+.strong {
+    font-weight: bold;
+}
+</style>
