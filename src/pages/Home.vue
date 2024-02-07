@@ -22,7 +22,7 @@
       </div>
       <div class="query-results">
         <div class="query-result" v-for="result in searchResults">
-          <span @click="storeSuggested(result)">{{
+          <span @click="searchQuery = result.address.freeformAddress">{{
             result.address.freeformAddress
           }}</span>
           <span>
@@ -79,12 +79,13 @@
           />
         </div>
       </div>
-      <!-- <div class="servicesFilter">
-        <div v-for="(service, index) in services">
-          <input ref="serviceCheckboxes" type="checkbox" :id="service" />
-          <label :for="service">{{ service }}</label>
+
+      <div class="servicesFilter">
+        <div v-for="service in serviceList">
+          <input ref="serviceCheckboxes" type="checkbox" :id="service.name" />
+          <label :for="service.name">{{ service.name }}</label>
         </div>
-      </div> -->
+      </div>
 
       <button @click="searchApartments()">search</button>
     </div>
@@ -120,128 +121,102 @@ import axios from "axios";
 export default {
   data() {
     return {
-      searchRadius: 20,
-      addressList: [],
       searchQuery: null,
+      searchRadius: 20,
       searchResults: [],
+      addressList: [],
+      serviceList: [],
       rooms: 1,
       beds: 1,
       bathrooms: 1,
       square_meters: 1,
+      BACKEND_URL: "http://127.0.0.1:8000/",
+      debouncedSearch: this.debounce(this.backendFuzzySearch, 300),
       data: {},
     };
   },
   watch: {
     searchQuery() {
-      this.tomtomSearch();
+      this.debouncedSearch();
     },
   },
   methods: {
-    async fetchData() {
-      const response = await axios.get("http://127.0.0.1:8000/api/apartments");
-      this.addressList = response.data.results;
-    },
-    async tomtomSearch() {
+    // Take user input and suggest matched addresses
+    backendFuzzySearch() {
       if (this.searchQuery) {
-        const response = await axios.get(
-          "https://api.tomtom.com/search/2/search/" +
-            this.searchQuery +
-            ".json?key=qD5AjlcGdPMFjUKdDAYqT7xYi3yIRo3c",
-          {
-            params: {
-              key: this.API_KEY,
-            },
-          }
+        console.log(
+          "USER IS TYPING...",
+          this.searchQuery.length,
+          this.searchQuery
         );
-        this.searchResults = response.data.results;
+        const data = { query: this.searchQuery };
+        axios
+          .post(`${this.BACKEND_URL}api/apartments/search`, data)
+          .then((res) => {
+            this.searchResults = res.data.results;
+          });
       }
     },
-    storeSuggested(item) {
-      this.searchQuery = item.address.freeformAddress;
-      this.data.latitude = item.position.lat;
-      this.data.longitude = item.position.lon;
-    },
+    // async backendFuzzySearch() {
+    //   if (this.searchQuery) {
+    //     console.log(
+    //       "USER IS TYPING...",
+    //       this.searchQuery.length,
+    //       this.searchQuery
+    //     );
+    //     const data = { query: this.searchQuery };
+    //     const response = await axios.post(
+    //       `${this.BACKEND_URL}api/apartments/search`,
+    //       data
+    //     );
+    //     this.searchResults = response.data.results;
+    //   }
+    // },
+    // Send search data to backend for search and filter
     async searchApartments() {
+      // If user has entered a search query, send post request to backend with search data
+      let response;
       if (this.searchQuery) {
-        this.data.rooms = this.rooms;
-        this.data.beds = this.beds;
-        this.data.bathrooms = this.bathrooms;
-        this.data.square_meters = this.square_meters;
-        this.data.search_radius = this.searchRadius;
-        const response = await axios.post(
-          "http://127.0.0.1:8000/api/apartments",
+        this.data = {
+          rooms: this.rooms,
+          beds: this.beds,
+          bathrooms: this.bathrooms,
+          square_meters: this.square_meters,
+          search_radius: this.searchRadius,
+          latitude: this.searchResults[0].position.lat,
+          longitude: this.searchResults[0].position.lon,
+          services: this.$refs.serviceCheckboxes
+            .filter((service) => service.checked)
+            .map((service) => service.id),
+        };
+        response = await axios.post(
+          `${this.BACKEND_URL}api/apartments`,
           this.data
         );
-        this.addressList = response.data.results;
+        // Else if no query is entered, fetch all apartments
+      } else {
+        response = await axios.get(`${this.BACKEND_URL}api/apartments`);
       }
+      this.addressList = response.data.results.apartments;
+      this.serviceList = response.data.results.services;
+    },
+    // Return debounced function
+    debounce(fn, wait) {
+      let timer;
+      return function (...args) {
+        if (timer) {
+          clearTimeout(timer);
+        }
+        const that = this;
+        timer = setTimeout(() => {
+          fn.apply(that, args);
+        }, wait);
+      };
     },
   },
   mounted() {
-    this.fetchData();
+    this.searchApartments();
   },
-
-  // computed: {
-  //   locationList() {
-  //     return this.addressList.map((address) => {
-  //       return {
-  //         ...address,
-  //         position: {
-  //           lat: address.latitude,
-  //           lon: address.longitude,
-  //         },
-  //       };
-  //     });
-  //   },
-  //   services() {
-  //     const serviceList = [];
-  //     this.addressList.forEach((address) => {
-  //       const services = address.services;
-  //       services.forEach((service) => {
-  //         const serviceName = service.name;
-  //         if (!serviceList.includes(serviceName)) {
-  //           serviceList.push(serviceName);
-  //         }
-  //       });
-  //     });
-  //     return serviceList;
-  //   },
-  //   maxRooms() {
-  //     if (this.addressList.length) {
-  //       return this.addressList
-  //         .map((element) => element.rooms)
-  //         .reduce((previous, current) =>
-  //           current >= previous ? current : previous
-  //         );
-  //     }
-  //   },
-  //   maxBeds() {
-  //     if (this.addressList.length) {
-  //       return this.addressList
-  //         .map((element) => element.beds)
-  //         .reduce((previous, current) =>
-  //           current >= previous ? current : previous
-  //         );
-  //     }
-  //   },
-  //   maxBathrooms() {
-  //     if (this.addressList.length) {
-  //       return this.addressList
-  //         .map((element) => element.bathrooms)
-  //         .reduce((previous, current) =>
-  //           current >= previous ? current : previous
-  //         );
-  //     }
-  //   },
-  //   maxSqMeters() {
-  //     if (this.addressList.length) {
-  //       return this.addressList
-  //         .map((element) => element.square_meters)
-  //         .reduce((previous, current) =>
-  //           current >= previous ? current : previous
-  //         );
-  //     }
-  //   },
-  // },
 };
 </script>
 
