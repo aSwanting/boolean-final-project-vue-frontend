@@ -1,0 +1,48 @@
+@use "../styles/partials/variables" as *;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+ul,
+ol,
+menu {
+  list-style: none;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+a {
+  text-decoration: none;
+  color: currentColor;
+}
+
+button {
+  cursor: pointer;
+  background-color: $primary;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  transition: 200ms all;
+  &:hover {
+    background-color: $primary-hover;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $primary;
+}
