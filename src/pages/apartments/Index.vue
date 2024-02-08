@@ -1,23 +1,20 @@
 <template>
-
     <!--  -->
     <DefaultLayout>
         <div class="container">
             <h2 class="text-center">
                 Apartments
             </h2>
-        </div> 
+        </div>
         <div class="container">
             <div class="grid">
-                <ApartmentCard class="card apartment-card" 
-                v-for="apartment in apartments" :apartment="apartment" :key="apartment.id"/>
+                <ApartmentCard class="card apartment-card" v-for="apartment in apartments" :apartment="apartment"
+                    :key="apartment.id" />
             </div>
         </div>
-        <Loading v-if="apartments < 1"></Loading>
-        
-    </DefaultLayout>
-    
+        <!-- <Loading v-if="apartments < 1"></Loading> -->
 
+    </DefaultLayout>
 </template>
 
 <script>
@@ -41,8 +38,8 @@ export default {
         fetchApartments() {
             axios.get(`${this.BASE_URL}/apartments`)
                 .then((res) => {
-                    // console.log(res.data)
-                    this.apartments = res.data.results
+                    console.log(res.data.results)
+                    this.apartments = res.data.results.apartments.data
                 })
         }
     },
