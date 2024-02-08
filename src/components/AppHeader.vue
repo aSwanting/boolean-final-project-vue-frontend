@@ -14,11 +14,13 @@
               <a v-bind:href="BACKEND_URL"><font-awesome-icon icon="user" /></a>
             </button>
             <ul class="dropdown-menu">
-              <li class="px-2">Login</li>
+              <li class="px-2"> <a v-bind:href="BACKEND_URL_LOGIN">Login</a>
+              </li>
               <li>
                 <hr>
               </li>
-              <li class="px-2">Register</li>
+              <li class="px-2"> <a v-bind:href="BACKEND_URL_REGISTER">Register</a>
+              </li>
             </ul>
           </div>
         </ul>
@@ -32,6 +34,8 @@ export default {
   data() {
     return {
       BACKEND_URL: "http://127.0.0.1:8000/",
+      BACKEND_URL_LOGIN: "http://127.0.0.1:8000/login",
+      BACKEND_URL_REGISTER: "http://127.0.0.1:8000/register",
     };
   },
 };
