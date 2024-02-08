@@ -1,16 +1,29 @@
 <template>
   <header>
-    <nav class="nav-menu">
-      <ul class="d-flex nav-items">
-        <li class="nav-item">
-          <router-link :to="{ name: 'home' }">Home</router-link>
-        </li>
-
-        <li class="nav-item">
-          <a v-bind:href="BACKEND_URL">User Area</a>
-        </li>
-      </ul>
-    </nav>
+    <div class="container">
+      <nav class="nav-menu">
+        <ul class="d-flex nav-items  ">
+          <li class="nav-item">
+            <router-link :to="{ name: 'home' }">boolbnb</router-link>
+          </li>
+          <li class="nav-item">
+          </li>
+          <div class="btn-group dropdown-padding">
+            <button class="btn btn-secondary btn-sm dropdown-toggle button-color" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <a v-bind:href="BACKEND_URL"><font-awesome-icon icon="user" /></a>
+            </button>
+            <ul class="dropdown-menu">
+              <li class="px-2">Login</li>
+              <li>
+                <hr>
+              </li>
+              <li class="px-2">Register</li>
+            </ul>
+          </div>
+        </ul>
+      </nav>
+    </div>
   </header>
 </template>
 
@@ -25,16 +38,18 @@ export default {
 </script>
 <style lang="scss" scoped>
 @use "../styles/partials/variables" as *;
+
 header {
   border-bottom: 1px solid $primary;
 }
 
 .d-flex {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .nav-items {
+
   //   font-size: 20px;
   //   padding: 20px 0;
   .nav-item {
@@ -42,10 +57,31 @@ header {
       display: block;
       padding: 20px 50px;
       transition: 200ms all;
+
       &:hover {
         background-color: $primary-hover;
       }
     }
   }
+}
+
+.dropdown-padding {
+  padding: 15px;
+
+  .button-color {
+    background-color: white !important;
+    border-color: white;
+    color: black;
+  }
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 </style>
