@@ -1,123 +1,164 @@
 <template>
   <DefaultLayout>
-    <div class="container">
-      <div class="apartment-search">
-        <!-- location search -->
-        <div class="location-search">
-          <label for="search-bar">Enter a location to search </label>
-          <input
-            type="search"
-            id="search-bar"
-            placeholder="Via del Mandrione, Roma"
-            v-model="searchQuery"
-          />
-          <label for="search-radius">Search radius in km</label>
-          <input
-            class="query-input"
-            type="number"
-            name="search-radius"
-            id="search-radius"
-            min="1"
-            v-model="searchRadius"
-          />
-        </div>
-        <div class="query-results">
-          <div class="query-result" v-for="result in searchResults">
-            <span @click="searchQuery = result.address.freeformAddress">{{
-              result.address.freeformAddress
-            }}</span>
-            <span>
-              {{ result.position.lat }},
-              {{ result.position.lon }}
-            </span>
+    <section class="search-hero">
+      <div class="container">
+        <div class="apartment-search">
+          <!-- location search -->
+          <div class="location-search">
+            <!-- <label for="search-bar">Enter a location to search </label> -->
+            <input
+              class="search-bar"
+              type="search"
+              id="search-bar"
+              placeholder="Via del Mandrione, Roma"
+              v-model="searchQuery"
+            />
+            <!-- <label for="search-radius">Search radius in km</label> -->
+            <!-- <input
+              class="search-radius"
+              type="number"
+              name="search-radius"
+              id="search-radius"
+              min="1"
+              v-model="searchRadius"
+            /> -->
+            <button class="search-button" @click="searchApartments()">
+              Search
+            </button>
           </div>
-        </div>
+          <div class="query-results">
+            <div class="query-result" v-for="result in searchResults">
+              <span @click="searchQuery = result.address.freeformAddress">{{
+                result.address.freeformAddress
+              }}</span>
+              <span>
+                {{ result.position.lat }},
+                {{ result.position.lon }}
+              </span>
+            </div>
+          </div>
 
-        <!-- advanced search -->
-        <div class="advanced-search">
-          <div class="search-filters">
-            <div class="search-filter">
-              <label for="rooms">rooms </label>
-              <input
-                v-model="rooms"
-                type="number"
-                name="rooms"
-                id="rooms"
-                min="1"
-                placeholder="minimum n°"
-              />
-            </div>
-            <div class="search-filter">
-              <label for="beds">beds </label>
-              <input
-                v-model="beds"
-                type="number"
-                name="beds"
-                id="beds"
-                min="1"
-                placeholder="minimum n°"
-              />
-            </div>
-            <div class="search-filter">
-              <label for="bathrooms">bathrooms </label>
-              <input
-                v-model="bathrooms"
-                type="number"
-                name="bathrooms"
-                id="bathrooms"
-                min="1"
-                placeholder="minimum n°"
-              />
-            </div>
-            <div class="search-filter">
-              <label for="square_meters">square meters </label>
-              <input
-                v-model="square_meters"
-                type="number"
-                name="square_meters"
-                id="square_meters"
-                min="1"
-                placeholder="minimum n°"
-              />
-            </div>
-          </div>
-          <div class="service-filters">
-            <div v-for="service in serviceList">
-              <input
-                ref="serviceCheckboxes"
-                type="checkbox"
-                :id="service.name"
-              />
-              <label :for="service.name">{{ service.name }}</label>
+          <!-- advanced search -->
+          <div class="filter-modal">
+            <div class="advanced-search">
+              <div class="search-filters">
+                <h3>Filters</h3>
+                <div class="search-filter">
+                  <span>Search Radius: </span>
+                  <div class="filter-inputs">
+                    <input type="range" name="" id="" min="20" max="200" />
+                    <!-- <span
+                      class="filter-button"
+                      @click="filterClick('searchRadius', -1)"
+                    >
+                      -
+                    </span>
+                    <span>{{ searchRadius }}km</span>
+                    <span
+                      class="filter-button"
+                      @click="filterClick('searchRadius', +1)"
+                    >
+                      +
+                    </span> -->
+                  </div>
+                </div>
+                <div class="search-filter">
+                  <span>Rooms: </span>
+                  <div class="filter-inputs">
+                    <span
+                      class="filter-button"
+                      @click="filterClick('rooms', -1)"
+                    >
+                      -
+                    </span>
+                    <span>{{ rooms }} </span>
+                    <span
+                      class="filter-button"
+                      @click="filterClick('rooms', +1)"
+                    >
+                      +
+                    </span>
+                  </div>
+                </div>
+                <div class="search-filter">
+                  <span>Beds: </span>
+                  <div class="filter-inputs">
+                    <span
+                      class="filter-button"
+                      @click="filterClick('beds', -1)"
+                    >
+                      -
+                    </span>
+                    <span>{{ beds }} </span>
+                    <span
+                      class="filter-button"
+                      @click="filterClick('beds', +1)"
+                    >
+                      +
+                    </span>
+                  </div>
+                </div>
+                <div class="search-filter">
+                  <span>Bathrooms: </span>
+                  <div class="filter-inputs">
+                    <span
+                      class="filter-button"
+                      @click="filterClick('bathrooms', -1)"
+                    >
+                      -
+                    </span>
+                    <span>{{ bathrooms }} </span>
+                    <span
+                      class="filter-button"
+                      @click="filterClick('bathrooms', +1)"
+                    >
+                      +
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="service-filters">
+                <h3>Services</h3>
+                <div>
+                  <div
+                    v-for="(service, index) in serviceList"
+                    class="service-filter"
+                    ref="services"
+                  >
+                    <input
+                      class="service-checkbox"
+                      ref="serviceCheckboxes"
+                      type="checkbox"
+                      :id="service.name"
+                    />
+                    <label @click="labelCheck(index)" :for="service.name">{{
+                      service.name
+                    }}</label>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <button @click="searchApartments()">search</button>
       </div>
-
-      <div class="card-wrapper">
-        <div class="apartment-card" v-for="apartment in addressList">
-          <p class="apartment-info">
-            <span class="field">Name: </span>{{ apartment.name }}
-          </p>
-          <p class="apartment-info">
-            <span class="field">Address: </span>{{ apartment.address }}
-          </p>
-          <p class="apartment-info">
-            <span class="field">Distance: </span>{{ apartment.distance }} km
-          </p>
-          <div class="apartment-info">
-            <span class="field">Services: </span>
-            <ul class="apartment-services">
-              <li class="service" v-for="service in apartment.services">
-                {{ service.name }}
-              </li>
-            </ul>
+    </section>
+    <section>
+      <div class="container">
+        <div class="card-wrapper">
+          <div class="apartment-card" v-for="apartment in addressList">
+            <div class="card-image">
+              <div>{{ apartment }}</div>
+            </div>
+            <h3 class="apartment-info">
+              {{ apartment.region }}, {{ apartment.country }}
+            </h3>
+            <p v-show="apartment.distance" class="apartment-info">
+              {{ apartment.distance }} kilometers away
+            </p>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </DefaultLayout>
 </template>
 
@@ -138,7 +179,6 @@ export default {
       rooms: 1,
       beds: 1,
       bathrooms: 1,
-      square_meters: 1,
       BACKEND_URL: "http://127.0.0.1:8000/",
       debouncedSearch: this.debounce(this.backendFuzzySearch, 300),
       data: {},
@@ -170,7 +210,6 @@ export default {
           rooms: this.rooms,
           beds: this.beds,
           bathrooms: this.bathrooms,
-          square_meters: this.square_meters,
           search_radius: this.searchRadius,
           latitude: this.searchResults[0].position.lat,
           longitude: this.searchResults[0].position.lon,
@@ -202,6 +241,31 @@ export default {
         }, wait);
       };
     },
+    labelCheck(index) {
+      this.$refs.serviceCheckboxes[index].checked
+        ? this.$refs.services[index].classList.remove("checked")
+        : this.$refs.services[index].classList.add("checked");
+    },
+    filterClick(filter, change) {
+      switch (filter) {
+        case "searchRadius":
+          this.searchRadius += change;
+          this.searchRadius < 1 ? (this.searchRadius = 1) : "";
+          break;
+        case "rooms":
+          this.rooms += change;
+          this.rooms < 1 ? (this.rooms = 1) : "";
+          break;
+        case "beds":
+          this.beds += change;
+          this.beds < 1 ? (this.beds = 1) : "";
+          break;
+        case "bathrooms":
+          this.bathrooms += change;
+          this.bathrooms < 1 ? (this.bathrooms = 1) : "";
+          break;
+      }
+    },
   },
   mounted() {
     this.searchApartments();
@@ -211,42 +275,65 @@ export default {
 
 <style lang="scss" scoped>
 @use "../styles/partials/variables" as *;
+.search-hero {
+  background-color: rgb(64, 68, 67);
+  background-image: url(../../public/search-hero-bg-3.jpg);
+  background-size: cover;
+  background-position: 0, 0;
+  height: 500px;
+}
 .container {
   max-width: 1200px;
-  padding: 30px;
+  padding: 50px;
+  height: 100%;
+  // display: flex;
+  // justify-content: stretch;
+  // align-items: center;
 
-  h1 {
-    text-align: center;
-    padding: 30px;
-    text-transform: uppercase;
-    font-weight: 100;
-    color: rgba(0, 0, 0, 0.5);
-  }
   .apartment-search {
-    width: 100%;
-    padding: 30px;
-    border-radius: 10px;
-    border: 2px dashed $primary;
-    outline: none;
-    margin-bottom: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 20px;
+    // width: 100%;
+    // padding: 30px;
+    // border-radius: 10px;
+    // background-color: white;
+
+    // outline: none;
+    // margin-bottom: 30px;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    // gap: 20px;
     .location-search {
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px dashed $light-grey;
+      // background-color: white;
+      border-radius: 9999px;
       display: flex;
-      align-items: center;
-      gap: 10px;
+      overflow: hidden;
+      // gap: 5px;
+      & > * {
+        // border-radius: 3px;
+        box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.12);
+      }
+      .search-bar {
+        background-color: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        border: none;
+        outline: none;
+        padding: 24px 40px;
+        flex-grow: 5;
+      }
+      .search-button {
+        flex-grow: 1;
+        border-radius: 0;
+      }
     }
     .query-results {
-      border-block: 1px solid $light-grey;
+      box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.12);
+      margin: 20px;
+      background-color: rgba(255, 255, 255, 0.548);
+      backdrop-filter: blur(10px);
+      border-radius: 10px;
       overflow: auto;
-      max-height: 100px;
       .query-result {
-        font-size: 12px;
+        font-size: 14px;
         margin: 8px 16px;
         display: flex;
         & :first-child {
@@ -254,88 +341,120 @@ export default {
           margin-right: auto;
           transition: 200ms all;
           &:hover {
-            color: $primary;
-            font-weight: 700;
+            color: rgb(21, 145, 114);
+            font-weight: 600;
           }
         }
       }
     }
-    .advanced-search {
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px dashed $light-grey;
-      .search-filters {
+    .filter-modal {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      .advanced-search {
+        background-color: rgba(255, 255, 255, 1);
+        width: 100%;
+        max-width: 800px;
         padding: 10px;
         border-radius: 10px;
-        border: 1px dashed $light-grey;
-        display: flex;
-        justify-content: space-around;
-        gap: 10px;
-        margin-bottom: 20px;
-      }
-      .search-filter {
-        text-transform: capitalize;
-        input {
-          width: 100%;
+        h3 {
+          text-align: center;
+          margin-bottom: 20px;
         }
-      }
-    }
-    input {
-      border: 1px solid rgba(0, 0, 0, 0.2);
-      border-radius: 6px;
-      padding: 6px;
-      outline: none;
-      flex-grow: 1;
-      min-width: 1px;
-    }
-    .service-filters {
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px dashed $light-grey;
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 5px;
 
-      label {
-        padding-left: 6px;
+        .search-filters {
+          border: 1px solid rgb(230, 230, 230);
+          border-radius: 10px;
+          padding: 20px;
+          margin: 10px;
+          .search-filter {
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid rgb(230, 230, 230);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px;
+            .filter-inputs {
+              text-align: center;
+              width: 80px;
+              display: flex;
+              justify-content: space-between;
+              .filter-button {
+                user-select: none;
+                cursor: pointer;
+              }
+            }
+          }
+        }
+        .service-filters {
+          border: 1px solid rgb(230, 230, 230);
+          border-radius: 10px;
+          padding: 20px;
+          margin: 10px;
+          & > div {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+          }
+
+          .service-filter {
+            flex-basis: calc((100% / 2) - 10px);
+            border: 1px solid rgb(230, 230, 230);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 300ms;
+            &.checked {
+              background-color: $primary;
+            }
+
+            label {
+              display: block;
+              cursor: pointer;
+              padding: 15px;
+              text-align: center;
+            }
+            input {
+              position: absolute;
+              visibility: hidden;
+            }
+          }
+        }
       }
     }
   }
   .card-wrapper {
-    overflow: auto;
-    flex-grow: 1;
-    padding: 10px;
-    border-radius: 10px;
-    border: 2px dashed $primary;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
 
     .apartment-card {
-      padding: 10px;
-      border-radius: 10px;
-      border: 2px solid $primary;
-      background-color: $light-grey;
       cursor: pointer;
-      transition: 500ms all;
-      &:hover {
-        background-color: $primary-hover;
+
+      .card-image {
+        padding: 10px;
+        width: 100%;
+        aspect-ratio: 1;
+        background-color: $primary;
+        border-radius: 20px;
+        box-shadow: 2px 5px 6px rgba(105, 105, 105, 0.2);
+        margin-bottom: 8px;
+        overflow: hidden;
+
+        div {
+          height: 100%;
+          overflow: auto;
+          font-size: 12px;
+          opacity: 0.5;
+        }
       }
       .apartment-info {
-        padding: 5px;
+        padding: 0px 6px;
         font-size: 14px;
-        .field {
-          font-weight: 800;
-        }
-        .apartment-services {
-          list-style: circle;
-          margin-left: 20px;
-          padding: 5px;
-          .service {
-            padding: 2px;
-          }
-        }
       }
     }
   }
