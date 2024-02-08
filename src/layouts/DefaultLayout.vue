@@ -1,24 +1,20 @@
 <template>
-    <AppHeader />
+  <AppHeader />
 
-    <main>
-        <slot></slot>
-    </main>
-    
+  <main>
+    <slot></slot>
+  </main>
 
-    <footer>
-        <h1>Footerone</h1>
-    </footer>
-
+  <AppFooter />
 </template>
 <script>
-import AppHeader from '../components/AppHeader.vue'
+import AppHeader from "../components/AppHeader.vue";
+import AppFooter from "../components/AppFooter.vue";
 export default {
-    components: {
-        AppHeader
-    }
-}
+  components: {
+    AppHeader,
+    AppFooter,
+  },
+};
 </script>
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

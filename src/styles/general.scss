@@ -1,3 +1,5 @@
+@use "../styles/partials/variables" as *;
+
 * {
   padding: 0;
   margin: 0;
@@ -26,14 +28,14 @@ a {
 
 button {
   cursor: pointer;
-  background-color: rgb(172, 243, 204);
+  background-color: $primary;
   padding: 8px;
   border-radius: 6px;
   border: none;
   outline: none;
   transition: 200ms all;
   &:hover {
-    background-color: rgb(130, 240, 207);
+    background-color: $primary-hover;
   }
 }
 
@@ -42,5 +44,5 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgb(172, 243, 204);
+  background-color: $primary;
 }
