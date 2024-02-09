@@ -4,13 +4,8 @@
       <div class="apartment-search">
         <!-- location search -->
         <div class="location-search">
-          <input
-            class="search-bar"
-            type="search"
-            id="search-bar"
-            placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)"
-            v-model="searchQuery"
-          />
+          <input class="search-bar" type="search" id="search-bar"
+            placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)" v-model="searchQuery" />
 
           <button class="search-button" @click="searchApartments()">
             Search
@@ -39,7 +34,9 @@
   <section>
     <div class="container">
       <div class="card-wrapper">
-        <div class="apartment-card" v-for="apartment in store.addressList">
+        <ApartmentCard class="apartment-card" v-for="apartment in store.addressList" :apartment="apartment">
+        </ApartmentCard>
+        <!-- <div class="apartment-card" v-for="apartment in store.addressList">
           <div class="card-image">
             <div>{{ apartment }}</div>
           </div>
@@ -51,7 +48,7 @@
           <p v-show="apartment.distance" class="apartment-info">
             {{ apartment.distance }} kilometers away
           </p>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
@@ -61,9 +58,11 @@
 import DefaultLayout from "../layouts/DefaultLayout.vue";
 import axios from "axios";
 import store from "../store";
+import ApartmentCard from "../components/ApartmentCard.vue"
 export default {
   components: {
     DefaultLayout,
+    ApartmentCard
   },
   data() {
     return {
@@ -127,6 +126,7 @@ export default {
 
 <style lang="scss" scoped>
 @use "../styles/partials/variables" as *;
+
 .search-hero {
   background-color: rgb(64, 68, 67);
   background-image: url(/search-hero-bg-3.jpg);
@@ -134,6 +134,7 @@ export default {
   background-position: 0, 0;
   height: 500px;
 }
+
 .filter-button {
   aspect-ratio: 1;
   margin: 0 auto;
@@ -142,6 +143,7 @@ export default {
   box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.2);
   display: block;
 }
+
 .container {
   max-width: 1200px;
   padding: 50px;
@@ -152,9 +154,11 @@ export default {
       border-radius: 9999px;
       display: flex;
       overflow: hidden;
-      & > * {
+
+      &>* {
         box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.12);
       }
+
       .search-bar {
         background-color: rgba(255, 255, 255, 0.8);
         backdrop-filter: blur(10px);
@@ -163,6 +167,7 @@ export default {
         padding: 24px 40px;
         flex-grow: 5;
       }
+
       .search-button {
         flex-grow: 1;
         border-radius: 0;
@@ -176,19 +181,23 @@ export default {
       backdrop-filter: blur(10px);
       border-radius: 10px;
       box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.12);
+
       .query-result {
         font-size: 14px;
         margin: 8px 16px;
         display: flex;
+
         & :first-child {
           cursor: pointer;
           margin-right: auto;
           transition: 100ms all;
+
           &:hover {
             color: rgb(21, 145, 114);
             font-weight: 600;
           }
         }
+
         & :last-child {
           color: rgba(0, 0, 0, 0.5);
           font-style: italic;
@@ -223,6 +232,7 @@ export default {
           opacity: 0.5;
         }
       }
+
       .apartment-info {
         padding: 0px 6px;
         font-size: 14px;
