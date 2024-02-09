@@ -115,6 +115,7 @@ export default {
             .filter((service) => service.active)
             .map((service) => service.key),
         };
+        this.searchResults = [];
         response = await axios.post(
           `${store.BACKEND_URL}api/apartments`,
           this.data
