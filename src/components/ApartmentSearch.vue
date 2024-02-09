@@ -4,8 +4,13 @@
       <div class="apartment-search">
         <!-- location search -->
         <div class="location-search">
-          <input class="search-bar" type="search" id="search-bar"
-            placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)" v-model="searchQuery" />
+          <input
+            class="search-bar"
+            type="search"
+            id="search-bar"
+            placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)"
+            v-model="searchQuery"
+          />
 
           <button class="search-button" @click="searchApartments()">
             Search
@@ -14,9 +19,9 @@
 
         <div class="query-results">
           <div class="query-result" v-for="result in searchResults">
-            <span @click="searchQuery = result.address.freeformAddress">{{
-              result.address.freeformAddress
-            }}</span>
+            <span @click="searchQuery = result.address.freeformAddress">
+              {{ result.address.freeformAddress }}
+            </span>
             <span>
               {{ result.position.lat }},
               {{ result.position.lon }}
@@ -34,7 +39,11 @@
   <section>
     <div class="container">
       <div class="card-wrapper">
-        <ApartmentCard class="apartment-card" v-for="apartment in store.addressList" :apartment="apartment">
+        <ApartmentCard
+          class="apartment-card"
+          v-for="apartment in store.addressList"
+          :apartment="apartment"
+        >
         </ApartmentCard>
         <!-- <div class="apartment-card" v-for="apartment in store.addressList">
           <div class="card-image">
@@ -58,11 +67,11 @@
 import DefaultLayout from "../layouts/DefaultLayout.vue";
 import axios from "axios";
 import store from "../store";
-import ApartmentCard from "../components/ApartmentCard.vue"
+import ApartmentCard from "../components/ApartmentCard.vue";
 export default {
   components: {
     DefaultLayout,
-    ApartmentCard
+    ApartmentCard,
   },
   data() {
     return {
@@ -95,6 +104,7 @@ export default {
       // If user has entered a search query, send post request to backend with search data
       let response;
       if (this.searchResults.length) {
+        this.searchResults = [];
         this.data = {
           search_radius: store.filters[0].value,
           rooms: store.filters[1].value,
@@ -155,7 +165,7 @@ export default {
       display: flex;
       overflow: hidden;
 
-      &>* {
+      & > * {
         box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.12);
       }
 
