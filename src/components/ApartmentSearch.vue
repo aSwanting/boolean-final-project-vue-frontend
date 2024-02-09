@@ -4,20 +4,15 @@
       <div class="apartment-search">
         <!-- location search -->
         <div class="location-search">
-          <input
-            class="search-bar"
-            type="search"
-            id="search-bar"
-            placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)"
-            v-model="searchQuery"
-          />
+          <input class="search-bar" type="search" id="search-bar"
+            placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)" v-model="searchQuery" />
 
           <button class="search-button" @click="searchApartments()">
             Search
           </button>
         </div>
 
-        <div class="query-results">
+        <div class="query-results" v-if="searchResults.length > 1">
           <div class="query-result" v-for="result in searchResults">
             <span @click="searchQuery = result.address.freeformAddress">
               {{ result.address.freeformAddress }}
@@ -39,11 +34,7 @@
   <section>
     <div class="container">
       <div class="card-wrapper">
-        <ApartmentCard
-          class="apartment-card"
-          v-for="apartment in store.addressList"
-          :apartment="apartment"
-        >
+        <ApartmentCard class="apartment-card" v-for="apartment in store.addressList" :apartment="apartment">
         </ApartmentCard>
         <!-- <div class="apartment-card" v-for="apartment in store.addressList">
           <div class="card-image">
@@ -125,6 +116,7 @@ export default {
         response = await axios.get(`${store.BACKEND_URL}api/apartments`);
       }
       store.addressList = response.data.results.apartments;
+
       store.serviceList = response.data.results.services;
     },
   },
@@ -165,7 +157,7 @@ export default {
       display: flex;
       overflow: hidden;
 
-      & > * {
+      &>* {
         box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.12);
       }
 
