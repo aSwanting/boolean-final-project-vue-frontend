@@ -5,7 +5,7 @@
     <slot></slot>
   </main>
 
-  <AppFooter />
+  <!-- <AppFooter /> -->
 </template>
 <script>
 import AppHeader from "../components/AppHeader.vue";
