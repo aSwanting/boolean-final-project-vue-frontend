@@ -1,34 +1,32 @@
 <template>
-    <div>
-        <h1 v-if="apartment">{{ apartment.description }}</h1>
-    </div>
+    <div class="container" v-if="apartment">
+        <figure>
+            <img class="cover-img" :src="`${BASE_URL_COVER_IMG}${apartment.cover_image}`" alt="">
+        </figure>
+        <div class="container-images">
+            <img class="images" v-for="img in apartment.images " :key="img.id" :src="`${BASE_URL_IMAGES}${img.link}`">
+        </div>
+        <div class="apartment-info">
+            <h3>{{ apartment.name }}</h3>
+            <p>{{ apartment.address }}, {{ apartment.country }}</p>
+            <p>{{ apartment.description }}</p>
+            <div class="services">
+                <div class="col-2" v-for="service in apartment.services" :key="service.id">{{ service.name }}</div>
+            </div>
+        </div>
 
-    <div>
-        <!-- <figure>
-            <img :src="apartment.cover_image" alt="">
-        </figure> -->
-
-        <!-- <ul class="services">
-            <li v-for="(service, i) in apartment.services" :key="apartment.id">
-                <h3>
-                    {{ service.name }}
-                </h3>
-            </li>
-        </ul> -->
     </div>
-    <div>
-        <!-- <figure v-for="(image, i) in apartment.images" :key="apartment.id">
-            <img :src="image.link" alt="">
-        </figure> -->
-    </div>
+    <Loading v-else></Loading>
 </template>
 <script>
 import axios from 'axios'
 import Section from '../../components/Section.vue'
+import Loading from '../../components/Loading.vue'
 
 export default {
     components: {
         Section,
+        Loading
     },
     props: {
         slug: String
@@ -36,7 +34,9 @@ export default {
     data() {
         return {
             apartment: null,
-            BASE_URL: 'http://127.0.0.1:8000/api'
+            BASE_URL: 'http://127.0.0.1:8000/api',
+            BASE_URL_COVER_IMG: 'http://127.0.0.1:8000/storage/cover_images/',
+            BASE_URL_IMAGES: `http://127.0.0.1:8000/storage/images/`,
         }
     },
     methods: {
@@ -61,4 +61,44 @@ export default {
 }
 
 </script>
-<style></style>
+<style lang="scss" scoped>
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.container-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.cover-img {
+    display: block;
+    width: 100%;
+    margin: 16px 0;
+}
+
+.images {
+    max-width: 150px;
+    display: block;
+}
+
+.services {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.col-2 {
+    flex-basis: calc(100% / 6);
+}
+
+.apartment-info {
+    padding: 12px;
+
+    * {
+        margin: 8px 0;
+    }
+}
+</style>
