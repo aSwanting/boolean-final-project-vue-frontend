@@ -98,7 +98,7 @@ export default {
 
   &.active {
     opacity: 1;
-    bottom: 0%;
+    bottom: -100%;
   }
 }
 
