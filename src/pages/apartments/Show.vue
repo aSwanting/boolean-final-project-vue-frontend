@@ -1,4 +1,7 @@
 <template>
+    <DefaultLayout>
+
+    
     <div class="container" v-if="apartment">
         <figure>
             <img class="cover-img" :src="`${BASE_URL_COVER_IMG}${apartment.cover_image}`" alt="">
@@ -17,16 +20,20 @@
 
     </div>
     <Loading v-else></Loading>
+    </DefaultLayout>
+    
 </template>
 <script>
 import axios from 'axios'
 import Section from '../../components/Section.vue'
 import Loading from '../../components/Loading.vue'
+import DefaultLayout from '../../layouts/DefaultLayout.vue'
 
 export default {
     components: {
         Section,
-        Loading
+        Loading,
+        DefaultLayout
     },
     props: {
         slug: String
