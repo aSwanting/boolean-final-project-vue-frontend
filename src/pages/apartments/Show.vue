@@ -6,13 +6,30 @@
         <div class="container-images">
             <img class="images" v-for="img in apartment.images " :key="img.id" :src="`${BASE_URL_IMAGES}${img.link}`">
         </div>
-        <div class="apartment-info">
-            <h3>{{ apartment.name }}</h3>
-            <p>{{ apartment.address }}, {{ apartment.country }}</p>
-            <p>{{ apartment.description }}</p>
-            <div class="services">
-                <div class="col-2" v-for="service in apartment.services" :key="service.id">{{ service.name }}</div>
+        <div class="body-container">
+            <div class="apartment-info">
+                <h3>{{ apartment.name }}</h3>
+                <p>{{ apartment.address }}, {{ apartment.country }}</p>
+                <p>{{ apartment.description }}</p>
+                <div class="services">
+                    <div class="col-2" v-for="service in apartment.services" :key="service.id">{{ service.name }}</div>
+                </div>
             </div>
+
+            <div class="drop-down">
+                <h4>Contact the owner</h4>
+                <span>&#8910;</span>
+            </div>
+            <form action="" class="contact-form">
+
+                <label for="sender">Sender</label>
+                <input type="text" name="sender" id="sender" placeholder="Francesco Rossi">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="francescorossi@gmail.com">
+                <label for="message">Message</label>
+                <textarea name="message" id="message" cols="30" rows="10"></textarea>
+                <input type="submit" class="submit" value="Send message">
+            </form>
         </div>
 
     </div>
@@ -73,6 +90,10 @@ export default {
     gap: 16px;
 }
 
+.body-container {
+    padding: 12px;
+}
+
 .cover-img {
     display: block;
     width: 100%;
@@ -95,10 +116,34 @@ export default {
 }
 
 .apartment-info {
-    padding: 12px;
 
     * {
         margin: 8px 0;
     }
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+
+    input {
+        margin-bottom: 8px;
+    }
+
+    label {
+        margin: 8px 0 2px 0;
+    }
+}
+
+.submit {
+    max-width: 100px;
+    align-self: center;
+    margin-top: 16px;
+}
+
+.drop-down {
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
 }
 </style>
