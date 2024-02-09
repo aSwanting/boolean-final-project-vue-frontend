@@ -13,6 +13,9 @@
       <div class="card-body">
         <p class="address">{{ apartment.region }}, {{ apartment.country }}</p>
         <p class="name">{{ apartment.name }}</p>
+        <p v-show="apartment.distance" class="apartment-info">
+          {{ apartment.distance }} kilometers away
+        </p>
       </div>
     </div>
   </router-link>

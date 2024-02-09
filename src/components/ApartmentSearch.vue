@@ -104,7 +104,6 @@ export default {
       // If user has entered a search query, send post request to backend with search data
       let response;
       if (this.searchResults.length) {
-        this.searchResults = [];
         this.data = {
           search_radius: store.filters[0].value,
           rooms: store.filters[1].value,
