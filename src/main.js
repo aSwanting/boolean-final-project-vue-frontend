@@ -8,9 +8,29 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
     faUser,
+    faWifi,
+    faWaterLadder,
+    faSquareParking,
+    faDumbbell,
+    faShield,
+    faPaw,
+    faHammer,
+    faBellConcierge,
+    faDice,
+    faJugDetergent
 } from '@fortawesome/free-solid-svg-icons'
 library.add(
     faUser,
+    faWifi,
+    faWaterLadder,
+    faSquareParking,
+    faDumbbell,
+    faShield,
+    faPaw,
+    faHammer,
+    faBellConcierge,
+    faDice,
+    faJugDetergent
 )
 
 createApp(App).component('font-awesome-icon', FontAwesomeIcon).use(router).mount('#app')
