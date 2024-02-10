@@ -34,7 +34,8 @@
   <section>
     <div class="container">
       <div class="card-wrapper">
-        <ApartmentCard class="apartment-card" v-for="apartment in store.addressList" :apartment="apartment">
+        <ApartmentCard class="apartment-card" v-for="apartment in store.addressList" :apartment="apartment"
+          @click="store.currentApartment = apartment">
         </ApartmentCard>
         <!-- <div class="apartment-card" v-for="apartment in store.addressList">
           <div class="card-image">

@@ -11,7 +11,7 @@
                 <h3>{{ apartment.name }}</h3>
                 <p>{{ apartment.address }}, {{ apartment.country }}</p>
                 <p>{{ apartment.description }}</p>
-                <!-- <p>{{ apartment.distance }} Km away</p> -->
+                <p v-show="apartment.distance">{{ apartment.distance }} Km away</p>
                 <div class="services">
                     <div class="col-2" v-for="service in apartment.services" :key="service.id">{{ service.name }}</div>
                 </div>
@@ -25,6 +25,7 @@
 import axios from 'axios'
 import DefaultLayout from '../../layouts/DefaultLayout.vue'
 import Loading from '../../components/Loading.vue'
+import store from '../../store'
 
 export default {
     components: {
@@ -32,11 +33,12 @@ export default {
         Loading
     },
     props: {
-        slug: String
+        slug: String,
     },
     data() {
         return {
-            apartment: null,
+            store,
+            apartment: store.currentApartment,
             BASE_URL: 'http://127.0.0.1:8000/api',
             BASE_URL_COVER_IMG: 'http://127.0.0.1:8000/storage/cover_images/',
             BASE_URL_IMAGES: `http://127.0.0.1:8000/storage/images/`,
@@ -51,7 +53,7 @@ export default {
         }
     },
     created() {
-        this.fetchApartment()
+        // this.fetchApartment()
     },
     mounted() {
         console.log('show montata')

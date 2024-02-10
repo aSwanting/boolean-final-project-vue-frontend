@@ -1,14 +1,8 @@
 <template>
-  <router-link
-    :to="{ name: 'apartments.show', params: { slug: apartment.slug } }"
-  >
+  <router-link :to="{ name: 'apartments.show', params: { slug: apartment.slug } }">
     <div class="apartment-card">
       <figure>
-        <img
-          class="apartment-image"
-          :src="`${BASE_URL_COVER_IMG}${apartment.cover_image}`"
-          alt=""
-        />
+        <img class="apartment-image" :src="`${BASE_URL_COVER_IMG}${apartment.cover_image}`" alt="" />
       </figure>
       <div class="card-body">
         <p class="address">{{ apartment.region }}, {{ apartment.country }}</p>
