@@ -1,6 +1,6 @@
 <template>
     <DefaultLayout>
-        <div class="container" v-if="apartment">
+        <div class="container" v-if="apartment.name">
             <figure>
                 <img class="cover-img" :src="`${BASE_URL_COVER_IMG}${apartment.cover_image}`" alt="">
             </figure>
@@ -50,10 +50,16 @@ export default {
                 this.apartment = res.data.apartment
 
             })
+        },
+        test1() {
+            if (!this.apartment.name) {
+                this.fetchApartment()
+            }
         }
     },
     created() {
         // this.fetchApartment()
+        this.test1();
     },
     mounted() {
         console.log('show montata')
