@@ -1,31 +1,34 @@
 <template>
-    <div class="container" v-if="apartment">
-        <figure>
-            <img class="cover-img" :src="`${BASE_URL_COVER_IMG}${apartment.cover_image}`" alt="">
-        </figure>
-        <div class="container-images">
-            <img class="images" v-for="img in apartment.images " :key="img.id" :src="`${BASE_URL_IMAGES}${img.link}`">
-        </div>
-        <div class="apartment-info">
-            <h3>{{ apartment.name }}</h3>
-            <p>{{ apartment.address }}, {{ apartment.country }}</p>
-            <p>{{ apartment.description }}</p>
-            <div class="services">
-                <div class="col-2" v-for="service in apartment.services" :key="service.id">{{ service.name }}</div>
+    <DefaultLayout>
+        <div class="container" v-if="apartment">
+            <figure>
+                <img class="cover-img" :src="`${BASE_URL_COVER_IMG}${apartment.cover_image}`" alt="">
+            </figure>
+            <div class="container-images">
+                <img class="images" v-for="img in apartment.images " :key="img.id" :src="`${BASE_URL_IMAGES}${img.link}`">
             </div>
-        </div>
+            <div class="apartment-info">
+                <h3>{{ apartment.name }}</h3>
+                <p>{{ apartment.address }}, {{ apartment.country }}</p>
+                <p>{{ apartment.description }}</p>
+                <!-- <p>{{ apartment.distance }} Km away</p> -->
+                <div class="services">
+                    <div class="col-2" v-for="service in apartment.services" :key="service.id">{{ service.name }}</div>
+                </div>
+            </div>
 
-    </div>
-    <Loading v-else></Loading>
+        </div>
+        <Loading v-else></Loading>
+    </DefaultLayout>
 </template>
 <script>
 import axios from 'axios'
-import Section from '../../components/Section.vue'
+import DefaultLayout from '../../layouts/DefaultLayout.vue'
 import Loading from '../../components/Loading.vue'
 
 export default {
     components: {
-        Section,
+        DefaultLayout,
         Loading
     },
     props: {
@@ -42,7 +45,6 @@ export default {
     methods: {
         fetchApartment() {
             axios.get(`${this.BASE_URL}/apartments/${this.slug}`).then(res => {
-                console.log(res.data)
                 this.apartment = res.data.apartment
 
             })
