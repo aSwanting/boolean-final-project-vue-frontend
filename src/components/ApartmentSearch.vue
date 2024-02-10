@@ -7,9 +7,12 @@
           <input class="search-bar" type="search" id="search-bar"
             placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)" v-model="searchQuery" />
 
-          <button class="search-button" @click="searchApartments()">
-            Search
-          </button>
+
+          <router-link @click="searchApartments()" :apartments="store.addressList" :to="{ name: 'search-results' }">
+            <button class="search-button">
+              Search
+            </button>
+          </router-link>
         </div>
 
         <div class="query-results" v-if="searchResults.length > 1">
