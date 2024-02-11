@@ -4,31 +4,35 @@
       class="img-frame left"
       :class="{ 'moving-left': carouselNext, 'moving-right': carouselPrev }"
     >
-      <img :src="imagePaths[prevImage]" alt="" />
+      <img :src="images[prevImage]" alt="" />
     </div>
     <div
       class="img-frame center"
       :class="{ 'moving-left': carouselNext, 'moving-right': carouselPrev }"
     >
-      <img :src="imagePaths[currentImage]" alt="" />
+      <img :src="images[currentImage]" alt="" />
     </div>
     <div
       class="img-frame right"
       :class="{ 'moving-left': carouselNext, 'moving-right': carouselPrev }"
     >
-      <img :src="imagePaths[nextImage]" alt="" />
+      <img :src="images[nextImage]" alt="" />
     </div>
-    <div class="carousel-controls">
+    <div v-if="apartment.images.length" class="carousel-controls">
       <div class="nav">
-        <button @click="carouselPrev = true">prev</button>
-        <button @click="carouselNext = true">next</button>
+        <div class="nav-arrow" @click.prevent="carouselPrev = true">
+          <font-awesome-icon icon="circle-chevron-left" />
+        </div>
+        <div class="nav-arrow" @click.prevent="carouselNext = true">
+          <font-awesome-icon icon="circle-chevron-right" />
+        </div>
       </div>
       <div class="carousel-icons">
-        <div v-for="(item, index) in imagePaths" :key="item.id">
+        <div v-for="(item, index) in images" :key="item.id">
           <div
             class="carousel-icon"
             :class="{ active: index === currentImage }"
-            @click="currentImage = index"
+            @click.prevent="currentImage = index"
           ></div>
         </div>
       </div>
@@ -38,17 +42,17 @@
 
 <script>
 export default {
+  props: {
+    apartment: {
+      type: Object,
+      required: false,
+    },
+  },
   data() {
     return {
-      currentImage: 1,
+      currentImage: 0,
       carouselNext: false,
       carouselPrev: false,
-      imagePaths: [
-        "/search-hero-bg-1.jpg",
-        "/search-hero-bg-2.jpg",
-        "/search-hero-bg-3.jpg",
-        "/search-hero-bg-4.jpg",
-      ],
     };
   },
   watch: {
@@ -67,19 +71,25 @@ export default {
         }, 500);
     },
   },
-  methods: {
-    carouselAnimation() {
-      console.log(this);
-    },
-  },
   computed: {
+    images() {
+      const paths = [];
+      paths.push(
+        "http://127.0.0.1:8000/storage/cover_images/" +
+          this.apartment.cover_image
+      );
+      const images = this.apartment.images;
+      images.forEach((image) => {
+        console.log("http://127.0.0.1:8000/storage/images/" + image.link);
+        paths.push("http://127.0.0.1:8000/storage/images/" + image.link);
+      });
+      return paths;
+    },
     prevImage() {
-      return this.currentImage
-        ? this.currentImage - 1
-        : this.imagePaths.length - 1;
+      return this.currentImage ? this.currentImage - 1 : this.images.length - 1;
     },
     nextImage() {
-      return this.currentImage < this.imagePaths.length - 1
+      return this.currentImage < this.images.length - 1
         ? this.currentImage + 1
         : 0;
     },
@@ -88,60 +98,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use "../styles/partials/variables" as *;
 img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.carousel-controls {
-  text-align: center;
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  .nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 30px;
-    padding: 30px;
-    flex: 1;
-    button {
-      border-radius: 9999px;
-      aspect-ratio: 1;
-      opacity: 0.8;
-      font-size: 12px;
-    }
-  }
-  .carousel-icons {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px;
-    .carousel-icon {
-      width: 12px;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background-color: white;
-      opacity: 50%;
-      transition: all 500ms;
-    }
-    & .active {
-      opacity: 100%;
-    }
-  }
-}
+
 .carousel-wrapper {
   overflow: hidden;
-  border-radius: 20px;
-  width: 420px;
-  aspect-ratio: 5/4;
+  border-radius: 10px;
+  height: 100%;
   margin: 0 auto;
   position: relative;
-  box-shadow: 8px 8px 24px rgba(0, 0, 0, 0.377);
+  box-shadow: 4px 4px 18px rgba(0, 0, 0, 0.377);
+  &:hover .carousel-controls .nav {
+    opacity: 1;
+  }
 
   .img-frame {
     position: absolute;
@@ -178,6 +151,57 @@ img {
     &.moving-right {
       left: 200%;
       transition: all 500ms;
+    }
+  }
+  .carousel-controls {
+    text-align: center;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+      padding: 20px;
+      flex: 1;
+      opacity: 0%;
+      transition: 400ms all;
+
+      .nav-arrow {
+        cursor: pointer;
+        font-size: 23px;
+        color: white;
+        filter: drop-shadow(2px 5px 6px rgba(0, 0, 0, 0.4));
+        opacity: 80%;
+        transition: 200ms all;
+        &:hover {
+          opacity: 100%;
+        }
+      }
+    }
+    .carousel-icons {
+      background-color: rgba(255, 255, 255, 0);
+      backdrop-filter: blur(5px);
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px;
+      .carousel-icon {
+        width: 8px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background-color: white;
+        opacity: 60%;
+        transition: all 200ms;
+      }
+      & .active {
+        opacity: 100%;
+      }
     }
   }
 }

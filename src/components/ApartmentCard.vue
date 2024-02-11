@@ -1,13 +1,15 @@
 <template>
-  <router-link :to="{ name: 'apartments.show', params: { slug: apartment.slug } }">
+  <router-link
+    :to="{ name: 'apartments.show', params: { slug: apartment.slug } }"
+  >
     <div class="apartment-card">
-      <figure>
-        <img class="apartment-image" :src="`${BASE_URL_COVER_IMG}${apartment.cover_image}`" alt="" />
-      </figure>
+      <div class="apartment-image">
+        <slot></slot>
+      </div>
       <div class="card-body">
-        <p class="address">{{ apartment.region }}, {{ apartment.country }}</p>
+        <p class="location">{{ apartment.region }}, {{ apartment.country }}</p>
         <p class="name">{{ apartment.name }}</p>
-        <p v-show="apartment.distance" class="apartment-info">
+        <p class="distance" v-show="apartment.distance">
           {{ apartment.distance }} kilometers away
         </p>
       </div>
@@ -31,41 +33,49 @@ export default {
 </script>
 <style lang="scss" scoped>
 .apartment-card {
-  //   max-width: 260px;
   background-color: white;
   transition: all 2s;
-  //   border: 2px solid;
-
-  &:hover {
-    animation-name: card-scale;
-    animation-duration: 0.3s;
-    animation-timing-function: linear;
-    animation-delay: -0.1s;
-    animation-fill-mode: forwards;
-  }
+  // border: 1px solid rgba(0, 0, 0, 0.1);
+  // &:hover {
+  //   animation-name: card-scale;
+  //   animation-duration: 0.3s;
+  //   animation-timing-function: linear;
+  //   animation-delay: -0.1s;
+  //   animation-fill-mode: forwards;
+  // }
 }
 
 .apartment-image {
   object-fit: cover;
   display: block;
-  border-radius: 10px;
   width: 100%;
   aspect-ratio: 3/2;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.322);
 }
 
 .card-body {
   font-size: 12px;
   padding: 6px;
 
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+  .location {
+    font-size: 14px;
+    font-weight: 800;
+  }
+
   .name {
-    font-weight: 300;
+    font-size: 13px;
+    font-weight: 400;
     color: rgb(122, 122, 122);
   }
-}
-
-.address {
-  font-weight: bold;
+  .distance {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgb(26, 26, 26);
+  }
 }
 
 // Keyframes

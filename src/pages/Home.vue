@@ -2,7 +2,6 @@
   <DefaultLayout>
     <ApartmentSearch />
     <AdvancedSearch />
-    <carousel />
   </DefaultLayout>
 </template>
 
@@ -16,7 +15,6 @@ export default {
     DefaultLayout,
     ApartmentSearch,
     AdvancedSearch,
-    Carousel,
   },
 };
 </script>
