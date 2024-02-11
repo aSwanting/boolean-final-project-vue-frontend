@@ -90,6 +90,6 @@ ul {
 }
 
 li:first-child {
-  border-bottom: 1px grey solid;
+  border-bottom: 1px var(--bs-border-color-translucent) solid;
 }
 </style>

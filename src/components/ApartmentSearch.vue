@@ -8,7 +8,7 @@
             placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)" v-model="searchQuery" />
 
 
-          <router-link @click="searchApartments()" :apartments="store.addressList" :to="{ name: 'search-results' }">
+          <router-link @click.native="searchApartments()" :to="{ name: 'search-results' }">
             <button class="search-button">
               Search
             </button>
@@ -17,12 +17,8 @@
 
         <div class="query-results" v-if="searchResults.length > 1">
           <div class="query-result" v-for="result in searchResults">
-            <span @click="searchQuery = result.address.freeformAddress">
+            <span @click="queryChecker(result)">
               {{ result.address.freeformAddress }}
-            </span>
-            <span>
-              {{ result.position.lat }},
-              {{ result.position.lon }}
             </span>
           </div>
         </div>
@@ -59,8 +55,10 @@
 </template>
 
 <script>
+
 import DefaultLayout from "../layouts/DefaultLayout.vue";
 import axios from "axios";
+import fs from "fs";
 import store from "../store";
 import ApartmentCard from "../components/ApartmentCard.vue";
 export default {
@@ -72,6 +70,7 @@ export default {
     return {
       store,
       searchQuery: null,
+      oldQuery: null,
       searchResults: [],
       debouncedSearch: store.debounce(this.backendFuzzySearch, 300),
       data: {},
@@ -79,7 +78,9 @@ export default {
   },
   watch: {
     searchQuery() {
-      this.debouncedSearch();
+      if (this.searchQuery != this.oldQuery) {
+        this.debouncedSearch();
+      } else { this.searchResults = '' }
     },
   },
   methods: {
@@ -122,12 +123,16 @@ export default {
       store.addressList = response.data.results.apartments;
 
       store.serviceList = response.data.results.services;
+
     },
-  },
-  mounted() {
-    this.searchApartments();
-  },
-};
+    queryChecker(result) {
+      this.searchQuery = result.address.freeformAddress;
+      this.oldQuery = result.address.freeformAddress;
+    },
+    mounted() {
+      this.searchApartments();
+    },
+  };
 </script>
 
 <style lang="scss" scoped>
