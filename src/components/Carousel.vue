@@ -1,33 +1,37 @@
 <template>
-  <div class="container">
-    <div class="carousel-wrapper">
-      <div
-        class="img-frame"
-        :class="{ 'moving-left': carouselNext, 'moving-right': carouselPrev }"
-      >
-        <img :src="imagePaths[prevImage]" alt="" />
-      </div>
-      <div
-        class="img-frame"
-        :class="{ 'moving-left': carouselNext, 'moving-right': carouselPrev }"
-      >
-        <img :src="imagePaths[currentImage]" alt="" />
-      </div>
-      <div
-        class="img-frame"
-        :class="{ 'moving-left': carouselNext, 'moving-right': carouselPrev }"
-      >
-        <img :src="imagePaths[nextImage]" alt="" />
-      </div>
+  <div class="carousel-wrapper">
+    <div
+      class="img-frame left"
+      :class="{ 'moving-left': carouselNext, 'moving-right': carouselPrev }"
+    >
+      <img :src="imagePaths[prevImage]" alt="" />
+    </div>
+    <div
+      class="img-frame center"
+      :class="{ 'moving-left': carouselNext, 'moving-right': carouselPrev }"
+    >
+      <img :src="imagePaths[currentImage]" alt="" />
+    </div>
+    <div
+      class="img-frame right"
+      :class="{ 'moving-left': carouselNext, 'moving-right': carouselPrev }"
+    >
+      <img :src="imagePaths[nextImage]" alt="" />
     </div>
     <div class="carousel-controls">
-      <button @click="carouselPrev = true">prev</button>
-      <button @click="carouselNext = true">next</button>
-    </div>
-    <div class="carousel-controls">
-      <p>[prev {{ prevImage }}]</p>
-      <p>[current {{ currentImage }}]</p>
-      <p>[next {{ nextImage }}]</p>
+      <div class="nav">
+        <button @click="carouselPrev = true">prev</button>
+        <button @click="carouselNext = true">next</button>
+      </div>
+      <div class="carousel-icons">
+        <div v-for="(item, index) in imagePaths" :key="item.id">
+          <div
+            class="carousel-icon"
+            :class="{ active: index === currentImage }"
+            @click="currentImage = index"
+          ></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -36,7 +40,7 @@
 export default {
   data() {
     return {
-      currentImage: 0,
+      currentImage: 1,
       carouselNext: false,
       carouselPrev: false,
       imagePaths: [
@@ -90,16 +94,49 @@ img {
   object-fit: cover;
 }
 .carousel-controls {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  padding: 30px;
   text-align: center;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    padding: 30px;
+    flex: 1;
+    button {
+      border-radius: 9999px;
+      aspect-ratio: 1;
+      opacity: 0.8;
+      font-size: 12px;
+    }
+  }
+  .carousel-icons {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    .carousel-icon {
+      width: 12px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background-color: white;
+      opacity: 50%;
+      transition: all 500ms;
+    }
+    & .active {
+      opacity: 100%;
+    }
+  }
 }
 .carousel-wrapper {
-  //   border: 8px solid purple;
-  border-radius: 20px;
   overflow: hidden;
+  border-radius: 20px;
   width: 420px;
   aspect-ratio: 5/4;
   margin: 0 auto;
@@ -121,7 +158,7 @@ img {
       transition: all 500ms;
     }
   }
-  & > :first-child {
+  & .left {
     left: -100%;
     &.moving-left {
       left: -200%;
@@ -132,7 +169,7 @@ img {
       transition: all 500ms;
     }
   }
-  & > :last-child {
+  & .right {
     left: 100%;
     &.moving-left {
       left: 0%;
