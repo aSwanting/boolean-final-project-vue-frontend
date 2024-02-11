@@ -58,7 +58,6 @@
 
 import DefaultLayout from "../layouts/DefaultLayout.vue";
 import axios from "axios";
-import fs from "fs";
 import store from "../store";
 import ApartmentCard from "../components/ApartmentCard.vue";
 export default {
@@ -132,7 +131,8 @@ export default {
     mounted() {
       this.searchApartments();
     },
-  };
+  }
+};
 </script>
 
 <style lang="scss" scoped>
