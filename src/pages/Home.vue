@@ -1,7 +1,8 @@
 <template>
   <DefaultLayout>
-    <AdvancedSearch />
     <ApartmentSearch />
+    <AdvancedSearch />
+    <carousel />
   </DefaultLayout>
 </template>
 
@@ -9,11 +10,13 @@
 import DefaultLayout from "../layouts/DefaultLayout.vue";
 import AdvancedSearch from "../components/AdvancedSearch.vue";
 import ApartmentSearch from "../components/ApartmentSearch.vue";
+import Carousel from "../components/Carousel.vue";
 export default {
   components: {
     DefaultLayout,
     ApartmentSearch,
     AdvancedSearch,
+    Carousel,
   },
 };
 </script>
