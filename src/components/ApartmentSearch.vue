@@ -11,12 +11,13 @@
             placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)"
             v-model="searchQuery"
           />
-
-
-          <router-link @click.native="searchApartments()" :to="{ name: 'search-results' }">
-            <button class="search-button">
-              Search
-            </button>
+          <router-link
+            class="btn-primary"
+            @click.native="searchApartments()"
+            :to="{ name: 'search-results' }"
+          >
+            Search
+            <!-- <button class="search-button">Search</button> -->
           </router-link>
         </div>
 
@@ -52,7 +53,6 @@
 </template>
 
 <script>
-
 import DefaultLayout from "../layouts/DefaultLayout.vue";
 import axios from "axios";
 import store from "../store";
@@ -69,8 +69,8 @@ export default {
       store,
       searchQuery: null,
       oldQuery: 1,
-      queryLat: '',
-      queryLong: '',
+      queryLat: "",
+      queryLong: "",
       searchResults: [],
       debouncedSearch: store.debounce(this.backendFuzzySearch, 300),
       data: {},
@@ -80,7 +80,9 @@ export default {
     searchQuery() {
       if (this.searchQuery != this.oldQuery) {
         this.debouncedSearch();
-      } else { this.searchResults = '' }
+      } else {
+        this.searchResults = "";
+      }
     },
   },
   methods: {
@@ -111,9 +113,9 @@ export default {
             .filter((service) => service.active)
             .map((service) => service.key),
         };
-        store.lat = this.searchResults[0].position.lat,
-          store.long = this.searchResults[0].position.lon,
-          this.searchResults = [];
+        (store.lat = this.searchResults[0].position.lat),
+          (store.long = this.searchResults[0].position.lon),
+          (this.searchResults = []);
         response = await axios.post(
           `${store.BACKEND_URL}api/apartments`,
           this.data
@@ -125,13 +127,11 @@ export default {
       store.addressList = response.data.results.apartments;
 
       store.serviceList = response.data.results.services;
-
     },
     queryChecker(result) {
       this.searchQuery = result.address.freeformAddress;
       this.oldQuery = result.address.freeformAddress;
     },
-
   },
   mounted() {
     this.searchApartments();
@@ -183,7 +183,7 @@ export default {
         flex-grow: 5;
       }
 
-      .search-button {
+      a {
         flex-grow: 1;
         border-radius: 0;
       }
