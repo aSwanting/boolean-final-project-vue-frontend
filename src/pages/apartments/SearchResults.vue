@@ -58,14 +58,7 @@ export default {
     },
     created() {
         this.getApartments();
-    },
-    // beforeUpdate() {
-    //     this.fetchResults();
-    // }
-    // updated() {
-    //     console.log(store.addressList),
-    //         this.apartments = store.addressList
-    // }
+    }
 }
 </script>
 
