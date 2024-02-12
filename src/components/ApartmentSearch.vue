@@ -17,28 +17,27 @@
             :to="{ name: 'search-results' }"
           >
             Search -->
+          <button class="filter-button" @click="store.modalOpen = true">
+            <font-awesome-icon icon="filter" />
+          </button>
           <button class="search-button" @click="searchApartments()">
             Search
           </button>
           <!-- </router-link> -->
         </div>
 
-        <div class="query-results" v-if="searchResults.length > 1">
+        <div class="query-results" :class="{ open: searchResults.length }">
           <div class="query-result" v-for="result in searchResults">
             <span @click="queryChecker(result)">
               {{ result.address.freeformAddress }}
             </span>
           </div>
         </div>
-
-        <button class="filter-button" @click="store.modalOpen = true">
-          Filters
-        </button>
       </div>
     </div>
   </section>
 
-  <section>
+  <section class="apartment-cards">
     <div class="container">
       <div class="card-wrapper">
         <ApartmentCard
@@ -60,7 +59,7 @@ import axios from "axios";
 import store from "../store";
 import ApartmentCard from "../components/ApartmentCard.vue";
 import Carousel from "./Carousel.vue";
-import { routerKey } from "vue-router";
+
 export default {
   components: {
     DefaultLayout,
@@ -71,9 +70,7 @@ export default {
     return {
       store,
       searchQuery: null,
-      oldQuery: 1,
-      queryLat: "",
-      queryLong: "",
+      oldQuery: "",
       searchResults: [],
       debouncedSearch: store.debounce(this.backendFuzzySearch, 300),
       data: {},
@@ -84,7 +81,7 @@ export default {
       if (this.searchQuery != this.oldQuery) {
         this.debouncedSearch();
       } else {
-        this.searchResults = "";
+        this.searchResults = [];
       }
     },
   },
@@ -157,109 +154,149 @@ export default {
   background-size: cover;
   background-position: 0, 0;
   height: 500px;
-}
 
-.filter-button {
-  aspect-ratio: 1;
-  margin: 0 auto;
-  border-radius: 50%;
-  padding: 20px;
-  box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.2);
-  display: block;
-}
+  .container {
+    max-width: 1200px;
+    padding: 50px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-.container {
-  max-width: 1200px;
-  padding: 50px;
-  height: 100%;
+    .apartment-search {
+      // border: 2px solid red;
+      width: 80%;
 
-  .apartment-search {
-    .location-search {
-      border-radius: 9999px;
-      display: flex;
-      overflow: hidden;
-
-      & > * {
-        box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.12);
-      }
-
-      .search-bar {
-        background-color: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(10px);
-        border: none;
-        outline: none;
-        padding: 24px 40px;
-        flex-grow: 5;
-      }
-
-      button {
-        flex-grow: 1;
-        border-radius: 0;
-      }
-    }
-
-    .query-results {
-      padding: 6px;
-      margin: 20px;
-      background-color: rgba(255, 255, 255, 0.548);
-      backdrop-filter: blur(10px);
-      border-radius: 10px;
-      box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.12);
-
-      .query-result {
-        font-size: 14px;
-        margin: 8px 16px;
+      .location-search {
+        border-radius: 9999px;
         display: flex;
+        overflow: hidden;
+        gap: 2px;
 
-        & :first-child {
-          cursor: pointer;
-          margin-right: auto;
-          transition: 100ms all;
+        & > * {
+          backdrop-filter: blur(10px);
+          flex-grow: 1;
+          flex-shrink: 1;
+          border-radius: 0;
+          outline: none;
+          border: none;
+          width: 0;
+          transition: 300ms all;
 
-          &:hover {
-            color: rgb(21, 145, 114);
-            font-weight: 600;
+          &:nth-child(1) {
+            background-color: rgba(255, 255, 255, 0.7);
+            width: 74%;
+            padding: 14px 40px;
+            &:hover {
+              background-color: rgba(255, 255, 255, 1);
+            }
+          }
+          &:nth-child(2) {
+            background-color: rgba(255, 255, 255, 0.4);
+            color: rgb(80, 80, 80);
+            width: 6%;
+            font-size: 18px;
+            &:hover {
+              background-color: rgba(255, 255, 255, 1);
+              color: rgb(0, 0, 0);
+            }
+          }
+          &:nth-child(3) {
+            background-color: rgba(37, 255, 164, 0.5);
+
+            width: 20%;
+            &:hover {
+              background-color: rgba(30, 233, 149, 0.836);
+            }
           }
         }
+      }
 
-        & :last-child {
-          color: rgba(0, 0, 0, 0.5);
-          font-style: italic;
-          font-size: 12px;
+      .query-results {
+        padding: 0px 16px;
+        margin: 20px;
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+        justify-content: center;
+        background-color: rgba(255, 255, 255, 0.548);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.12);
+        height: 0px;
+        overflow: hidden;
+        transition: 300ms all;
+        &.open {
+          padding: 8px 16px;
+          height: 200px;
+        }
+
+        .query-result {
+          font-size: 14px;
+          display: flex;
+
+          & :first-child {
+            cursor: pointer;
+            margin-right: auto;
+            transition: 100ms all;
+
+            &:hover {
+              color: rgb(21, 145, 114);
+              font-weight: 600;
+            }
+          }
+
+          // & :last-child {
+          //   color: rgba(0, 0, 0, 0.5);
+          //   font-style: italic;
+          //   font-size: 12px;
+          // }
         }
       }
     }
   }
+}
 
-  .card-wrapper {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
+.apartment-cards {
+  .container {
+    max-width: 1200px;
+    padding: 50px;
+    height: 100%;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
+    .card-wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
 
-    .apartment-card {
-      cursor: pointer;
+      .apartment-card {
+        cursor: pointer;
 
-      .card-image {
-        padding: 10px;
-        width: 100%;
-        aspect-ratio: 1;
-        background-color: $primary;
-        border-radius: 20px;
-        box-shadow: 2px 5px 6px rgba(105, 105, 105, 0.2);
-        margin-bottom: 8px;
-        overflow: hidden;
+        .card-image {
+          padding: 10px;
+          width: 100%;
+          aspect-ratio: 1;
+          background-color: $primary;
+          border-radius: 20px;
+          box-shadow: 2px 5px 6px rgba(105, 105, 105, 0.2);
+          margin-bottom: 8px;
+          overflow: hidden;
 
-        div {
-          height: 100%;
-          overflow: auto;
-          font-size: 12px;
-          opacity: 0.5;
+          div {
+            height: 100%;
+            overflow: auto;
+            font-size: 12px;
+            opacity: 0.5;
+          }
         }
-      }
 
-      .apartment-info {
-        padding: 0px 6px;
-        font-size: 14px;
+        .apartment-info {
+          padding: 0px 6px;
+          font-size: 14px;
+        }
       }
     }
   }

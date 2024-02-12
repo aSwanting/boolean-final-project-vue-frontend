@@ -1,34 +1,51 @@
 <template>
-  <div class="overlay" :class="{ active: store.modalOpen }" @click="store.modalOpen = false"></div>
+  <div
+    class="overlay"
+    :class="{ active: store.modalOpen }"
+    @click="store.modalOpen = false"
+  ></div>
   <div class="advanced-search" :class="{ active: store.modalOpen }">
-    <div class="filters">
-      <div v-for="item in store.filters" :key="item.id">
-        <div class="filter-label">
-          {{ item.key }}
+    <div class="search-options">
+      <div class="filters">
+        <div v-for="item in store.filters" :key="item.id">
+          <div class="filter-label">
+            {{ item.name }}
+          </div>
+          <div class="filter">
+            <div
+              class="filter-button"
+              @mousedown="filterClick(item, -1)"
+              @mouseup="filterRelease()"
+            >
+              <font-awesome-icon icon="circle-minus" />
+            </div>
+            <div class="filter-value">
+              {{ item.value }}
+            </div>
+            <div
+              class="filter-button"
+              @mousedown="filterClick(item, +1)"
+              @mouseup="filterRelease()"
+            >
+              <font-awesome-icon icon="circle-plus" />
+            </div>
+          </div>
         </div>
-        <div class="filter">
-          <div class="filter-button" @mousedown="filterClick(item, -1)" @mouseup="filterRelease()">
-            -
-          </div>
-          <div class="filter-value">
-            {{ item.value }}
-          </div>
-          <div class="filter-button" @mousedown="filterClick(item, +1)" @mouseup="filterRelease()">
-            +
+      </div>
+
+      <div class="services">
+        <div v-for="(item, index) in store.services" :key="item.id">
+          <div
+            class="service"
+            :class="{ active: item.active }"
+            @click="item.active = !item.active"
+          >
+            <div>{{ item.key }}</div>
+            <font-awesome-icon :icon="serviceIcons[index]" />
           </div>
         </div>
       </div>
     </div>
-
-    <div class="services">
-      <div v-for="item in store.services" :key="item.id">
-        <div class="service" :class="{ active: item.active }" @click="item.active = !item.active">
-          <div>{{ item.key }}</div>
-          <div>{{ item.active }}</div>
-        </div>
-      </div>
-    </div>
-
     <div class="filter-controls">
       <button @click="applyFilters">Filter</button>
       <button @click="resetFilters">Reset</button>
@@ -41,8 +58,21 @@ import store from "../store";
 export default {
   data() {
     return {
+      user: "user",
       store,
       interval: null,
+      serviceIcons: [
+        "wifi",
+        "water-ladder",
+        "parking",
+        "dumbbell",
+        "shield",
+        "jug-detergent",
+        "paw",
+        "mug-saucer",
+        "hammer",
+        "bell-concierge",
+      ],
     };
   },
   watch: {
@@ -109,7 +139,7 @@ export default {
   background-color: white;
   padding: 10px;
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   position: absolute;
   top: -50%;
   left: 50%;
@@ -121,99 +151,124 @@ export default {
     top: 50%;
     opacity: 1;
   }
+  .search-options {
+    display: flex;
 
-  .filters,
-  .services,
-  .filter-controls {
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    padding: 10px;
-    margin: 10px;
-  }
-
-  .filters {
-    text-align: center;
-
-    &>* {
-      padding: 10px 0;
+    .filters,
+    .services {
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: 20px;
+      padding: 10px;
+      margin: 10px;
+      width: 100%;
     }
 
-    .filter {
+    .filters {
+      text-align: center;
       display: flex;
-      justify-content: space-between;
-      border-radius: 15px;
-      overflow: hidden;
-      position: relative;
+      flex-direction: column;
+      justify-content: space-around;
+      padding: 30px;
 
-      &>* {
-        padding: 16px 32px;
+      // & > * {
+      //   padding: 10px 0;
+      // }
+
+      .filter {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        overflow: hidden;
+        position: relative;
+        padding: 10px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+        // & > * {
+        //   padding: 16px 32px;
+        // }
+
+        .filter-value {
+          font-size: 18px;
+          width: 80px;
+          color: rgb(48, 48, 48);
+        }
+
+        .filter-button {
+          color: rgb(73, 218, 174);
+          cursor: pointer;
+          user-select: none;
+          font-size: 22px;
+          // border-radius: 50%;
+          // aspect-ratio: 1;
+          // width: 30px;
+          // padding: 20px;
+          // overflow: hidden;
+
+          &:hover {
+            color: rgb(18, 112, 86);
+          }
+        }
       }
 
-      .filter-value {
-        font-size: 18px;
-        color: rgb(48, 48, 48);
+      .filter-label {
+        margin-bottom: 4px;
       }
+    }
 
-      .filter-button {
-        background-color: rgb(73, 218, 174);
-        cursor: pointer;
+    .services {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 16px;
+      font-size: 15px;
+
+      .service {
+        color: grey;
         user-select: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        // width: 140px;
+        padding: 6px 14px;
+        border-radius: 30px;
+        transition: 200ms all;
+        cursor: pointer;
+        outline: 1px solid rgba(0, 0, 0, 0.1);
 
         &:hover {
-          background-color: rgb(181, 236, 220);
+          background-color: rgb(216, 252, 249);
+        }
+
+        &.active {
+          outline: 3px solid $primary;
+          box-shadow: 2px 5px 18px rgba(0, 0, 0, 0.2);
         }
       }
     }
 
-    .filter-label {
-      margin-bottom: 4px;
+    // .filter,
+    // .service {
+    //   box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+    // }
+  }
+
+  .filter-controls {
+    display: flex;
+    gap: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+
+    & :first-child {
+      flex-grow: 2;
+      box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
     }
-  }
 
-  .services {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    font-size: 14px;
-
-    .service {
-      color: grey;
-      user-select: none;
-      display: flex;
-      justify-content: space-between;
-      padding: 20px;
-      border-radius: 10px;
-      transition: 300ms all;
-      cursor: pointer;
-
-      &:hover {
-        background-color: rgb(216, 252, 249);
-      }
-
-      &.active {
-        background-color: $primary;
-      }
+    & :last-child {
+      flex-grow: 1;
+      box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
     }
-  }
-
-  .filter,
-  .service {
-    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
-  }
-}
-
-.filter-controls {
-  display: flex;
-  gap: 20px;
-
-  & :first-child {
-    flex-grow: 2;
-    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  & :last-child {
-    flex-grow: 1;
-    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
   }
 }
 </style>

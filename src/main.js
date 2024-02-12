@@ -18,8 +18,12 @@ import {
   faBellConcierge,
   faDice,
   faJugDetergent,
+  faMugSaucer,
   faCircleChevronRight,
   faChevronCircleLeft,
+  faPlusCircle,
+  faMinusCircle,
+  faFilter,
 } from "@fortawesome/free-solid-svg-icons";
 library.add(
   faUser,
@@ -33,8 +37,12 @@ library.add(
   faBellConcierge,
   faDice,
   faJugDetergent,
+  faMugSaucer,
   faCircleChevronRight,
-  faChevronCircleLeft
+  faChevronCircleLeft,
+  faPlusCircle,
+  faMinusCircle,
+  faFilter
 );
 
 createApp(App)
