@@ -36,6 +36,10 @@ export default {
       this.startAutoScroll();
     });
   },
+  unmounted() {
+    this.stopAutoScroll();
+  },
+
   methods: {
     startAutoScroll() {
       const imageWrapper = this.$refs.imageWrapper;
