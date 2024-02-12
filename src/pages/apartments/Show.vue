@@ -1,47 +1,55 @@
 <template>
     <DefaultLayout>
-        <div class="container" v-if="apartment">
-            <figure>
-                <img class="cover-img" :src="`${BASE_URL_COVER_IMG}${apartment.cover_image}`" alt="">
-            </figure>
-            <div class="container-images">
-                <img class="images" v-for="img in apartment.images " :key="img.id" :src="`${BASE_URL_IMAGES}${img.link}`">
-            </div>
-            <div class="apartment-info">
-                <h3>{{ apartment.name }}</h3>
-                <p>{{ apartment.address }}, {{ apartment.country }}</p>
-                <p>{{ apartment.description }}</p>
-                <p v-show="apartment.distance">{{ apartment.distance }} Km away</p>
-                <div class="services">
-                    <div class="col-2" v-for="service in apartment.services" :key="service.id">{{ service.name }}</div>
-                </div>
-            </div>
-
+    <div class="container" v-if="apartment">
+        <!-- <figure>
+            <img class="cover-img" :src="`${BASE_URL_COVER_IMG}${apartment.cover_image}`" alt="">
+        </figure> -->
+        <div class="carousel">
+            <Carousel :items="apartment"/>
         </div>
-        <Loading v-else></Loading>
+        <!-- <div class="container-images">
+            <img class="images" v-for="img in apartment.images " :key="img.id" :src="`${BASE_URL_IMAGES}${img.link}`">
+        </div> -->
+        <div class="apartment-info">
+            <h3>{{ apartment.name }}</h3>
+            <p>{{ apartment.address }}, {{ apartment.country }}</p>
+            <p>{{ apartment.description }}</p>
+            <div class="services">
+                <div class="col-2" v-for="service in apartment.services" :key="service.id">{{ service.name }}</div>
+            </div>
+          </div>
+    </div>
+    <Loading v-else></Loading>
     </DefaultLayout>
 </template>
 <script>
 import axios from 'axios'
 import DefaultLayout from '../../layouts/DefaultLayout.vue'
 import Loading from '../../components/Loading.vue'
+import DefaultLayout from '../../layouts/DefaultLayout.vue'
+import Carousel from '../../components/ApartmentImagesCarousel.vue'
 import store from '../../store'
 
 export default {
     components: {
+        Section,
+        Loading,
         DefaultLayout,
-        Loading
+        Carousel
+
+
     },
     props: {
         slug: String,
     },
+    
     data() {
         return {
             store,
             apartment: store.currentApartment,
             BASE_URL: 'http://127.0.0.1:8000/api',
-            BASE_URL_COVER_IMG: 'http://127.0.0.1:8000/storage/cover_images/',
-            BASE_URL_IMAGES: `http://127.0.0.1:8000/storage/images/`,
+            BASE_URL_COVER_IMG: 'http://127.0.0.1:8000/storage/',
+            BASE_URL_IMAGES: `http://127.0.0.1:8000/storage/`,
         }
     },
     methods: {
@@ -67,8 +75,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .container {
-    max-width: 800px;
+    max-width: 90%;
     margin: 0 auto;
+    .carousel {
+        overflow-x: hidden;
+        max-width: 100%;
+        padding: 20px 0;
+
+    }
 }
 
 .container-images {
