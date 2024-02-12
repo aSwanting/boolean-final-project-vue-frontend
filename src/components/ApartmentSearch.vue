@@ -4,8 +4,13 @@
       <div class="apartment-search">
         <!-- location search -->
         <div class="location-search">
-          <input class="search-bar" type="search" id="search-bar"
-            placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)" v-model="searchQuery" />
+          <input
+            class="search-bar"
+            type="search"
+            id="search-bar"
+            placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)"
+            v-model="searchQuery"
+          />
 
           <button class="search-button" @click="searchApartments()">
             Search
@@ -34,22 +39,14 @@
   <section>
     <div class="container">
       <div class="card-wrapper">
-        <ApartmentCard class="apartment-card" v-for="apartment in store.addressList" :apartment="apartment"
-          @click="store.currentApartment = apartment">
+        <ApartmentCard
+          class="apartment-card"
+          v-for="apartment in store.addressList"
+          @click="store.currentApartment = apartment"
+          :apartment="apartment"
+        >
+          <Carousel :apartment="apartment" />
         </ApartmentCard>
-        <!-- <div class="apartment-card" v-for="apartment in store.addressList">
-          <div class="card-image">
-            <div>{{ apartment }}</div>
-          </div>
-
-          <h3 class="apartment-info">
-            {{ apartment.region }}, {{ apartment.country }}
-          </h3>
-
-          <p v-show="apartment.distance" class="apartment-info">
-            {{ apartment.distance }} kilometers away
-          </p>
-        </div> -->
       </div>
     </div>
   </section>
@@ -60,10 +57,12 @@ import DefaultLayout from "../layouts/DefaultLayout.vue";
 import axios from "axios";
 import store from "../store";
 import ApartmentCard from "../components/ApartmentCard.vue";
+import Carousel from "./Carousel.vue";
 export default {
   components: {
     DefaultLayout,
     ApartmentCard,
+    Carousel,
   },
   data() {
     return {
@@ -158,7 +157,7 @@ export default {
       display: flex;
       overflow: hidden;
 
-      &>* {
+      & > * {
         box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.12);
       }
 
@@ -212,7 +211,7 @@ export default {
 
   .card-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 25px;
 
     .apartment-card {
