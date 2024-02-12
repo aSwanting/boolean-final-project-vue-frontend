@@ -10,23 +10,35 @@
 
 <script>
 import store from '../../store'
+import axios from 'axios'
 import ApartmentCard from '../../components/ApartmentCard.vue'
 export default {
     components: {
         ApartmentCard
     },
-    props: {
-        apartments: Array
-    },
     data() {
         return {
             store,
-            // apartments: store.addressList
+            apartments: [],
         }
     },
-    // mounted() {
-    //     console.log(this.apartments)
-    // },
+    methods: {
+        fetchResults() {
+            axios.get('http://127.0.0.1:8000/api/apartments/results/').then(res => {
+                this.apartments = res.data.results;
+                console.log(res.data.results);
+            });
+        }
+    },
+    created() {
+        this.apartments = [];
+    },
+    mounted() {
+        this.fetchResults();
+    },
+    // updated() {
+    //     this.fetchResults();
+    // }
     // updated() {
     //     console.log(store.addressList),
     //         this.apartments = store.addressList
