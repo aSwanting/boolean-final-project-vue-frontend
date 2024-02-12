@@ -3,12 +3,15 @@
 
     
     <div class="container" v-if="apartment">
-        <figure>
+        <!-- <figure>
             <img class="cover-img" :src="`${BASE_URL_COVER_IMG}${apartment.cover_image}`" alt="">
-        </figure>
-        <div class="container-images">
-            <img class="images" v-for="img in apartment.images " :key="img.id" :src="`${BASE_URL_IMAGES}${img.link}`">
+        </figure> -->
+        <div class="carousel">
+            <Carousel :items="apartment"/>
         </div>
+        <!-- <div class="container-images">
+            <img class="images" v-for="img in apartment.images " :key="img.id" :src="`${BASE_URL_IMAGES}${img.link}`">
+        </div> -->
         <div class="apartment-info">
             <h3>{{ apartment.name }}</h3>
             <p>{{ apartment.address }}, {{ apartment.country }}</p>
@@ -28,28 +31,31 @@ import axios from 'axios'
 import Section from '../../components/Section.vue'
 import Loading from '../../components/Loading.vue'
 import DefaultLayout from '../../layouts/DefaultLayout.vue'
+import Carousel from '../../components/ApartmentImagesCarousel.vue'
 
 export default {
     components: {
         Section,
         Loading,
-        DefaultLayout
+        DefaultLayout,
+        Carousel
     },
     props: {
         slug: String
     },
+    
     data() {
         return {
             apartment: null,
             BASE_URL: 'http://127.0.0.1:8000/api',
-            BASE_URL_COVER_IMG: 'http://127.0.0.1:8000/storage/cover_images/',
-            BASE_URL_IMAGES: `http://127.0.0.1:8000/storage/images/`,
+            BASE_URL_COVER_IMG: 'http://127.0.0.1:8000/storage/',
+            BASE_URL_IMAGES: `http://127.0.0.1:8000/storage/`,
         }
     },
     methods: {
         fetchApartment() {
             axios.get(`${this.BASE_URL}/apartments/${this.slug}`).then(res => {
-                console.log(res.data)
+                // console.log(res.data)
                 this.apartment = res.data.apartment
 
             })
@@ -70,8 +76,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .container {
-    max-width: 800px;
+    max-width: 90%;
     margin: 0 auto;
+    .carousel {
+        overflow-x: hidden;
+        max-width: 100%;
+        padding: 20px 0;
+
+    }
 }
 
 .container-images {
