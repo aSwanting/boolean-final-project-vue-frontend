@@ -1,5 +1,5 @@
 @use "../styles/partials/variables" as *;
-@import 'node_modules/bootstrap/scss/bootstrap';
+@import "node_modules/bootstrap/scss/bootstrap";
 
 * {
   padding: 0;
@@ -9,6 +9,12 @@
 
 body {
   font-family: "Open Sans Variable", sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  & > div {
+    overflow: auto;
+    height: 100%;
+  }
 }
 
 ul,
@@ -41,10 +47,10 @@ button {
   }
 }
 
-::-webkit-scrollbar {
-  width: 10px;
-}
+// ::-webkit-scrollbar {
+//   width: 8px;
+// }
 
-::-webkit-scrollbar-thumb {
-  background-color: $primary;
-}
+// ::-webkit-scrollbar-thumb {
+//   background-color: $primary;
+// }
