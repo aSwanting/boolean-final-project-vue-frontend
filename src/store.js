@@ -30,6 +30,8 @@ const store = reactive({
       max: 9,
     },
   ],
+  lat: '',
+  long: '',
   services: [],
   addressList: [],
   serviceList: [],

@@ -69,7 +69,9 @@ export default {
     return {
       store,
       searchQuery: null,
-      oldQuery: null,
+      oldQuery: 1,
+      queryLat: '',
+      queryLong: '',
       searchResults: [],
       debouncedSearch: store.debounce(this.backendFuzzySearch, 300),
       data: {},
@@ -110,7 +112,9 @@ export default {
             .filter((service) => service.active)
             .map((service) => service.key),
         };
-        this.searchResults = [];
+        store.lat = this.searchResults[0].position.lat,
+          store.long = this.searchResults[0].position.lon,
+          this.searchResults = [];
         response = await axios.post(
           `${store.BACKEND_URL}api/apartments`,
           this.data
@@ -128,10 +132,11 @@ export default {
       this.searchQuery = result.address.freeformAddress;
       this.oldQuery = result.address.freeformAddress;
     },
-    mounted() {
-      this.searchApartments();
-    },
-  }
+
+  },
+  mounted() {
+    this.searchApartments();
+  },
 };
 </script>
 
