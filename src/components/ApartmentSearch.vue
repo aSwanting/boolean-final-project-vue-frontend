@@ -11,14 +11,16 @@
             placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)"
             v-model="searchQuery"
           />
-          <router-link
+          <!-- <router-link
             class="btn-primary"
             @click.native="searchApartments()"
             :to="{ name: 'search-results' }"
           >
+            Search -->
+          <button class="search-button" @click="searchApartments()">
             Search
-            <!-- <button class="search-button">Search</button> -->
-          </router-link>
+          </button>
+          <!-- </router-link> -->
         </div>
 
         <div class="query-results" v-if="searchResults.length > 1">
@@ -58,6 +60,7 @@ import axios from "axios";
 import store from "../store";
 import ApartmentCard from "../components/ApartmentCard.vue";
 import Carousel from "./Carousel.vue";
+import { routerKey } from "vue-router";
 export default {
   components: {
     DefaultLayout,
@@ -98,6 +101,11 @@ export default {
       }
     },
     // Send search data to backend for search and filter
+    async fetchApartments() {
+      const response = await axios.get(`${store.BACKEND_URL}api/apartments`);
+      store.addressList = response.data.results.apartments;
+      store.serviceList = response.data.results.services;
+    },
     async searchApartments() {
       // If user has entered a search query, send post request to backend with search data
       let response;
@@ -113,28 +121,29 @@ export default {
             .filter((service) => service.active)
             .map((service) => service.key),
         };
-        (store.lat = this.searchResults[0].position.lat),
-          (store.long = this.searchResults[0].position.lon),
-          (this.searchResults = []);
+
+        store.lat = this.searchResults[0].position.lat;
+        store.long = this.searchResults[0].position.lon;
+        this.searchResults = [];
+
         response = await axios.post(
           `${store.BACKEND_URL}api/apartments`,
           this.data
         );
-        // Else if no query is entered, fetch all apartments
-      } else {
-        response = await axios.get(`${store.BACKEND_URL}api/apartments`);
-      }
-      store.addressList = response.data.results.apartments;
 
-      store.serviceList = response.data.results.services;
+        store.addressList = response.data.results.apartments;
+        store.serviceList = response.data.results.services;
+        this.$router.push({ name: "search-results" });
+      }
     },
+
     queryChecker(result) {
       this.searchQuery = result.address.freeformAddress;
       this.oldQuery = result.address.freeformAddress;
     },
   },
   mounted() {
-    this.searchApartments();
+    this.fetchApartments();
   },
 };
 </script>
@@ -183,7 +192,7 @@ export default {
         flex-grow: 5;
       }
 
-      a {
+      button {
         flex-grow: 1;
         border-radius: 0;
       }
