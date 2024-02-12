@@ -39,14 +39,28 @@
 
   <section class="apartment-cards">
     <div class="container">
-      <div class="card-wrapper">
+      <h4 class="card-section">Sponsored</h4>
+      <div class="card-wrapper sponsored-cards">
         <ApartmentCard
           class="apartment-card"
+          :class="{ sponsored: apartment.orders.length }"
           v-for="apartment in store.addressList"
           @click="store.currentApartment = apartment"
           :apartment="apartment"
         >
-          <Carousel :apartment="apartment" />
+          <Carousel class="card-image" :apartment="apartment" />
+        </ApartmentCard>
+      </div>
+      <h4 class="card-section">Other Locations</h4>
+      <div class="card-wrapper">
+        <ApartmentCard
+          class="apartment-card"
+          :class="{ sponsored: apartment.orders.length }"
+          v-for="apartment in store.addressList"
+          @click="store.currentApartment = apartment"
+          :apartment="apartment"
+        >
+          <Carousel class="card-image" :apartment="apartment" />
         </ApartmentCard>
       </div>
     </div>
@@ -204,7 +218,6 @@ export default {
           }
           &:nth-child(3) {
             background-color: rgba(37, 255, 164, 0.5);
-
             width: 20%;
             &:hover {
               background-color: rgba(30, 233, 149, 0.836);
@@ -263,42 +276,61 @@ export default {
     max-width: 1200px;
     padding: 50px;
     height: 100%;
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: center;
-    // align-items: center;
+    .card-section {
+      color: rgb(73, 73, 73);
+      margin-bottom: 12px;
+    }
     .card-wrapper {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 25px;
+      border: 1px solid $primary;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 50px;
 
-      .apartment-card {
-        cursor: pointer;
-
-        .card-image {
-          padding: 10px;
-          width: 100%;
-          aspect-ratio: 1;
-          background-color: $primary;
-          border-radius: 20px;
-          box-shadow: 2px 5px 6px rgba(105, 105, 105, 0.2);
-          margin-bottom: 8px;
-          overflow: hidden;
-
-          div {
-            height: 100%;
-            overflow: auto;
-            font-size: 12px;
-            opacity: 0.5;
+      &.sponsored-cards {
+        .apartment-card {
+          display: none;
+          &.sponsored {
+            display: block;
+            .card-image {
+              outline: 3px solid $primary;
+            }
           }
         }
+      }
 
-        .apartment-info {
-          padding: 0px 6px;
-          font-size: 14px;
+      .apartment-card {
+        display: block;
+        &.sponsored {
+          display: none;
         }
       }
     }
   }
 }
 </style>
+
+<!-- .card-image {
+  padding: 10px;
+  width: 100%;
+  aspect-ratio: 1;
+  background-color: $primary;
+  border-radius: 20px;
+  box-shadow: 2px 5px 6px rgba(105, 105, 105, 0.2);
+  margin-bottom: 8px;
+  overflow: hidden;
+
+  div {
+    height: 100%;
+    overflow: auto;
+    font-size: 12px;
+    opacity: 0.5;
+  }
+}
+
+.apartment-info {
+  padding: 0px 6px;
+  font-size: 14px;
+} -->
