@@ -17,7 +17,7 @@
           </button>
         </div>
 
-        <div class="query-results">
+        <div class="query-results" v-if="searchResults.length > 1">
           <div class="query-result" v-for="result in searchResults">
             <span @click="searchQuery = result.address.freeformAddress">
               {{ result.address.freeformAddress }}
@@ -42,22 +42,11 @@
         <ApartmentCard
           class="apartment-card"
           v-for="apartment in store.addressList"
+          @click="store.currentApartment = apartment"
           :apartment="apartment"
         >
+          <Carousel :apartment="apartment" />
         </ApartmentCard>
-        <!-- <div class="apartment-card" v-for="apartment in store.addressList">
-          <div class="card-image">
-            <div>{{ apartment }}</div>
-          </div>
-
-          <h3 class="apartment-info">
-            {{ apartment.region }}, {{ apartment.country }}
-          </h3>
-
-          <p v-show="apartment.distance" class="apartment-info">
-            {{ apartment.distance }} kilometers away
-          </p>
-        </div> -->
       </div>
     </div>
   </section>
@@ -68,10 +57,12 @@ import DefaultLayout from "../layouts/DefaultLayout.vue";
 import axios from "axios";
 import store from "../store";
 import ApartmentCard from "../components/ApartmentCard.vue";
+import Carousel from "./Carousel.vue";
 export default {
   components: {
     DefaultLayout,
     ApartmentCard,
+    Carousel,
   },
   data() {
     return {
@@ -125,6 +116,7 @@ export default {
         response = await axios.get(`${store.BACKEND_URL}api/apartments`);
       }
       store.addressList = response.data.results.apartments;
+
       store.serviceList = response.data.results.services;
     },
   },
@@ -219,7 +211,7 @@ export default {
 
   .card-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 25px;
 
     .apartment-card {

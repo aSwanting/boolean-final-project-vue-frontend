@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="overlay"
-    :class="{ active: store.modalOpen }"
-    @click="store.modalOpen = false"
-  ></div>
+  <div class="overlay" :class="{ active: store.modalOpen }" @click="store.modalOpen = false"></div>
   <div class="advanced-search" :class="{ active: store.modalOpen }">
     <div class="filters">
       <div v-for="item in store.filters" :key="item.id">
@@ -11,21 +7,13 @@
           {{ item.key }}
         </div>
         <div class="filter">
-          <div
-            class="filter-button"
-            @mousedown="filterClick(item, -1)"
-            @mouseup="filterRelease()"
-          >
+          <div class="filter-button" @mousedown="filterClick(item, -1)" @mouseup="filterRelease()">
             -
           </div>
           <div class="filter-value">
             {{ item.value }}
           </div>
-          <div
-            class="filter-button"
-            @mousedown="filterClick(item, +1)"
-            @mouseup="filterRelease()"
-          >
+          <div class="filter-button" @mousedown="filterClick(item, +1)" @mouseup="filterRelease()">
             +
           </div>
         </div>
@@ -34,11 +22,7 @@
 
     <div class="services">
       <div v-for="item in store.services" :key="item.id">
-        <div
-          class="service"
-          :class="{ active: item.active }"
-          @click="item.active = !item.active"
-        >
+        <div class="service" :class="{ active: item.active }" @click="item.active = !item.active">
           <div>{{ item.key }}</div>
           <div>{{ item.active }}</div>
         </div>
@@ -101,6 +85,7 @@ export default {
 
 <style lang="scss" scoped>
 @use "../styles/partials/variables" as *;
+
 .overlay {
   background-color: rgba(0, 0, 0, 0.493);
   backdrop-filter: blur(10px);
@@ -110,11 +95,13 @@ export default {
   bottom: 100%;
   opacity: 0;
   transition: all 500ms;
+
   &.active {
     opacity: 1;
     bottom: 0%;
   }
 }
+
 .advanced-search {
   z-index: 1;
   border-radius: 20px;
@@ -128,9 +115,13 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   transition: all 500ms;
+  opacity: 0;
+
   &.active {
     top: 50%;
+    opacity: 1;
   }
+
   .filters,
   .services,
   .filter-controls {
@@ -139,37 +130,46 @@ export default {
     padding: 10px;
     margin: 10px;
   }
+
   .filters {
     text-align: center;
-    & > * {
+
+    &>* {
       padding: 10px 0;
     }
+
     .filter {
       display: flex;
       justify-content: space-between;
       border-radius: 15px;
       overflow: hidden;
       position: relative;
-      & > * {
+
+      &>* {
         padding: 16px 32px;
       }
+
       .filter-value {
         font-size: 18px;
         color: rgb(48, 48, 48);
       }
+
       .filter-button {
         background-color: rgb(73, 218, 174);
         cursor: pointer;
         user-select: none;
+
         &:hover {
           background-color: rgb(181, 236, 220);
         }
       }
     }
+
     .filter-label {
       margin-bottom: 4px;
     }
   }
+
   .services {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -185,26 +185,32 @@ export default {
       border-radius: 10px;
       transition: 300ms all;
       cursor: pointer;
+
       &:hover {
         background-color: rgb(216, 252, 249);
       }
+
       &.active {
         background-color: $primary;
       }
     }
   }
+
   .filter,
   .service {
     box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
   }
 }
+
 .filter-controls {
   display: flex;
   gap: 20px;
+
   & :first-child {
     flex-grow: 2;
     box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
   }
+
   & :last-child {
     flex-grow: 1;
     box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);

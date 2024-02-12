@@ -14,12 +14,12 @@
               <a v-bind:href="BACKEND_URL"><font-awesome-icon icon="user" /></a>
             </button>
             <ul class="dropdown-menu">
-              <li class="px-2"> <a v-bind:href="BACKEND_URL_LOGIN">Login</a>
+              <li class="p-2 dropdown-item"> <a v-bind:href="BACKEND_URL_LOGIN">Login</a>
               </li>
-              <li>
+              <!-- <li>
                 <hr>
-              </li>
-              <li class="px-2"> <a v-bind:href="BACKEND_URL_REGISTER">Register</a>
+              </li> -->
+              <li class="p-2 dropdown-item"> <a v-bind:href="BACKEND_URL_REGISTER">Register</a>
               </li>
             </ul>
           </div>
@@ -72,10 +72,17 @@ header {
 .dropdown-padding {
   padding: 15px;
 
+.dropdown-item:hover {
+  background-color: $primary !important;
+}  
+
   .button-color {
     background-color: white !important;
     border-color: white;
     color: black;
+    &:hover {
+      background-color: $primary !important;
+    }
   }
 }
 
@@ -87,5 +94,9 @@ ul {
 .container {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+li:first-child {
+  border-bottom: 1px grey solid;
 }
 </style>

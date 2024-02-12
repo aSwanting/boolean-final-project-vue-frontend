@@ -1,7 +1,5 @@
 <template>
     <DefaultLayout>
-
-    
     <div class="container" v-if="apartment">
         <!-- <figure>
             <img class="cover-img" :src="`${BASE_URL_COVER_IMG}${apartment.cover_image}`" alt="">
@@ -19,19 +17,18 @@
             <div class="services">
                 <div class="col-2" v-for="service in apartment.services" :key="service.id">{{ service.name }}</div>
             </div>
-        </div>
-
+          </div>
     </div>
     <Loading v-else></Loading>
     </DefaultLayout>
-    
 </template>
 <script>
 import axios from 'axios'
-import Section from '../../components/Section.vue'
+import DefaultLayout from '../../layouts/DefaultLayout.vue'
 import Loading from '../../components/Loading.vue'
 import DefaultLayout from '../../layouts/DefaultLayout.vue'
 import Carousel from '../../components/ApartmentImagesCarousel.vue'
+import store from '../../store'
 
 export default {
     components: {
@@ -39,14 +36,17 @@ export default {
         Loading,
         DefaultLayout,
         Carousel
+
+
     },
     props: {
-        slug: String
+        slug: String,
     },
     
     data() {
         return {
-            apartment: null,
+            store,
+            apartment: store.currentApartment,
             BASE_URL: 'http://127.0.0.1:8000/api',
             BASE_URL_COVER_IMG: 'http://127.0.0.1:8000/storage/',
             BASE_URL_IMAGES: `http://127.0.0.1:8000/storage/`,
@@ -55,14 +55,13 @@ export default {
     methods: {
         fetchApartment() {
             axios.get(`${this.BASE_URL}/apartments/${this.slug}`).then(res => {
-                // console.log(res.data)
                 this.apartment = res.data.apartment
 
             })
         }
     },
     created() {
-        this.fetchApartment()
+        // this.fetchApartment()
     },
     mounted() {
         console.log('show montata')
