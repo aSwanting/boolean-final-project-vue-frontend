@@ -48,7 +48,7 @@ export default {
   data() {
     return {
       store,
-      apartment: store.currentApartment,
+      apartment: null,
       BASE_URL: "http://127.0.0.1:8000/api",
       BASE_URL_COVER_IMG: "http://127.0.0.1:8000/storage/",
       BASE_URL_IMAGES: `http://127.0.0.1:8000/storage/`,
@@ -62,7 +62,7 @@ export default {
     },
   },
   created() {
-    // this.fetchApartment()
+    this.fetchApartment();
   },
   mounted() {
     console.log("show montata");
