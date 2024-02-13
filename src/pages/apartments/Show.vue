@@ -1,12 +1,15 @@
 <template>
   <DefaultLayout>
     <div class="container" v-if="apartment">
-      <!-- <figure>
-            <img class="cover-img" :src="`${BASE_URL_COVER_IMG}${apartment.cover_image}`" alt="">
-        </figure> -->
-      <div class="carousel">
+
+      <figure v-if="apartment.images.length < 1">
+        <img class="cover-img" :src="`${BASE_URL_COVER_IMG}${apartment.cover_image}`" alt="">
+      </figure>
+
+      <div class="carousel" v-else>
         <Carousel :items="apartment" />
       </div>
+
       <!-- <div class="container-images">
             <img class="images" v-for="img in apartment.images " :key="img.id" :src="`${BASE_URL_IMAGES}${img.link}`">
         </div> -->
@@ -46,8 +49,8 @@ export default {
       store,
       apartment: null,
       BASE_URL: "http://127.0.0.1:8000/api",
-      BASE_URL_COVER_IMG: "http://127.0.0.1:8000/storage/",
-      BASE_URL_IMAGES: `http://127.0.0.1:8000/storage/`,
+      BASE_URL_COVER_IMG: "http://127.0.0.1:8000/storage/cover_images/",
+      BASE_URL_IMAGES: `http://127.0.0.1:8000/storage/images/`,
     };
   },
   methods: {
@@ -88,8 +91,8 @@ export default {
 
 .cover-img {
   display: block;
-  width: 100%;
-  margin: 16px 0;
+  width: 500px;
+  margin: 16px auto;
 }
 
 .images {
