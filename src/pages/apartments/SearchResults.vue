@@ -44,35 +44,11 @@ export default {
                 this.apartments = res.data.results;
 
                 this.showLoader = false;
-
             });
         },
         async getApartments() {
             this.showLoader = true;
-            if (store.lat) {
-                let response;
-                this.data = {
-                    search_radius: store.filters[0].value,
-                    rooms: store.filters[1].value,
-                    beds: store.filters[2].value,
-                    bathrooms: store.filters[3].value,
-                    latitude: store.lat,
-                    longitude: store.long,
-                    services: store.services
-                        .filter((service) => service.active)
-                        .map((service) => service.key),
-                };
-
-                response = await axios.post(
-                    `${store.BACKEND_URL}api/apartments`,
-                    this.data
-                );
-                this.apartments = response.data.results.apartments;
-
-                this.showLoader = false;
-            } else {
-                this.fetchResults();
-            }
+            this.fetchResults();
         }
     },
     beforeMount() {
