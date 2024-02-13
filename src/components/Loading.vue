@@ -18,6 +18,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use "../styles/partials/variables" as *;
+
 .position {
     position: absolute;
     top: 50%;
@@ -47,7 +49,7 @@ export default {
     display: block;
     width: 25%;
     height: 25%;
-    background-color: #8ee9ce;
+    background-color: $primary;
     border-radius: 100%;
     animation: sk-chase-dot-before 2.0s infinite ease-in-out both;
 }
