@@ -4,21 +4,19 @@
       <div class="apartment-search">
         <!-- location search -->
         <div class="location-search">
-          <input class="search-bar" type="search" id="search-bar"
-            placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)" v-model="searchQuery" />
-          <!-- <router-link
-            class="btn-primary"
-            @click.native="searchApartments()"
-            :to="{ name: 'search-results' }"
-          >
-            Search -->
+          <input
+            class="search-bar"
+            type="search"
+            id="search-bar"
+            placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)"
+            v-model="searchQuery"
+          />
           <button class="filter-button" @click="store.modalOpen = true">
             <font-awesome-icon icon="filter" />
           </button>
           <button class="search-button" @click="searchApartments()">
             Search
           </button>
-          <!-- </router-link> -->
         </div>
 
         <div class="query-results" :class="{ open: searchResults.length }">
@@ -36,21 +34,19 @@
     <div class="container">
       <h4 class="card-section">Featured</h4>
       <div class="card-wrapper sponsored-cards" v-if="store.addressList[0]">
-        <ApartmentCard class="apartment-card" :class="{ sponsored: apartment.orders.length }"
-          v-for="apartment in store.addressList" @click="store.currentApartment = apartment" :apartment="apartment">
+        <ApartmentCard
+          class="apartment-card"
+          :class="{ sponsored: apartment.orders.length }"
+          v-for="apartment in store.addressList"
+          :apartment="apartment"
+        >
           <Carousel class="card-image" :apartment="apartment" />
         </ApartmentCard>
       </div>
+
       <div class="card-wrapper sponsored-cards" v-else>
         <Loading></Loading>
       </div>
-      <!-- <h4 class="card-section">Other Locations</h4>
-      <div class="card-wrapper">
-        <ApartmentCard class="apartment-card" :class="{ sponsored: apartment.orders.length }"
-          v-for="apartment in store.addressList" @click="store.currentApartment = apartment" :apartment="apartment">
-          <Carousel class="card-image" :apartment="apartment" />
-        </ApartmentCard>
-      </div> -->
     </div>
   </section>
 </template>
@@ -68,7 +64,7 @@ export default {
     DefaultLayout,
     ApartmentCard,
     Carousel,
-    Loading
+    Loading,
   },
   data() {
     return {
@@ -113,28 +109,31 @@ export default {
       let response;
       if (this.searchResults.length) {
         this.data = {
-          search_radius: store.filters[0].value,
+          searchQuery: this.searchQuery,
+          latitude: this.searchResults[0].position.lat,
+          longitude: this.searchResults[0].position.lon,
           rooms: store.filters[1].value,
           beds: store.filters[2].value,
           bathrooms: store.filters[3].value,
-          latitude: this.searchResults[0].position.lat,
-          longitude: this.searchResults[0].position.lon,
+          search_radius: store.filters[0].value,
           services: store.services
             .filter((service) => service.active)
             .map((service) => service.key),
         };
-
-        store.lat = this.searchResults[0].position.lat;
-        store.long = this.searchResults[0].position.lon;
-        this.searchResults = [];
 
         response = await axios.post(
           `${store.BACKEND_URL}api/apartments`,
           this.data
         );
 
+        store.queryData = this.data;
+        store.searchQuery = this.searchQuery;
+        store.lat = this.searchResults[0].position.lat;
+        store.long = this.searchResults[0].position.lon;
         store.addressList = response.data.results.apartments;
         store.serviceList = response.data.results.services;
+
+        this.searchResults = [];
         this.$router.push({ name: "search-results" });
       }
     },
@@ -179,7 +178,7 @@ export default {
         overflow: hidden;
         gap: 2px;
 
-        &>* {
+        & > * {
           backdrop-filter: blur(10px);
           flex-grow: 1;
           flex-shrink: 1;
@@ -269,7 +268,6 @@ export default {
 }
 
 .apartment-cards {
-
   .container {
     max-width: 1200px;
     padding: 50px;
@@ -291,8 +289,6 @@ export default {
       margin-bottom: 50px;
       position: relative;
       min-height: 180px;
-
-
 
       &.sponsored-cards {
         .apartment-card {

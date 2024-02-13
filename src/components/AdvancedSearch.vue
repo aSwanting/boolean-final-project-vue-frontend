@@ -78,7 +78,8 @@ export default {
   watch: {
     "store.serviceList": {
       handler() {
-        if (store.serviceList.length) {
+        if (store.serviceList.length && !store.services.length) {
+          console.log("fetching services");
           store.services = this.fetchServices();
         }
       },
