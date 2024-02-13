@@ -52,7 +52,7 @@ export default {
       BASE_URL: "http://127.0.0.1:8000/api",
       BASE_URL_COVER_IMG: "http://127.0.0.1:8000/storage/cover_images/",
       BASE_URL_IMAGES: `http://127.0.0.1:8000/storage/images/`,
-      visit: {},
+      data: {},
     };
   },
   methods: {
@@ -64,21 +64,35 @@ export default {
     getIPAddress() {
       axios.get('https://api.ipify.org?format=json')
       .then((res) => {
-
-        this.visit = {
-          IPAdress : res.data.ip,
-          apartmentID : this.apartment.id,
-          date : format(new Date(), 'yy-MM-dd HH:mm:ss'),
-        }
-        console.log(this.visit);
+         this.data = {
+           IPAddress : res.data.ip,
+           apartmentID : this.apartment.id,
+           date : format(new Date(), 'yy-MM-dd HH:mm:ss'),
+         }
+         this.postVisit();        
       })
+      .catch((error) => {
+        console.error('Si è verificato un errore durante il recupero dell\'indirizzo IP:', error);
+      })
+    },
+    postVisit() {
+      axios.post(`${this.BASE_URL}/apartments/visits`,this.data)
+        .then((res) => {
+          console.log('Indirizzo IP salvato con successo nel back-end.', res);
+        })
+        .catch((error) => {
+          console.error('Si è verificato un errore durante il salvataggio dell\'indirizzo IP nel back-end:', error);
+        })
     }
   },
   created() {
     this.fetchApartment();
   },
-  mounted() {
+  beforeMount() {
     this.getIPAddress();
+  },
+  mounted() {
+    console.log(this.visit);
     console.log("show montata");
   },
   unmounted() {
