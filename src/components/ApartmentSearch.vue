@@ -34,20 +34,23 @@
 
   <section class="apartment-cards">
     <div class="container">
-      <h4 class="card-section">Sponsored</h4>
-      <div class="card-wrapper sponsored-cards">
+      <h4 class="card-section">Featured</h4>
+      <div class="card-wrapper sponsored-cards" v-if="store.addressList[0]">
         <ApartmentCard class="apartment-card" :class="{ sponsored: apartment.orders.length }"
           v-for="apartment in store.addressList" @click="store.currentApartment = apartment" :apartment="apartment">
           <Carousel class="card-image" :apartment="apartment" />
         </ApartmentCard>
       </div>
-      <h4 class="card-section">Other Locations</h4>
+      <div class="card-wrapper sponsored-cards" v-else>
+        <span class=" loading"></span>
+      </div>
+      <!-- <h4 class="card-section">Other Locations</h4>
       <div class="card-wrapper">
         <ApartmentCard class="apartment-card" :class="{ sponsored: apartment.orders.length }"
           v-for="apartment in store.addressList" @click="store.currentApartment = apartment" :apartment="apartment">
           <Carousel class="card-image" :apartment="apartment" />
         </ApartmentCard>
-      </div>
+      </div> -->
     </div>
   </section>
 </template>
@@ -264,6 +267,8 @@ export default {
 }
 
 .apartment-cards {
+  // position: relative;
+
   .container {
     max-width: 1200px;
     padding: 50px;
@@ -305,6 +310,30 @@ export default {
         }
       }
     }
+  }
+}
+
+.loading {
+  height: 60px;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  border: 10px solid rgb(255, 254, 254);
+  border-top: 10px solid rgb(149, 149, 149);
+  animation: spin 1s infinite linear;
+  margin: 30px auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>
