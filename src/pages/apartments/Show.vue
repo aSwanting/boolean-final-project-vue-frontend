@@ -33,6 +33,7 @@ import DefaultLayout from "../../layouts/DefaultLayout.vue";
 import Loading from "../../components/Loading.vue";
 import Carousel from "../../components/ApartmentImagesCarousel.vue";
 import store from "../../store";
+import { format } from 'date-fns';
 
 export default {
   components: {
@@ -51,6 +52,7 @@ export default {
       BASE_URL: "http://127.0.0.1:8000/api",
       BASE_URL_COVER_IMG: "http://127.0.0.1:8000/storage/cover_images/",
       BASE_URL_IMAGES: `http://127.0.0.1:8000/storage/images/`,
+      visit: {},
     };
   },
   methods: {
@@ -59,11 +61,24 @@ export default {
         this.apartment = res.data.apartment;
       });
     },
+    getIPAddress() {
+      axios.get('https://api.ipify.org?format=json')
+      .then((res) => {
+
+        this.visit = {
+          IPAdress : res.data.ip,
+          apartmentID : this.apartment.id,
+          date : format(new Date(), 'yy-MM-dd HH:mm:ss'),
+        }
+        console.log(this.visit);
+      })
+    }
   },
   created() {
     this.fetchApartment();
   },
   mounted() {
+    this.getIPAddress();
     console.log("show montata");
   },
   unmounted() {
