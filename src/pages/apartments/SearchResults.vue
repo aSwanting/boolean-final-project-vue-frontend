@@ -1,19 +1,21 @@
 <template>
     <DefaultLayout>
-        <div v-if="apartments[0]" class="container">
-            <div class="card-wrapper">
-                <ApartmentCard class="apartment-card" v-for="apartment in apartments" :apartment="apartment">
-                    <Carousel :apartment="apartment" />
-                </ApartmentCard>
+        <div class="wrapper">
+            <div v-if="apartments[0]" class="container">
+                <div class="card-wrapper">
+                    <ApartmentCard class="apartment-card" v-for="apartment in apartments" :apartment="apartment">
+                        <Carousel :apartment="apartment" />
+                    </ApartmentCard>
+                </div>
             </div>
+            <div v-else-if="showLoader == false" class="no-apt">
+                <p>There are no apartments with the selected values!</p>
+                <router-link class="btn-primary" :to="{ name: 'home' }">
+                    Home
+                </router-link>
+            </div>
+            <Loading v-show="showLoader == true"></Loading>
         </div>
-        <div v-else-if="showLoader == false" class="no-apt">
-            <p>There are no apartments with the selected values!</p>
-            <router-link class="btn-primary" :to="{ name: 'home' }">
-                Home
-            </router-link>
-        </div>
-        <Loading v-show="showLoader == true"></Loading>
     </DefaultLayout>
 </template>
 
@@ -58,6 +60,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.wrapper {
+    position: relative;
+    min-height: 100px;
+}
+
 .container {
     max-width: 1200px;
     padding: 50px;

@@ -75,6 +75,8 @@ export default {
 .container {
   max-width: 90%;
   margin: 0 auto;
+  min-height: 100px;
+  position: relative;
 
   .carousel {
     overflow-x: hidden;

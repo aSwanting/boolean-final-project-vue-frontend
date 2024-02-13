@@ -42,7 +42,7 @@
         </ApartmentCard>
       </div>
       <div class="card-wrapper sponsored-cards" v-else>
-        <span class=" loading"></span>
+        <Loading></Loading>
       </div>
       <!-- <h4 class="card-section">Other Locations</h4>
       <div class="card-wrapper">
@@ -61,12 +61,14 @@ import axios from "axios";
 import store from "../store";
 import ApartmentCard from "../components/ApartmentCard.vue";
 import Carousel from "./Carousel.vue";
+import Loading from "./Loading.vue";
 
 export default {
   components: {
     DefaultLayout,
     ApartmentCard,
     Carousel,
+    Loading
   },
   data() {
     return {
@@ -267,12 +269,12 @@ export default {
 }
 
 .apartment-cards {
-  // position: relative;
 
   .container {
     max-width: 1200px;
     padding: 50px;
     height: 100%;
+    position: relative;
 
     .card-section {
       color: rgb(73, 73, 73);
@@ -287,6 +289,10 @@ export default {
       border-radius: 20px;
       padding: 20px;
       margin-bottom: 50px;
+      position: relative;
+      min-height: 180px;
+
+
 
       &.sponsored-cards {
         .apartment-card {
@@ -310,30 +316,6 @@ export default {
         }
       }
     }
-  }
-}
-
-.loading {
-  height: 60px;
-  aspect-ratio: 1;
-  border-radius: 999px;
-  border: 10px solid rgb(255, 254, 254);
-  border-top: 10px solid rgb(149, 149, 149);
-  animation: spin 1s infinite linear;
-  margin: 30px auto;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
   }
 }
 </style>
