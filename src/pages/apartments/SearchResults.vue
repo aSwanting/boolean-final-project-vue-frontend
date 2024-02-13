@@ -62,7 +62,7 @@ export default {
 <style lang="scss" scoped>
 .wrapper {
     position: relative;
-    min-height: 100px;
+    min-height: 360px;
 }
 
 .container {
