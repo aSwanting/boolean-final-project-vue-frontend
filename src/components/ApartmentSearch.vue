@@ -4,13 +4,8 @@
       <div class="apartment-search">
         <!-- location search -->
         <div class="location-search">
-          <input
-            class="search-bar"
-            type="search"
-            id="search-bar"
-            placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)"
-            v-model="searchQuery"
-          />
+          <input class="search-bar" type="search" id="search-bar"
+            placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)" v-model="searchQuery" />
           <!-- <router-link
             class="btn-primary"
             @click.native="searchApartments()"
@@ -41,25 +36,15 @@
     <div class="container">
       <h4 class="card-section">Sponsored</h4>
       <div class="card-wrapper sponsored-cards">
-        <ApartmentCard
-          class="apartment-card"
-          :class="{ sponsored: apartment.orders.length }"
-          v-for="apartment in store.addressList"
-          @click="store.currentApartment = apartment"
-          :apartment="apartment"
-        >
+        <ApartmentCard class="apartment-card" :class="{ sponsored: apartment.orders.length }"
+          v-for="apartment in store.addressList" @click="store.currentApartment = apartment" :apartment="apartment">
           <Carousel class="card-image" :apartment="apartment" />
         </ApartmentCard>
       </div>
       <h4 class="card-section">Other Locations</h4>
       <div class="card-wrapper">
-        <ApartmentCard
-          class="apartment-card"
-          :class="{ sponsored: apartment.orders.length }"
-          v-for="apartment in store.addressList"
-          @click="store.currentApartment = apartment"
-          :apartment="apartment"
-        >
+        <ApartmentCard class="apartment-card" :class="{ sponsored: apartment.orders.length }"
+          v-for="apartment in store.addressList" @click="store.currentApartment = apartment" :apartment="apartment">
           <Carousel class="card-image" :apartment="apartment" />
         </ApartmentCard>
       </div>
@@ -94,9 +79,10 @@ export default {
     searchQuery() {
       if (this.searchQuery != this.oldQuery) {
         this.debouncedSearch();
-      } else {
-        this.searchResults = [];
       }
+      // } else {
+      //   this.searchResults = [];
+      // }
     },
   },
   methods: {
@@ -188,7 +174,7 @@ export default {
         overflow: hidden;
         gap: 2px;
 
-        & > * {
+        &>* {
           backdrop-filter: blur(10px);
           flex-grow: 1;
           flex-shrink: 1;
@@ -202,23 +188,28 @@ export default {
             background-color: rgba(255, 255, 255, 0.7);
             width: 74%;
             padding: 14px 40px;
+
             &:hover {
               background-color: rgba(255, 255, 255, 1);
             }
           }
+
           &:nth-child(2) {
             background-color: rgba(255, 255, 255, 0.4);
             color: rgb(80, 80, 80);
             width: 6%;
             font-size: 18px;
+
             &:hover {
               background-color: rgba(255, 255, 255, 1);
               color: rgb(0, 0, 0);
             }
           }
+
           &:nth-child(3) {
             background-color: rgba(37, 255, 164, 0.5);
             width: 20%;
+
             &:hover {
               background-color: rgba(30, 233, 149, 0.836);
             }
@@ -240,6 +231,7 @@ export default {
         height: 0px;
         overflow: hidden;
         transition: 300ms all;
+
         &.open {
           padding: 8px 16px;
           height: 200px;
@@ -276,10 +268,12 @@ export default {
     max-width: 1200px;
     padding: 50px;
     height: 100%;
+
     .card-section {
       color: rgb(73, 73, 73);
       margin-bottom: 12px;
     }
+
     .card-wrapper {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -292,8 +286,10 @@ export default {
       &.sponsored-cards {
         .apartment-card {
           display: none;
+
           &.sponsored {
             display: block;
+
             .card-image {
               outline: 3px solid $primary;
             }
@@ -303,6 +299,7 @@ export default {
 
       .apartment-card {
         display: block;
+
         &.sponsored {
           display: none;
         }
