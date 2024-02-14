@@ -28,9 +28,12 @@ export default {
         </ul>
       </div>
       <div class="col-4">
-        <ul>
-          <li>Seguici su</li>
-          <li> </li>
+        <div>Seguici su</div>
+        <ul class="d-flex gap-3">
+          <li><font-awesome-icon :icon="['fab', 'facebook']" /></li>
+          <li><font-awesome-icon :icon="['fab', 'instagram']" /></li>
+          <li><font-awesome-icon :icon="['fab', 'github']" /></li>
+          <li><font-awesome-icon :icon="['fab', 'telegram']" /></li>
         </ul>
       </div>
     </div>
