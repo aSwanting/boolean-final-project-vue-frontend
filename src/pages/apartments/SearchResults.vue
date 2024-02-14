@@ -14,6 +14,8 @@
       <div id="map"></div>
     </div>
 
+
+
     <div class="wrapper">
       <div v-if="apartments" class="container">
         <div class="card-wrapper">
@@ -56,8 +58,8 @@ export default {
     };
   },
   methods: {
-    fetchResults() {
-      axios.get("http://127.0.0.1:8000/api/apartments/results/").then((res) => {
+    async fetchResults() {
+      await axios.get("http://127.0.0.1:8000/api/apartments/results/").then((res) => {
         console.log(res.data);
         this.apartments = res.data.results.apartments;
         this.query = res.data.results.query;
@@ -72,10 +74,35 @@ export default {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(map);
 
+      map.on('moveend', () => {
+
+        let bounds = map.getBounds();
+        let center = map.getCenter();
+        let distance1 = map.distance(center, bounds._northEast);
+        console.log(distance1 / 1000, center);
+
+      })
+
       this.apartments.forEach(apartment => {
-        var marker = L.marker([apartment.latitude, apartment.longitude]).addTo(map);
+        var marker = L.marker([apartment.latitude, apartment.longitude]).on('click', () => {
+          // this.$router.push({ name: 'apartments.show', params: { slug: apartment.slug } })
+          console.log('hello')
+        }).addTo(map);
+        var popup = L.popup({ interactive: true }).setContent(`<a href="http://localhost:5174/apartments/${apartment.slug}">${apartment.address}</a>`)
+
+
+
+        // popup.on('click', () => {
+        //   // this.$router.push({ name: 'apartments.show', params: { slug: apartment.slug } })
+        //   console.log('hello')
+        // });
+
+        marker.bindPopup(popup);
       });
-    }
+
+
+    },
+
   },
   beforeMount() {
     this.fetchResults();

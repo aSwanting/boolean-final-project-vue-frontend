@@ -159,7 +159,7 @@ export default {
 
 #map {
   border-radius: 10px;
-  min-width: 250px;
-  min-height: 250px;
+  width: 250px;
+  height: 250px;
 }
 </style>
