@@ -1,28 +1,24 @@
 <template>
   <DefaultLayout>
-    <div class="search-component p-5 m-5 border rounded shadow">
-      <p>Query: {{ query.searchQuery }}</p>
-      <p>Latitude: {{ query.latitude }}</p>
-      <p>Longitude: {{ query.latitude }}</p>
-      <p>Rooms: {{ query.rooms }}</p>
-      <p>Beds: {{ query.beds }}</p>
-      <p>Range: {{ query.search_radius }}km</p>
-      <!-- <p>Services:{{ query.services.join(", ") }}</p> -->
+
+    <div class="container d-flex  justify-content-between column-gap-4">
+      <div class="search-component p-5  border rounded shadow flex-grow-1 ">
+        <p>Query: {{ query.searchQuery }}</p>
+        <p>Latitude: {{ query.latitude }}</p>
+        <p>Longitude: {{ query.latitude }}</p>
+        <p>Rooms: {{ query.rooms }}</p>
+        <p>Beds: {{ query.beds }}</p>
+        <p>Range: {{ query.search_radius }}km</p>
+        <!-- <p>Services:{{ query.services.join(", ") }}</p> -->
+      </div>
+      <div id="map"></div>
     </div>
 
     <div class="wrapper">
       <div v-if="apartments" class="container">
         <div class="card-wrapper">
-          <ApartmentCard
-            class="apartment-card"
-            v-for="apartment in apartments"
-            :apartment="apartment"
-          >
-            <Carousel
-              class="card-image"
-              :class="{ sponsored: !apartment.sponsored }"
-              :apartment="apartment"
-            />
+          <ApartmentCard class="apartment-card" v-for="apartment in apartments" :apartment="apartment">
+            <Carousel class="card-image" :class="{ sponsored: !apartment.sponsored }" :apartment="apartment" />
           </ApartmentCard>
         </div>
       </div>
@@ -66,17 +62,36 @@ export default {
         this.apartments = res.data.results.apartments;
         this.query = res.data.results.query;
         this.showLoader = false;
+        this.getMap();
       });
     },
+    getMap() {
+      var map = L.map('map').setView([this.query.latitude, this.query.longitude], 11);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+
+      this.apartments.forEach(apartment => {
+        var marker = L.marker([apartment.latitude, apartment.longitude]).addTo(map);
+      });
+    }
   },
   beforeMount() {
     this.fetchResults();
-  },
+
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 @use "../../styles/partials/variables" as *;
+
+#map {
+  height: 350px;
+  aspect-ratio: 1;
+  border-radius: 10px;
+}
 
 .card-image.sponsored {
   outline: 4px solid $primary;

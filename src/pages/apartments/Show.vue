@@ -1,5 +1,6 @@
 <template>
   <DefaultLayout>
+
     <div class="container" v-if="apartment">
 
       <figure v-if="apartment.images.length < 1">
@@ -10,9 +11,12 @@
         <Carousel :items="apartment" />
       </div>
 
+
       <!-- <div class="container-images">
             <img class="images" v-for="img in apartment.images " :key="img.id" :src="`${BASE_URL_IMAGES}${img.link}`">
         </div> -->
+
+
       <div class="apartment-info">
         <h3>{{ apartment.name }}</h3>
         <p>{{ apartment.address }}, {{ apartment.country }}</p>
@@ -25,6 +29,9 @@
       </div>
     </div>
     <Loading v-else></Loading>
+    <div class="container">
+      <div id="map"></div>
+    </div>
   </DefaultLayout>
 </template>
 <script>
@@ -59,45 +66,46 @@ export default {
     fetchApartment() {
       axios.get(`${this.BASE_URL}/apartments/${this.slug}`).then((res) => {
         this.apartment = res.data.apartment;
+        this.getIPAddress();
+        this.getMap();
       });
     },
     getIPAddress() {
       axios.get('https://api.ipify.org?format=json')
-      .then((res) => {
-         this.data = {
-           IPAddress : res.data.ip,
-           apartmentID : this.apartment.id,
-           date : format(new Date(), 'yy-MM-dd HH:mm:ss'),
-         }
-         this.postVisit();        
-      })
-      .catch((error) => {
-        console.error('Si è verificato un errore durante il recupero dell\'indirizzo IP:', error);
-      })
+        .then((res) => {
+          this.data = {
+            IPAddress: res.data.ip,
+            apartmentID: this.apartment.id,
+            date: format(new Date(), 'yy-MM-dd HH:mm:ss'),
+          }
+          this.postVisit();
+        })
+        .catch((error) => {
+          console.error('Si è verificato un errore durante il recupero dell\'indirizzo IP:', error);
+        })
     },
     postVisit() {
-      axios.post(`${this.BASE_URL}/apartments/visits`,this.data)
+      axios.post(`${this.BASE_URL}/apartments/visits`, this.data)
         .then((res) => {
           console.log('Indirizzo IP salvato con successo nel back-end.', res);
         })
         .catch((error) => {
           console.error('Si è verificato un errore durante il salvataggio dell\'indirizzo IP nel back-end:', error);
         })
+    },
+    getMap() {
+      var map = L.map('map').setView([this.apartment.latitude, this.apartment.longitude], 13);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+
+      var marker = L.marker([this.apartment.latitude, this.apartment.longitude]).addTo(map);
     }
   },
   created() {
     this.fetchApartment();
-  },
-  beforeMount() {
-    this.getIPAddress();
-  },
-  mounted() {
-    console.log(this.visit);
-    console.log("show montata");
-  },
-  unmounted() {
-    console.log("show unmounted");
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -147,5 +155,11 @@ export default {
   * {
     margin: 8px 0;
   }
+}
+
+#map {
+  border-radius: 10px;
+  min-width: 250px;
+  min-height: 250px;
 }
 </style>
