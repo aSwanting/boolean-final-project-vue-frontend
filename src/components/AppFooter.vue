@@ -1,7 +1,3 @@
-<template>
-  <footer>Footer</footer>
-</template>
-
 <script>
 export default {
   data() {
@@ -11,11 +7,35 @@ export default {
   },
 };
 </script>
+
+<template >
+  <footer>
+    <div class="row gap-2 ">
+      <div class="col-4">
+        <ul>
+          <li>Chi Siamo</li>
+          <li>Contatti</li>
+          <li>Pubblica il tuo annuncio</li>
+          <li>Lavora con noi</li>
+        </ul>
+      </div>
+      <div class="col-4">
+        <ul>
+          <li>Termini di utilizzo</li>
+          <li>Normativa sulla privacy e sui cookie</li>
+          <li>Appartamenti vicino a me </li>
+          <li>Domande Frequenti</li>
+        </ul>
+      </div>
+      <div class="col-4">
+        <ul>
+          <li>Seguici su</li>
+          <li> </li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</template>
 <style lang="scss" scoped>
 @use "../styles/partials/variables" as *;
-footer {
-  border-top: 1px solid $primary;
-  text-align: center;
-  padding: 20px;
-}
 </style>
