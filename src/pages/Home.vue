@@ -1,8 +1,8 @@
 <template>
-  <div class="text-center border rounded shadow p-5 m-5">
+  <div class="border rounded shadow p-4 m-5">
     <SearchComponent />
   </div>
-  <div class="text-center border rounded shadow p-5 m-5">
+  <div class="border rounded shadow p-4 m-5">
     <SearchResultsComponent />
   </div>
 </template>

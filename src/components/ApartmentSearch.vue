@@ -72,20 +72,20 @@ export default {
       searchQuery: null,
       oldQuery: "",
       searchResults: [],
-      debouncedSearch: store.debounce(this.backendFuzzySearch, 300),
+      // debouncedSearch: store.debounce(this.backendFuzzySearch, 300),
       data: {},
     };
   },
-  watch: {
-    searchQuery() {
-      if (this.searchQuery != this.oldQuery) {
-        this.debouncedSearch();
-      }
-      // } else {
-      //   this.searchResults = [];
-      // }
-    },
-  },
+  // watch: {
+  //   searchQuery() {
+  //     if (this.searchQuery != this.oldQuery) {
+  //       this.debouncedSearch();
+  //     }
+  //     // } else {
+  //     //   this.searchResults = [];
+  //     // }
+  //   },
+  // },
   methods: {
     // Take user input and suggest matched addresses
     async backendFuzzySearch() {
