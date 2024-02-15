@@ -136,7 +136,7 @@ export default {
       }).addTo(map);
 
       var marker = L.marker([this.apartment.latitude, this.apartment.longitude]).addTo(map);
-    }
+    },
     closeModal() {
       this.isModalVisible = false
       // console.log('click')
