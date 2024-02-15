@@ -1,14 +1,14 @@
 <template>
-  <div class="container">
-    <div class="search-wrapper">
-      <div class="search-component p-3 border rounded shadow">
-        <SearchComponent />
-      </div>
-      <div class="results-component overflow-hidden">
-        <SearchResultsWithMap />
-      </div>
+  <header class="shadow">
+    <div class="container">
+      <SearchComponent />
     </div>
-  </div>
+  </header>
+  <section class="search-results">
+    <div class="container">
+      <SearchResultsWithMap />
+    </div>
+  </section>
 </template>
 
 <script>
@@ -30,19 +30,17 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  height: 100%;
-  max-width: 90%;
+  padding: 0;
+  max-width: 1000px;
 }
-.search-wrapper {
-  display: flex;
-  flex-direction: column;
-  padding: 30px;
+header {
+  padding: 20px;
+}
+.search-results {
+  padding: 20px;
   height: 100%;
-  gap: 30px;
-  .search-component {
-  }
-  .results-component {
-    flex-grow: 1;
+  .container {
+    height: 100%;
   }
 }
 </style>

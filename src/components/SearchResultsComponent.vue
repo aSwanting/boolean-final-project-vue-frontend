@@ -1,29 +1,23 @@
 <template>
-  <div v-if="store.addressList">
+  <div class="pe-3" v-if="store.addressList">
     <div v-for="apartment in store.addressList" class="apartment-card">
-      <div class="card-image">
-        <Carousel
-          :apartment="apartment"
-          :class="{
-            'border border-4 border-primary': !apartment.sponsored,
-          }"
-        />
+      <div
+        class="card-inner shadow"
+        :class="{ sponsored: !apartment.sponsored }"
+      >
+        <div class="apartment-card-image">
+          <Carousel :apartment="apartment" />
+        </div>
+        <div class="apartment-card-body">
+          <p class="location">
+            {{ apartment.region }}, {{ apartment.country }}
+          </p>
+          <p class="name">{{ apartment.name }}</p>
+          <p class="distance" v-show="apartment.distance">
+            {{ apartment.distance }} kilometers away
+          </p>
+        </div>
       </div>
-      <div class="card-body">
-        <p class="location">{{ apartment.region }}, {{ apartment.country }}</p>
-        <p class="name">{{ apartment.name }}</p>
-        <p class="distance" v-show="apartment.distance">
-          {{ apartment.distance }} kilometers away
-        </p>
-      </div>
-      <!-- <ApartmentCard :apartment="apartment">
-        <Carousel
-          :apartment="apartment"
-          :class="{
-            'border border-4 border-primary': !apartment.sponsored,
-          }"
-        />
-      </ApartmentCard> -->
     </div>
   </div>
   <div class="position-relative h-100" v-else>
@@ -51,21 +45,50 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use "../styles/partials/variables" as *;
+p {
+  margin: 0;
+}
 .apartment-card {
-  display: flex;
-  height: 200px;
-  p {
-    margin: 0;
+  // padding: 0 25px;
+  .card-inner {
+    display: flex;
+    height: 205px;
+    &.sponsored {
+      border: 3px solid $primary;
+    }
+    & > * {
+      flex: 1 1 50%;
+    }
+    .apartment-card-image {
+    }
+    .apartment-card-body {
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      .location {
+        font-size: 16px;
+        font-weight: 800;
+      }
+      .name {
+        font-weight: 300;
+        font-size: 18px;
+        font-style: italic;
+        color: rgba(0, 0, 0, 0.473);
+      }
+      .distance {
+        color: rgba(0, 0, 0, 0.8);
+      }
+    }
   }
-  & > * {
-    width: 50%;
-    padding: 15px;
-    border-block: 1px solid rgba(0, 0, 0, 0.2);
-  }
-
-  .card-image {
-  }
-  .card-body {
+  &::after {
+    content: "";
+    display: block;
+    background-color: rgba(0, 0, 0, 0.1);
+    height: 2px;
+    width: 80%;
+    margin: 24px auto;
   }
 }
 </style>

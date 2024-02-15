@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="search-wrapper">
     <!-- Search Form Start -->
-    <div class="search-form mb-4 input-group shadow">
+    <div class="search-form input-group mb-3">
       <input
         v-model="searchQuery"
         class="form-control"
@@ -15,7 +15,7 @@
     </div>
 
     <!-- Suggested queries -->
-    <div class="shadow border rounded p-3 mb-4" v-if="suggestedAddresses">
+    <div class="shadow border" v-if="suggestedAddresses">
       <div
         v-for="suggested in suggestedAddresses"
         @click="addressSelect(suggested)"
@@ -25,9 +25,9 @@
     </div>
 
     <!-- Advanced Search Form Start -->
-    <div class="d-flex gap-3 advanced-search shadow border rounded p-3 mb-4">
+    <div class="advanced-search mb-3">
       <!-- Search Range -->
-      <div class="border rounded p-3 flex-grow-1">
+      <div class="">
         <label class="form-label" for=""
           >Search Range of {{ filter.search_radius }} km</label
         >
@@ -46,7 +46,7 @@
         </div>
       </div>
       <!-- Rooms -->
-      <div class="border rounded p-3 flex-grow-1">
+      <div class="">
         <label class="form-label" for="">Rooms</label>
         <input
           v-model="filter.rooms"
@@ -59,7 +59,7 @@
         />
       </div>
       <!-- Beds -->
-      <div class="border rounded p-3 flex-grow-1">
+      <div class="">
         <label class="form-label" for="">Beds</label>
         <input
           v-model="filter.beds"
@@ -72,7 +72,7 @@
         />
       </div>
       <!-- Bathrooms -->
-      <div class="border rounded p-3 flex-grow-1">
+      <div class="">
         <label class="form-label" for="">Bathrooms</label>
         <input
           v-model="filter.bathrooms"
@@ -86,12 +86,12 @@
       </div>
     </div>
     <!-- Services Start -->
-    <div class="d-flex flex-wrap justify-content-evenly gap-3">
+    <div class="d-flex flex-wrap justify-content-between gap-3">
       <button
-        class="service-badge btn btn-sm btn-secondary rounded-pill shadow"
+        class="service-badge btn btn-sm rounded-pill border-primary"
         v-for="service in store.serviceList"
         :class="{
-          'btn-success': filter.services.includes(service.name),
+          'btn-primary': filter.services.includes(service.name),
         }"
         @click="toggleService(service.name)"
       >
@@ -128,7 +128,8 @@ export default {
     },
     filter: {
       handler() {
-        console.log("filter changed");
+        // console.log("filter changed");
+        store.radius = this.filter.search_radius;
       },
       deep: true,
     },
@@ -148,6 +149,7 @@ export default {
       this.searchQuery = suggested.address.freeformAddress;
       this.selectedAddress = suggested.address.freeformAddress;
       this.position = suggested.position;
+      store.position = suggested.position;
       this.suggestedAddresses = null;
     },
     async backendFuzzySearch() {
@@ -159,6 +161,7 @@ export default {
         );
         this.suggestedAddresses = response.data.results.slice(0, 6);
         this.position = this.suggestedAddresses[0].position;
+        store.position = this.suggestedAddresses[0].position;
       }
     },
     async fetchApartments() {
@@ -181,4 +184,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.advanced-search {
+  border: 2px solid magenta;
+  display: flex;
+  & > * {
+    border: 2px solid cyan;
+  }
+}
+</style>

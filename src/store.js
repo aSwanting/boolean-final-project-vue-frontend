@@ -3,6 +3,7 @@ import axios from "axios";
 
 const store = reactive({
   // Properties
+  BACKEND_URL: "http://127.0.0.1:8000/",
   modalOpen: false,
   searchQuery: null,
   filters: [
@@ -42,7 +43,10 @@ const store = reactive({
   addressList: null,
   serviceList: null,
   queryData: null,
-  BACKEND_URL: "http://127.0.0.1:8000/",
+
+  // temp props for map
+  position: { lat: 41.9028, lon: 12.4964 },
+  radius: 20,
 
   // Methods
   debounce(fn, wait) {

@@ -1,14 +1,12 @@
 <template>
-  <section>
-    <div class="wrapper shadow">
-      <div class="results">
-        <SearchResults />
-      </div>
-      <div class="map">
-        <ResultsMap />
-      </div>
+  <div class="wrapper">
+    <div class="results">
+      <SearchResults />
     </div>
-  </section>
+    <div class="map">
+      <ResultsMap />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -31,21 +29,18 @@ export default {
 <style lang="scss" scoped>
 @use "../styles/partials/variables" as *;
 
-section {
-  height: 100%;
-}
 .wrapper {
   overflow: hidden;
-  border: 6px solid $primary;
-  border-radius: 20px;
   height: 100%;
   display: flex;
+  // gap: 15px;
   .results {
-    width: 55%;
+    flex: 1 1 50%;
     overflow: auto;
+    // padding: 3px;
   }
   .map {
-    width: 45%;
+    flex: 1 1 50%;
   }
 }
 </style>
