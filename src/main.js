@@ -21,9 +21,21 @@ import {
   faBellConcierge,
   faDice,
   faJugDetergent,
+  faMugSaucer,
   faCircleChevronRight,
   faChevronCircleLeft,
+  faPlusCircle,
+  faMinusCircle,
+  faFilter,
+
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFacebook,
+  faTelegram,
+  faInstagram,
+  faGithub
+} from "@fortawesome/free-brands-svg-icons";
+
 library.add(
   faHeart,
   faShare,
@@ -39,8 +51,16 @@ library.add(
   faBellConcierge,
   faDice,
   faJugDetergent,
+  faMugSaucer,
   faCircleChevronRight,
-  faChevronCircleLeft
+  faChevronCircleLeft,
+  faPlusCircle,
+  faMinusCircle,
+  faFilter,
+  faFacebook,
+  faTelegram,
+  faInstagram,
+  faGithub
 );
 
 createApp(App)

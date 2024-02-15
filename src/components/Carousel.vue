@@ -80,7 +80,6 @@ export default {
       );
       const images = this.apartment.images;
       images.forEach((image) => {
-        console.log("http://127.0.0.1:8000/storage/images/" + image.link);
         paths.push("http://127.0.0.1:8000/storage/images/" + image.link);
       });
       return paths;

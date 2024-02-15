@@ -11,7 +11,8 @@ body {
   font-family: "Open Sans Variable", sans-serif;
   height: 100vh;
   overflow: hidden;
-  & > div {
+
+  &>div {
     overflow: auto;
     height: 100%;
   }

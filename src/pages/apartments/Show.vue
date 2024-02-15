@@ -33,7 +33,11 @@
       <div class="carousel">
         <Carousel :items="apartment" />
       </div>
+
+
       <h2 class="title">{{ apartment.name }}</h2>
+
+
       <div class="apartment-info">
         <p>{{ apartment.address }}, {{ apartment.country }}</p>
         <p>{{ apartment.description }}</p>
@@ -54,6 +58,9 @@
       </MessageModal>
     </main >
     <Loading v-else></Loading>
+    <div class="container">
+      <div id="map"></div>
+    </div>
   </DefaultLayout>
 </template>
 <script>
@@ -64,6 +71,7 @@ import Carousel from "../../components/ApartmentImagesCarousel.vue";
 import store from "../../store";
 import { RouterLink } from "vue-router";
 import MessageModal from '../../components/MessageModal.vue';
+import { format } from 'date-fns';
 
 export default {
   components: {
@@ -83,8 +91,9 @@ export default {
       store,
       apartment: null,
       BASE_URL: "http://127.0.0.1:8000/api",
-      BASE_URL_COVER_IMG: "http://127.0.0.1:8000/storage/",
-      BASE_URL_IMAGES: `http://127.0.0.1:8000/storage/`,
+      BASE_URL_COVER_IMG: "http://127.0.0.1:8000/storage/cover_images/",
+      BASE_URL_IMAGES: `http://127.0.0.1:8000/storage/images/`,
+      data: {},
       isModalVisible: false,
     };
   },
@@ -92,8 +101,42 @@ export default {
     fetchApartment() {
       axios.get(`${this.BASE_URL}/apartments/${this.slug}`).then((res) => {
         this.apartment = res.data.apartment;
+        this.getIPAddress();
+        this.getMap();
       });
     },
+    getIPAddress() {
+      axios.get('https://api.ipify.org?format=json')
+        .then((res) => {
+          this.data = {
+            IPAddress: res.data.ip,
+            apartmentID: this.apartment.id,
+            date: format(new Date(), 'yy-MM-dd HH:mm:ss'),
+          }
+          this.postVisit();
+        })
+        .catch((error) => {
+          console.error('Si è verificato un errore durante il recupero dell\'indirizzo IP:', error);
+        })
+    },
+    postVisit() {
+      axios.post(`${this.BASE_URL}/apartments/visits`, this.data)
+        .then((res) => {
+          console.log('Indirizzo IP salvato con successo nel back-end.', res);
+        })
+        .catch((error) => {
+          console.error('Si è verificato un errore durante il salvataggio dell\'indirizzo IP nel back-end:', error);
+        })
+    },
+    getMap() {
+      var map = L.map('map').setView([this.apartment.latitude, this.apartment.longitude], 13);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+
+      var marker = L.marker([this.apartment.latitude, this.apartment.longitude]).addTo(map);
+    }
     closeModal() {
       this.isModalVisible = false
       // console.log('click')
@@ -104,13 +147,7 @@ export default {
   },
   created() {
     this.fetchApartment();
-  },
-  mounted() {
-    console.log("show montata");
-  },
-  unmounted() {
-    console.log("show unmounted");
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -147,6 +184,8 @@ export default {
       align-items: center;
     }
   }
+  min-height: 100px;
+  position: relative;
 
   .carousel {
     overflow-x: hidden;
@@ -192,4 +231,10 @@ export default {
 
 
   @media (min-width: 1400px) {}
-}</style>
+}
+#map {
+  border-radius: 10px;
+  min-width: 250px;
+  min-height: 250px;
+}
+</style>
