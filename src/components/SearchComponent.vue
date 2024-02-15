@@ -2,13 +2,7 @@
   <div>
     <!-- Search Form Start -->
     <div class="search-form mb-4 input-group shadow">
-      <input
-        v-model="searchQuery"
-        class="form-control"
-        type="search"
-        name=""
-        id=""
-      />
+      <input v-model="searchQuery" class="form-control" type="search" name="" id="" />
       <button class="btn btn-primary" @click="outputSearchData()">
         search
       </button>
@@ -16,10 +10,7 @@
 
     <!-- Suggested queries -->
     <div class="shadow border rounded p-3 mb-4" v-if="suggestedAddresses">
-      <div
-        v-for="suggested in suggestedAddresses"
-        @click="addressSelect(suggested)"
-      >
+      <div v-for="suggested in suggestedAddresses" @click="addressSelect(suggested)">
         {{ suggested.address.freeformAddress }}
       </div>
     </div>
@@ -28,73 +19,35 @@
     <div class="d-flex gap-3 advanced-search shadow border rounded p-3 mb-4">
       <!-- Search Range -->
       <div class="border rounded p-3 flex-grow-1">
-        <label class="form-label" for=""
-          >Search Range of {{ filter.search_radius }} km</label
-        >
+        <label class="form-label" for="">Search Range of {{ filter.search_radius }} km</label>
         <div class="d-flex gap-3">
           <div>20</div>
-          <input
-            v-model="filter.search_radius"
-            class="form-range"
-            type="range"
-            name=""
-            id=""
-            min="20"
-            max="200"
-          />
+          <input v-model="filter.search_radius" class="form-range" type="range" name="" id="" min="20" max="200" />
           <div>200</div>
         </div>
       </div>
       <!-- Rooms -->
       <div class="border rounded p-3 flex-grow-1">
         <label class="form-label" for="">Rooms</label>
-        <input
-          v-model="filter.rooms"
-          class="form-control"
-          type="number"
-          name=""
-          id=""
-          min="1"
-          max="12"
-        />
+        <input v-model="filter.rooms" class="form-control" type="number" name="" id="" min="1" max="12" />
       </div>
       <!-- Beds -->
       <div class="border rounded p-3 flex-grow-1">
         <label class="form-label" for="">Beds</label>
-        <input
-          v-model="filter.beds"
-          class="form-control"
-          type="number"
-          name=""
-          id=""
-          min="1"
-          max="12"
-        />
+        <input v-model="filter.beds" class="form-control" type="number" name="" id="" min="1" max="12" />
       </div>
       <!-- Bathrooms -->
       <div class="border rounded p-3 flex-grow-1">
         <label class="form-label" for="">Bathrooms</label>
-        <input
-          v-model="filter.bathrooms"
-          class="form-control"
-          type="number"
-          name=""
-          id=""
-          min="1"
-          max="12"
-        />
+        <input v-model="filter.bathrooms" class="form-control" type="number" name="" id="" min="1" max="12" />
       </div>
     </div>
     <!-- Services Start -->
     <div class="d-flex flex-wrap justify-content-evenly gap-3">
-      <button
-        class="service-badge btn btn-sm btn-secondary rounded-pill shadow"
-        v-for="service in store.serviceList"
+      <button class="service-badge btn btn-sm btn-secondary rounded-pill shadow" v-for="service in store.serviceList"
         :class="{
           'btn-success': filter.services.includes(service.name),
-        }"
-        @click="toggleService(service.name)"
-      >
+        }" @click="toggleService(service.name)">
         {{ service.name }}
       </button>
     </div>
@@ -141,6 +94,7 @@ export default {
         latitude: this.position.lat,
         longitude: this.position.lon,
       };
+      store.data = data
       await store.searchApartments(data);
       this.suggestedAddresses = null;
     },

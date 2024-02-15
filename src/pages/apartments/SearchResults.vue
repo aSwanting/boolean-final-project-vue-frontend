@@ -1,22 +1,14 @@
 <template>
   <DefaultLayout>
+    <SearchComponent></SearchComponent>
 
     <div class="container d-flex  justify-content-between column-gap-4">
-      <div class="search-component p-5  border rounded shadow flex-grow-1 ">
-        <p>Query: {{ query.searchQuery }}</p>
-        <p>Latitude: {{ query.latitude }}</p>
-        <p>Longitude: {{ query.latitude }}</p>
-        <p>Rooms: {{ query.rooms }}</p>
-        <p>Beds: {{ query.beds }}</p>
-        <p>Range: {{ query.search_radius }}km</p>
-        <!-- <p>Services:{{ query.services.join(", ") }}</p> -->
-      </div>
       <div id="map"></div>
     </div>
 
+    <SearchResultsComponent v-if="store.addressList"></SearchResultsComponent>
 
-
-    <div class="wrapper">
+    <div class="wrapper" v-else>
       <div v-if="apartments" class="container">
         <div class="card-wrapper">
           <ApartmentCard class="apartment-card" v-for="apartment in apartments" :apartment="apartment">
@@ -42,67 +34,133 @@ import ApartmentCard from "../../components/ApartmentCard.vue";
 import Carousel from "../../components/Carousel.vue";
 import Loading from "../../components/Loading.vue";
 import DefaultLayout from "../../layouts/DefaultLayout.vue";
+import SearchComponent from "../../components/SearchComponent.vue";
+import SearchResultsComponent from "../../components/SearchResultsComponent.vue"
 export default {
   components: {
     ApartmentCard,
     Carousel,
     Loading,
     DefaultLayout,
+    SearchComponent,
+    SearchResultsComponent
+
   },
   data() {
     return {
       store,
       apartments: [],
       showLoader: true,
-      query: "",
+      query: null,
+      map: null,
+      markers: null,
+      marker: null,
+      popup: null,
+
     };
   },
   methods: {
+    async fetchApartments() {
+      await axios.get("http://127.0.0.1:8000/api/apartments/all").then((res) => {
+
+        let allApartments = res.data.results.apartments;
+        if (this.map) {
+          allApartments.forEach(apartment => {
+            let marker = L.marker([apartment.latitude, apartment.longitude]).addTo(this.map);
+            let popup = L.popup().setContent(`<a href="http://localhost:5174/apartments/${apartment.slug}">${apartment.address}</a>`);
+            marker.bindPopup(popup);
+
+          });
+        }
+      })
+    },
     async fetchResults() {
       await axios.get("http://127.0.0.1:8000/api/apartments/results/").then((res) => {
-        console.log(res.data);
+
         this.apartments = res.data.results.apartments;
         this.query = res.data.results.query;
+        store.addressList = this.apartments
+        store.data = this.query
+        console.log(this.query);
         this.showLoader = false;
         this.getMap();
+
       });
     },
     getMap() {
-      var map = L.map('map').setView([this.query.latitude, this.query.longitude], 11);
+      this.map = L.map('map').setView([this.query.latitude, this.query.longitude], 11);
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }).addTo(map);
+      }).addTo(this.map);
 
-      map.on('moveend', () => {
-
-        let bounds = map.getBounds();
-        let center = map.getCenter();
-        let distance1 = map.distance(center, bounds._northEast);
-        console.log(distance1 / 1000, center);
-
-      })
-
+      this.markers = L.layerGroup();
       this.apartments.forEach(apartment => {
-        var marker = L.marker([apartment.latitude, apartment.longitude]).on('click', () => {
-          // this.$router.push({ name: 'apartments.show', params: { slug: apartment.slug } })
-          console.log('hello')
-        }).addTo(map);
-        var popup = L.popup({ interactive: true }).setContent(`<a href="http://localhost:5174/apartments/${apartment.slug}">${apartment.address}</a>`)
-
-
-
-        // popup.on('click', () => {
-        //   // this.$router.push({ name: 'apartments.show', params: { slug: apartment.slug } })
-        //   console.log('hello')
-        // });
-
-        marker.bindPopup(popup);
+        this.marker = L.marker([apartment.latitude, apartment.longitude]).addTo(this.markers)
       });
+      this.markers.addTo(this.map);
 
 
-    },
+      // this.map.on('moveend', () => {
 
+      //   this.markers.clearLayers();
+
+      //   let center = this.map.getCenter();
+      //   store.data.latitude = center.lat.toFixed(6);
+      //   store.data.longitude = center.lng.toFixed(6);
+
+      //   store.searchApartments(store.data);
+
+      //   store.addressList.forEach(apartment => {
+      //     this.marker = L.marker([apartment.latitude, apartment.longitude]).addTo(this.markers).addTo(this.map);
+      //   });;
+
+
+      // });
+      // this.map.on('zoomend', () => {
+
+
+      //   let bounds = this.map.getBounds();
+      //   let center = this.map.getCenter();
+      //   let range = this.map.distance(center, bounds._northEast) / 1000;
+      //   store.data.latitude = center.lat.toFixed(6);
+      //   store.data.longitude = center.lng.toFixed(6);
+      //   this.getRange(range);
+
+      //   store.searchApartments(store.data);
+
+      //   this.markers.clearLayers();
+
+      //   store.addressList.forEach(apartment => {
+      //     this.marker = L.marker([apartment.latitude, apartment.longitude]).addTo(this.markers).addTo(this.map);
+      //   });;
+
+
+      // });
+
+
+
+
+
+    }
+  },
+  watch: {
+    "store.trigger": {
+      handler() {
+
+        if (this.map) {
+
+          this.map.flyTo([store.data.latitude, store.data.longitude], 11);
+          this.markers.clearLayers();
+
+          store.addressList.forEach(apartment => {
+            this.marker = L.marker([apartment.latitude, apartment.longitude]).addTo(this.markers).addTo(this.map);
+          })
+        }
+
+      },
+      immediate: true,
+    }
   },
   beforeMount() {
     this.fetchResults();

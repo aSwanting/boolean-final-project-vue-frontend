@@ -41,7 +41,9 @@ const store = reactive({
   addressList: null,
   serviceList: null,
   queryData: null,
+  data: {},
   BACKEND_URL: "http://127.0.0.1:8000/",
+  trigger: true,
 
   // Methods
   debounce(fn, wait) {
@@ -67,7 +69,11 @@ const store = reactive({
       data
     );
     store.addressList = response.data.results.apartments;
+    this.triggerStoreFunction();
   },
+  triggerStoreFunction() {
+    this.trigger = !this.trigger;
+  }
 });
 
 export default store;
