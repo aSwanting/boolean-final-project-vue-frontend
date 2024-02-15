@@ -7,6 +7,9 @@ import { router } from "./router";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
+  faHeart,
+  faShare,
+  faMessage,
   faUser,
   faWifi,
   faWaterLadder,
@@ -22,6 +25,9 @@ import {
   faChevronCircleLeft,
 } from "@fortawesome/free-solid-svg-icons";
 library.add(
+  faHeart,
+  faShare,
+  faMessage,
   faUser,
   faWifi,
   faWaterLadder,
