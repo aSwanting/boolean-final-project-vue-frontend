@@ -24,7 +24,15 @@ import {
   faPlusCircle,
   faMinusCircle,
   faFilter,
+
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFacebook,
+  faTelegram,
+  faInstagram,
+  faGithub
+} from "@fortawesome/free-brands-svg-icons";
+
 library.add(
   faUser,
   faWifi,
@@ -42,7 +50,11 @@ library.add(
   faChevronCircleLeft,
   faPlusCircle,
   faMinusCircle,
-  faFilter
+  faFilter,
+  faFacebook,
+  faTelegram,
+  faInstagram,
+  faGithub
 );
 
 createApp(App)
