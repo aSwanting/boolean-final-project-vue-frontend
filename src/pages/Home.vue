@@ -1,20 +1,19 @@
 <template>
-  <DefaultLayout>
-    <ApartmentSearch />
-    <AdvancedSearch />
-  </DefaultLayout>
+  <div class="border rounded shadow p-4 m-5">
+    <SearchComponent />
+  </div>
+  <div class="border rounded shadow p-4 m-5">
+    <SearchResultsComponent />
+  </div>
 </template>
 
 <script>
-import DefaultLayout from "../layouts/DefaultLayout.vue";
-import AdvancedSearch from "../components/AdvancedSearch.vue";
-import ApartmentSearch from "../components/ApartmentSearch.vue";
-import Carousel from "../components/Carousel.vue";
+import SearchComponent from "../components/SearchComponent.vue";
+import SearchResultsComponent from "../components/SearchResultsComponent.vue";
 export default {
   components: {
-    DefaultLayout,
-    ApartmentSearch,
-    AdvancedSearch,
+    SearchComponent,
+    SearchResultsComponent,
   },
 };
 </script>

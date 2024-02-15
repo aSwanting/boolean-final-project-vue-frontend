@@ -33,23 +33,23 @@ a {
   color: currentColor;
 }
 
-button,
-.btn-primary {
-  cursor: pointer;
-  background-color: $primary;
-  padding: 8px;
-  border-radius: 6px;
-  border: none;
-  outline: none;
-  transition: 200ms all;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+// button,
+// .btn-primary {
+//   cursor: pointer;
+//   background-color: $primary;
+//   padding: 8px;
+//   border-radius: 6px;
+//   border: none;
+//   outline: none;
+//   transition: 200ms all;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
 
-  &:hover {
-    background-color: $primary-hover;
-  }
-}
+//   &:hover {
+//     background-color: $primary-hover;
+//   }
+// }
 
 // ::-webkit-scrollbar {
 //   width: 8px;

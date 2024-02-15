@@ -1,4 +1,5 @@
 import { reactive } from "vue";
+import axios from "axios";
 
 const store = reactive({
   // Properties
@@ -37,8 +38,8 @@ const store = reactive({
   lat: "",
   long: "",
   services: [],
-  addressList: [],
-  serviceList: [],
+  addressList: null,
+  serviceList: null,
   queryData: null,
   BACKEND_URL: "http://127.0.0.1:8000/",
 
@@ -54,6 +55,18 @@ const store = reactive({
         fn.apply(that, args);
       }, wait);
     };
+  },
+  async fetchApartments() {
+    const response = await axios.get(`${this.BACKEND_URL}api/apartments`);
+    store.addressList = response.data.results.apartments;
+    store.serviceList = response.data.results.services;
+  },
+  async searchApartments(data) {
+    const response = await axios.post(
+      `${store.BACKEND_URL}api/apartments`,
+      data
+    );
+    store.addressList = response.data.results.apartments;
   },
 });
 
