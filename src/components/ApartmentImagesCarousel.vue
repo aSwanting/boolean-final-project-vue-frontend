@@ -20,7 +20,7 @@ export default {
     return {
       BASE_URL_IMAGES: "http://127.0.0.1:8000/storage/images/",
       perView: 3,
-      delay: 2000,
+      delay: 2500,
       totalScroll: 0,
       autoScroll: null,
     };
@@ -81,26 +81,53 @@ export default {
 <style lang="scss" scoped>
 .carousel-wrapper {
   position: relative;
-}
-.images-wrapper {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: calc((100% - (1.5rem * 2)) / 3);
-  gap: 1.5rem;
-  position: relative;
-  left: 0;
-  transition: 0.3s;
 
-  figure {
-    aspect-ratio: 4 / 3;
+  .images-wrapper {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 100%;
+    gap: 1.5rem;
+    position: relative;
+    left: 0;
+    transition: 0.3s;
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      border-radius: 20px;
+    figure {
+      aspect-ratio: 4 / 3;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        border-radius: 20px;
+      }
     }
   }
+
+  @media (min-width: 576px) {}
+
+
+  @media (min-width: 768px) {
+    .images-wrapper {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: calc((100% - (1.5rem * 2)) / 2);
+      gap: 1.5rem;
+      position: relative;
+      left: 0;
+      transition: 0.3s;
+    }
+  }
+
+
+  @media (min-width: 992px) {}
+
+
+  @media (min-width: 1200px) {}
+
+
+  @media (min-width: 1400px) {}
 }
+
+
 </style>
