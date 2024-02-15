@@ -38,6 +38,7 @@ const store = reactive({
   lat: "",
   long: "",
   services: [],
+  sponsoredAddressList: null,
   addressList: null,
   serviceList: null,
   queryData: null,
@@ -58,15 +59,15 @@ const store = reactive({
   },
   async fetchApartments() {
     const response = await axios.get(`${this.BACKEND_URL}api/apartments`);
-    store.addressList = response.data.results.apartments;
-    store.serviceList = response.data.results.services;
+    this.sponsoredAddressList = response.data.results.apartments;
+    this.serviceList = response.data.results.services;
   },
   async searchApartments(data) {
     const response = await axios.post(
-      `${store.BACKEND_URL}api/apartments`,
+      `${this.BACKEND_URL}api/apartments`,
       data
     );
-    store.addressList = response.data.results.apartments;
+    this.addressList = response.data.results.apartments;
   },
 });
 

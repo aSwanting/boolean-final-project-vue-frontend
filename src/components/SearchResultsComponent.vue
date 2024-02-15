@@ -1,24 +1,33 @@
 <template>
-  <div>
-    <div class="p-3 m-3 border rounded shadow">
-      <div
-        class="d-grid gap-3"
-        style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))"
-        v-if="store.addressList"
-      >
-        <div v-for="apartment in store.addressList">
-          <ApartmentCard :apartment="apartment">
-            <Carousel
-              :apartment="apartment"
-              :class="{
-                'border border-4 border-primary': !apartment.sponsored,
-              }"
-            />
-          </ApartmentCard>
-        </div>
+  <div v-if="store.addressList">
+    <div v-for="apartment in store.addressList" class="apartment-card">
+      <div class="card-image">
+        <Carousel
+          :apartment="apartment"
+          :class="{
+            'border border-4 border-primary': !apartment.sponsored,
+          }"
+        />
       </div>
-      <div v-else>No addresses loaded</div>
+      <div class="card-body">
+        <p class="location">{{ apartment.region }}, {{ apartment.country }}</p>
+        <p class="name">{{ apartment.name }}</p>
+        <p class="distance" v-show="apartment.distance">
+          {{ apartment.distance }} kilometers away
+        </p>
+      </div>
+      <!-- <ApartmentCard :apartment="apartment">
+        <Carousel
+          :apartment="apartment"
+          :class="{
+            'border border-4 border-primary': !apartment.sponsored,
+          }"
+        />
+      </ApartmentCard> -->
     </div>
+  </div>
+  <div class="position-relative h-100" v-else>
+    <Loading />
   </div>
 </template>
 
@@ -26,10 +35,12 @@
 import store from "../store";
 import ApartmentCard from "./ApartmentCard.vue";
 import Carousel from "./Carousel.vue";
+import Loading from "./Loading.vue";
 export default {
   components: {
     ApartmentCard,
     Carousel,
+    Loading,
   },
   data() {
     return {
@@ -39,4 +50,22 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.apartment-card {
+  display: flex;
+  height: 200px;
+  p {
+    margin: 0;
+  }
+  & > * {
+    width: 50%;
+    padding: 15px;
+    border-block: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  .card-image {
+  }
+  .card-body {
+  }
+}
+</style>
