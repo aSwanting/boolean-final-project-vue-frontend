@@ -73,7 +73,38 @@ const store = reactive({
   },
   triggerStoreFunction() {
     this.trigger = !this.trigger;
-  }
+  },
+  // radiusConverting(i) {
+  //   if (i <= 200 && i >= 181) {
+  //     return 15
+  //   } else if (i <= 180 && i >= 161) {
+  //     return 14
+  //   }
+  //   else if (i <= 160 && i >= 141) {
+  //     return 13
+  //   }
+  //   else if (i <= 140 && i >= 121) {
+  //     return 12
+  //   }
+  //   else if (i <= 120 && i >= 101) {
+  //     return 11
+  //   }
+  //   else if (i <= 100 && i >= 81) {
+  //     return 10
+  //   }
+  //   else if (i <= 80 && i >= 61) {
+  //     return 9
+  //   }
+  //   else if (i <= 60 && i >= 41) {
+  //     return 8
+  //   }
+  //   else if (i <= 40 && i >= 21) {
+  //     return 7
+  //   }
+  //   else if (i <= 20) {
+  //     return 6
+  //   };
+  // }
 });
 
 export default store;

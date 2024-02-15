@@ -88,17 +88,17 @@ export default {
       });
     },
     getMap() {
-      this.map = L.map('map').setView([this.query.latitude, this.query.longitude], 11);
+      this.map = L.map('map').setMinZoom(3).setMaxZoom(15).setView([this.query.latitude, this.query.longitude]).setZoom(this.radiusConverting(this.query.search_radius))
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(this.map);
-
+      console.log(this.query.search_radius);
       this.markers = L.layerGroup();
       this.apartments.forEach(apartment => {
         this.marker = L.marker([apartment.latitude, apartment.longitude]).addTo(this.markers)
       });
       this.markers.addTo(this.map);
+
 
 
       // this.map.on('moveend', () => {
@@ -117,32 +117,50 @@ export default {
 
 
       // });
-      // this.map.on('zoomend', () => {
+      this.map.on('zoomend', () => {
+
+        console.log(this.map.getZoom());
+        // let bounds = this.map.getBounds();
+        // let center = this.map.getCenter();
+        // let range = this.map.distance(center, bounds._northEast) / 1000;
+        // store.data.latitude = center.lat.toFixed(6);
+        // store.data.longitude = center.lng.toFixed(6);
+        // this.getRange(range);
+
+        // store.searchApartments(store.data);
+
+        // this.markers.clearLayers();
+
+        // store.addressList.forEach(apartment => {
+        //   this.marker = L.marker([apartment.latitude, apartment.longitude]).addTo(this.markers).addTo(this.map);
+        // });;
 
 
-      //   let bounds = this.map.getBounds();
-      //   let center = this.map.getCenter();
-      //   let range = this.map.distance(center, bounds._northEast) / 1000;
-      //   store.data.latitude = center.lat.toFixed(6);
-      //   store.data.longitude = center.lng.toFixed(6);
-      //   this.getRange(range);
-
-      //   store.searchApartments(store.data);
-
-      //   this.markers.clearLayers();
-
-      //   store.addressList.forEach(apartment => {
-      //     this.marker = L.marker([apartment.latitude, apartment.longitude]).addTo(this.markers).addTo(this.map);
-      //   });;
-
-
-      // });
+      });
 
 
 
 
+
+    },
+    radiusConverting(i) {
+      if (i <= 200 && i >= 161) {
+        return 5
+      } else if (i <= 160 && i >= 121) {
+        return 6
+      }
+      else if (i <= 120 && i >= 81) {
+        return 7
+      }
+      else if (i <= 90 && i >= 61) {
+        return 7
+      }
+      else if (i <= 60) {
+        return 8
+      }
 
     }
+
   },
   watch: {
     "store.trigger": {
@@ -150,7 +168,7 @@ export default {
 
         if (this.map) {
 
-          this.map.flyTo([store.data.latitude, store.data.longitude], 11);
+          this.map.flyTo([store.data.latitude, store.data.longitude], this.radiusConverting(store.data.search_radius));
           this.markers.clearLayers();
 
           store.addressList.forEach(apartment => {
