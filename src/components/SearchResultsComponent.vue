@@ -1,13 +1,12 @@
 <template>
   <div class="pe-3" v-if="store.addressList">
     <div v-for="(apartment, index) in store.addressList" class="apartment-card">
-      <div
-        class="card-inner"
-        :class="{ sponsored: !apartment.sponsored }"
-        @click="goToShow(index)"
-      >
+      <div class="card-inner" :class="{ sponsored: !apartment.sponsored }" @click="goToShow(index)">
         <div class="apartment-card-image">
           <Carousel :apartment="apartment" />
+          <div class="icon-sponsor d-none">
+            <font-awesome-icon icon="award" />
+          </div>
         </div>
         <div class="apartment-card-body">
           <p class="location">
@@ -53,9 +52,11 @@ export default {
 
 <style lang="scss" scoped>
 @use "../styles/partials/variables" as *;
+
 p {
   margin: 0;
 }
+
 .apartment-card {
   // padding: 0 25px;
 
@@ -65,37 +66,56 @@ p {
     cursor: pointer;
     box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.05);
     transition: 200ms all;
+    position: relative;
+
     &:hover {
       box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
     }
+
     &.sponsored {
-      border: 3px solid $primary;
+      border: 3px solid #ffbf00;
+
+      .icon-sponsor {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        color: #ffbf00;
+        display: block !important;
+      }
     }
-    & > * {
+
+
+    &>* {
       flex: 1 1 50%;
     }
-    .apartment-card-image {
-    }
+
+    .apartment-card-image {}
+
     .apartment-card-body {
       padding: 24px 18px;
       display: flex;
       flex-direction: column;
       justify-content: space-around;
+
       .location {
         font-size: 16px;
         font-weight: 800;
       }
+
       .name {
         font-weight: 300;
         font-size: 18px;
         font-style: italic;
         color: rgba(0, 0, 0, 0.473);
       }
+
       .distance {
         color: rgba(0, 0, 0, 0.8);
       }
     }
   }
+
   &::after {
     content: "";
     display: block;
