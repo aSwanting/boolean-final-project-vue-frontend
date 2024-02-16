@@ -7,24 +7,24 @@
   <div class="advanced-search" :class="{ active: store.modalOpen }">
     <div class="search-options">
       <div class="filters">
-        <div v-for="item in store.filters" :key="item.id">
+        <div v-for="filter in store.filters">
           <div class="filter-label">
-            {{ item.name }}
+            {{ filter.name }}
           </div>
           <div class="filter">
             <div
               class="filter-button"
-              @mousedown="filterClick(item, -1)"
+              @mousedown="filterClick(filter, -1)"
               @mouseup="filterRelease()"
             >
               <font-awesome-icon icon="circle-minus" />
             </div>
             <div class="filter-value">
-              {{ item.value }}
+              {{ filter.value }}
             </div>
             <div
               class="filter-button"
-              @mousedown="filterClick(item, +1)"
+              @mousedown="filterClick(filter, +1)"
               @mouseup="filterRelease()"
             >
               <font-awesome-icon icon="circle-plus" />
@@ -34,14 +34,14 @@
       </div>
 
       <div class="services">
-        <div v-for="(item, index) in store.services" :key="item.id">
+        <div v-for="service in store.services">
           <div
             class="service"
-            :class="{ active: item.active }"
-            @click="item.active = !item.active"
+            :class="{ active: service.active }"
+            @click="service.active = !service.active"
           >
-            <div>{{ item.key }}</div>
-            <font-awesome-icon :icon="serviceIcons[index]" />
+            <div>{{ service.name }}</div>
+            <font-awesome-icon :icon="service.icon" />
           </div>
         </div>
       </div>
@@ -58,40 +58,11 @@ import store from "../store";
 export default {
   data() {
     return {
-      user: "user",
       store,
       interval: null,
-      serviceIcons: [
-        "wifi",
-        "water-ladder",
-        "parking",
-        "dumbbell",
-        "shield",
-        "jug-detergent",
-        "paw",
-        "mug-saucer",
-        "hammer",
-        "bell-concierge",
-      ],
     };
   },
-  watch: {
-    "store.serviceList": {
-      handler() {
-        if (store.serviceList) {
-          console.log("fetching services");
-          store.services = this.fetchServices();
-        }
-      },
-      immediate: true,
-    },
-  },
   methods: {
-    fetchServices() {
-      return store.serviceList.map((service) => {
-        return { key: service.name, id: service.id, active: false };
-      });
-    },
     filterClick(item, change) {
       this.interval = setInterval(() => {
         item.value += change;

@@ -9,19 +9,19 @@
             type="search"
             id="search-bar"
             placeholder="Enter an address or region to search (ex. via del Mandrione, Roma)"
-            v-model="searchQuery"
+            v-model="store.searchQuery"
           />
           <button class="filter-button" @click="store.modalOpen = true">
             <font-awesome-icon icon="filter" />
           </button>
-          <button class="search-button" @click="searchApartments()">
+          <button class="search-button" @click="outputSearchData()">
             Search
           </button>
         </div>
 
-        <div class="query-results" :class="{ open: searchResults.length }">
-          <div class="query-result" v-for="result in searchResults">
-            <span @click="queryChecker(result)">
+        <div class="query-results" :class="{ open: suggestedAddresses }">
+          <div class="query-result" v-for="result in suggestedAddresses">
+            <span @click="addressSelect(result)">
               {{ result.address.freeformAddress }}
             </span>
           </div>
@@ -29,26 +29,6 @@
       </div>
     </div>
   </section>
-
-  <!-- <section class="apartment-cards">
-    <div class="container">
-      <h4 class="card-section">Featured</h4>
-      <div class="card-wrapper sponsored-cards" v-if="store.addressList.length">
-        <ApartmentCard
-          class="apartment-card"
-          :class="{ sponsored: apartment.orders.length }"
-          v-for="apartment in store.addressList"
-          :apartment="apartment"
-        >
-          <Carousel class="card-image" :apartment="apartment" />
-        </ApartmentCard>
-      </div>
-
-      <div class="card-wrapper sponsored-cards" v-else>
-        <Loading></Loading>
-      </div>
-    </div>
-  </section> -->
 </template>
 
 <script>
@@ -69,82 +49,47 @@ export default {
   data() {
     return {
       store,
-      searchQuery: null,
-      oldQuery: "",
-      searchResults: [],
+      suggestedAddresses: null,
+      selectedAddress: null,
+      position: null,
       debouncedSearch: store.debounce(this.backendFuzzySearch, 300),
-      data: {},
     };
   },
   watch: {
-    searchQuery() {
-      if (this.searchQuery != this.oldQuery) {
-        this.debouncedSearch();
-      }
-      // } else {
-      //   this.searchResults = [];
-      // }
+    "store.searchQuery": {
+      handler(newVal, oldVal) {
+        if (oldVal && store.searchQuery !== this.selectedAddress) {
+          this.debouncedSearch();
+        }
+      },
+      immediate: true,
     },
   },
   methods: {
-    // Take user input and suggest matched addresses
+    async outputSearchData() {
+      await store.searchApartments();
+      this.$router.push({ name: "search-results" });
+      this.suggestedAddresses = null;
+    },
+    addressSelect(suggested) {
+      store.searchQuery = suggested.address.freeformAddress;
+      this.selectedAddress = suggested.address.freeformAddress;
+      this.position = suggested.position;
+      store.position = suggested.position;
+      this.suggestedAddresses = null;
+    },
     async backendFuzzySearch() {
-      if (this.searchQuery) {
-        const data = { query: this.searchQuery };
+      if (store.searchQuery) {
+        const data = { query: store.searchQuery };
         const response = await axios.post(
           `${store.BACKEND_URL}api/apartments/search`,
           data
         );
-        this.searchResults = response.data.results.slice(0, 6);
+        this.suggestedAddresses = response.data.results.slice(0, 6);
+        this.position = this.suggestedAddresses[0].position;
+        store.position = this.suggestedAddresses[0].position;
       }
     },
-    // Send search data to backend for search and filter
-    async fetchApartments() {
-      const response = await axios.get(`${store.BACKEND_URL}api/apartments`);
-      store.addressList = response.data.results.apartments;
-      store.serviceList = response.data.results.services;
-    },
-    async searchApartments() {
-      // If user has entered a search query, send post request to backend with search data
-      let response;
-      if (this.searchResults.length) {
-        this.data = {
-          searchQuery: this.searchQuery,
-          latitude: this.searchResults[0].position.lat,
-          longitude: this.searchResults[0].position.lon,
-          rooms: store.filters[1].value,
-          beds: store.filters[2].value,
-          bathrooms: store.filters[3].value,
-          search_radius: store.filters[0].value,
-          services: store.services
-            .filter((service) => service.active)
-            .map((service) => service.key),
-        };
-
-        response = await axios.post(
-          `${store.BACKEND_URL}api/apartments`,
-          this.data
-        );
-
-        store.queryData = this.data;
-        store.searchQuery = this.searchQuery;
-        store.lat = this.searchResults[0].position.lat;
-        store.long = this.searchResults[0].position.lon;
-        store.addressList = response.data.results.apartments;
-        store.serviceList = response.data.results.services;
-
-        this.searchResults = [];
-        this.$router.push({ name: "search-results" });
-      }
-    },
-
-    queryChecker(result) {
-      this.searchQuery = result.address.freeformAddress;
-      this.oldQuery = result.address.freeformAddress;
-    },
-  },
-  mounted() {
-    store.fetchApartments();
   },
 };
 </script>

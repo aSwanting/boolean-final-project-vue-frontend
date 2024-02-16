@@ -36,17 +36,14 @@ const store = reactive({
       max: 9,
     },
   ],
-  lat: "",
-  long: "",
-  services: [],
+
   sponsoredAddressList: null,
   addressList: null,
-  serviceList: null,
+  services: null,
   queryData: null,
 
   // temp props for map
   position: { lat: 41.9028, lon: 12.4964 },
-  radius: 20,
 
   // Methods
   debounce(fn, wait) {
@@ -61,12 +58,44 @@ const store = reactive({
       }, wait);
     };
   },
-  async fetchApartments() {
+  async fetchApartmentsAndServices() {
     const response = await axios.get(`${this.BACKEND_URL}api/apartments`);
     this.sponsoredAddressList = response.data.results.apartments;
-    this.serviceList = response.data.results.services;
+
+    const serviceIcons = [
+      "wifi",
+      "water-ladder",
+      "parking",
+      "dumbbell",
+      "shield",
+      "jug-detergent",
+      "paw",
+      "mug-saucer",
+      "hammer",
+      "bell-concierge",
+    ];
+
+    this.services = response.data.results.services.map((service, index) => {
+      return {
+        name: service.name,
+        id: service.id,
+        icon: serviceIcons[index],
+        active: false,
+      };
+    });
   },
-  async searchApartments(data) {
+
+  async searchApartments() {
+    const data = {
+      search_radius: this.filters[0].value,
+      rooms: this.filters[1].value,
+      beds: this.filters[2].value,
+      bathrooms: this.filters[3].value,
+      services: this.services.filter((e) => e.active).map((e) => e.name),
+      query: this.searchQuery,
+      latitude: this.position.lat,
+      longitude: this.position.lon,
+    };
     const response = await axios.post(
       `${this.BACKEND_URL}api/apartments`,
       data

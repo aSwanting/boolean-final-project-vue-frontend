@@ -7,7 +7,7 @@
     <!-- Search Form Start -->
     <div class="search-form input-group mb-3">
       <input
-        v-model="searchQuery"
+        v-model="store.searchQuery"
         class="form-control search-input"
         type="search"
         name=""
@@ -16,12 +16,12 @@
       <!-- Search Range -->
       <div class="range-form">
         <label class="form-label range-label" for=""
-          >{{ filter.search_radius }} km</label
+          >{{ store.filters[0].value }} km</label
         >
         <div class="d-flex gap-3">
           <div>20</div>
           <input
-            v-model="filter.search_radius"
+            v-model="store.filters[0].value"
             class="form-range"
             type="range"
             name=""
@@ -38,12 +38,7 @@
     </div>
 
     <!-- Suggested queries -->
-    <div
-      class="suggested-dropdown"
-      :class="{
-        open: suggestedAddresses && this.searchQuery != store.searchQuery,
-      }"
-    >
+    <div class="suggested-dropdown" :class="{ open: suggestedAddresses }">
       <div
         v-for="suggested in suggestedAddresses"
         @click="addressSelect(suggested)"
@@ -59,7 +54,7 @@
         <div class="">
           <font-awesome-icon icon="house" />
           <input
-            v-model="filter.rooms"
+            v-model="store.filters[1].value"
             class=""
             type="number"
             name=""
@@ -72,7 +67,7 @@
         <div class="">
           <font-awesome-icon icon="bed" />
           <input
-            v-model="filter.beds"
+            v-model="store.filters[2].value"
             class=""
             type="number"
             name=""
@@ -85,7 +80,7 @@
         <div class="">
           <font-awesome-icon icon="toilet" />
           <input
-            v-model="filter.bathrooms"
+            v-model="store.filters[3].value"
             class=""
             type="number"
             name=""
@@ -99,11 +94,11 @@
       <div class="search-services">
         <button
           class="service-badge btn btn-sm rounded-pill border-primary"
-          v-for="service in store.serviceList"
+          v-for="service in store.services"
           :class="{
-            'btn-primary': filter.services.includes(service.name),
+            'btn-primary': service.active,
           }"
-          @click="toggleService(service.name)"
+          @click="service.active = !service.active"
         >
           {{ service.name }}
         </button>
@@ -123,26 +118,17 @@ export default {
       suggestedAddresses: null,
       selectedAddress: null,
       position: null,
-      filter: {
-        search_radius: 20,
-        rooms: 1,
-        beds: 1,
-        bathrooms: 1,
-        services: [],
-      },
       debouncedSearch: store.debounce(this.backendFuzzySearch, 300),
     };
   },
   watch: {
-    searchQuery() {
-      if (this.searchQuery !== this.selectedAddress) this.debouncedSearch();
-    },
-    filter: {
-      handler() {
-        // console.log("filter changed");
-        store.radius = this.filter.search_radius;
+    "store.searchQuery": {
+      handler(newVal, oldVal) {
+        if (oldVal && store.searchQuery !== this.selectedAddress) {
+          this.debouncedSearch();
+        }
       },
-      deep: true,
+      immediate: true,
     },
   },
   methods: {
@@ -150,25 +136,19 @@ export default {
       this.$router.push({ name: "home" });
     },
     async outputSearchData() {
-      const data = {
-        ...this.filter,
-        query: this.searchQuery,
-        latitude: this.position.lat,
-        longitude: this.position.lon,
-      };
-      await store.searchApartments(data);
+      await store.searchApartments();
       this.suggestedAddresses = null;
     },
     addressSelect(suggested) {
-      this.searchQuery = suggested.address.freeformAddress;
+      store.searchQuery = suggested.address.freeformAddress;
       this.selectedAddress = suggested.address.freeformAddress;
       this.position = suggested.position;
       store.position = suggested.position;
       this.suggestedAddresses = null;
     },
     async backendFuzzySearch() {
-      if (this.searchQuery) {
-        const data = { query: this.searchQuery };
+      if (store.searchQuery) {
+        const data = { query: store.searchQuery };
         const response = await axios.post(
           `${store.BACKEND_URL}api/apartments/search`,
           data
@@ -177,9 +157,6 @@ export default {
         this.position = this.suggestedAddresses[0].position;
         store.position = this.suggestedAddresses[0].position;
       }
-    },
-    async fetchApartments() {
-      await store.fetchApartments();
     },
     toggleService(serviceName) {
       if (this.filter.services.includes(serviceName)) {
@@ -192,10 +169,8 @@ export default {
       }
     },
   },
-  mounted() {
-    this.fetchApartments();
-    this.searchQuery = store.searchQuery;
-    this.suggestedAddresses = null;
+  async mounted() {
+    if (!store.addressList) await store.fetchApartmentsAndServices();
   },
 };
 </script>

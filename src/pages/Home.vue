@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import store from "../store";
 import DefaultLayout from "../layouts/DefaultLayout.vue";
 import AdvancedSearch from "../components/AdvancedSearch.vue";
 import ApartmentSearch from "../components/ApartmentSearch.vue";
@@ -20,6 +21,18 @@ export default {
     ApartmentSearch,
     AdvancedSearch,
     SponsoredResultsComponent,
+  },
+  data() {
+    return {
+      store,
+    };
+  },
+  async mounted() {
+    if (!store.addressList) {
+      console.log("fetching apartments and services...");
+      await store.fetchApartmentsAndServices();
+      console.log(store);
+    }
   },
 };
 </script>
