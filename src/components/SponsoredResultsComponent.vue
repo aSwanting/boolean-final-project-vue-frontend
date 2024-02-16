@@ -3,8 +3,8 @@
     <div class="container">
       <div class="d-grid gap-3" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"
         v-if="store.sponsoredAddressList">
-        <div v-for="apartment in store.sponsoredAddressList">
-          <ApartmentCard class="position-relative" :apartment="apartment">
+        <div v-for="apartment in store.sponsoredAddressList" class="position-relative">
+          <ApartmentCard :apartment="apartment">
             <Carousel :apartment="apartment" class="shadow sponsored " :class="{
               'border border-4 border-sponsored ': !apartment.sponsored,
             }" />
