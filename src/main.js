@@ -63,7 +63,11 @@ library.add(
   faBed,
   faHouse,
   faToilet,
-  faArrowLeftLong
+  faArrowLeftLong,
+  faFacebook,
+  faTelegram,
+  faInstagram,
+  faGithub
 );
 
 createApp(App)
