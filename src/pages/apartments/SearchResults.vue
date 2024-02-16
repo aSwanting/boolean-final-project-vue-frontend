@@ -79,9 +79,8 @@ export default {
 
         this.apartments = res.data.results.apartments;
         this.query = res.data.results.query;
-        store.addressList = this.apartments
-        store.data = this.query
-        console.log(this.query);
+        store.addressList = this.apartments;
+        store.data = this.query;
         this.showLoader = false;
         this.getMap();
 
@@ -92,7 +91,7 @@ export default {
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(this.map);
-      console.log(this.query.search_radius);
+
       this.markers = L.layerGroup();
       this.apartments.forEach(apartment => {
         this.marker = L.marker([apartment.latitude, apartment.longitude]).addTo(this.markers)
@@ -101,39 +100,39 @@ export default {
 
 
 
-      // this.map.on('moveend', () => {
+      this.map.on('moveend', () => {
 
-      //   this.markers.clearLayers();
+        this.markers.clearLayers();
 
-      //   let center = this.map.getCenter();
-      //   store.data.latitude = center.lat.toFixed(6);
-      //   store.data.longitude = center.lng.toFixed(6);
+        let center = this.map.getCenter();
+        store.data.latitude = center.lat.toFixed(6);
+        store.data.longitude = center.lng.toFixed(6);
 
-      //   store.searchApartments(store.data);
+        store.searchApartments(store.data);
 
-      //   store.addressList.forEach(apartment => {
-      //     this.marker = L.marker([apartment.latitude, apartment.longitude]).addTo(this.markers).addTo(this.map);
-      //   });;
+        store.addressList.forEach(apartment => {
+          this.marker = L.marker([apartment.latitude, apartment.longitude]).addTo(this.markers).addTo(this.map);
+        });;
 
 
-      // });
+      });
       this.map.on('zoomend', () => {
 
         console.log(this.map.getZoom());
-        // let bounds = this.map.getBounds();
-        // let center = this.map.getCenter();
-        // let range = this.map.distance(center, bounds._northEast) / 1000;
-        // store.data.latitude = center.lat.toFixed(6);
-        // store.data.longitude = center.lng.toFixed(6);
-        // this.getRange(range);
+        let bounds = this.map.getBounds();
+        let center = this.map.getCenter();
+        let range = this.map.distance(center, bounds._northEast) / 1000;
+        store.data.latitude = center.lat.toFixed(6);
+        store.data.longitude = center.lng.toFixed(6);
+        store.data.search_radius = range;
 
-        // store.searchApartments(store.data);
+        store.searchApartments(store.data);
 
-        // this.markers.clearLayers();
+        this.markers.clearLayers();
 
-        // store.addressList.forEach(apartment => {
-        //   this.marker = L.marker([apartment.latitude, apartment.longitude]).addTo(this.markers).addTo(this.map);
-        // });;
+        store.addressList.forEach(apartment => {
+          this.marker = L.marker([apartment.latitude, apartment.longitude]).addTo(this.markers).addTo(this.map);
+        });;
 
 
       });
@@ -149,10 +148,7 @@ export default {
       } else if (i <= 160 && i >= 121) {
         return 6
       }
-      else if (i <= 120 && i >= 81) {
-        return 7
-      }
-      else if (i <= 90 && i >= 61) {
+      else if (i <= 120 && i >= 61) {
         return 7
       }
       else if (i <= 60) {
@@ -168,12 +164,12 @@ export default {
 
         if (this.map) {
 
-          this.map.flyTo([store.data.latitude, store.data.longitude], this.radiusConverting(store.data.search_radius));
-          this.markers.clearLayers();
+          this.map.flyTo([store.data.latitude, store.data.longitude], 11);
+          // this.markers.clearLayers();
 
-          store.addressList.forEach(apartment => {
-            this.marker = L.marker([apartment.latitude, apartment.longitude]).addTo(this.markers).addTo(this.map);
-          })
+          // store.addressList.forEach(apartment => {
+          //   this.marker = L.marker([apartment.latitude, apartment.longitude]).addTo(this.markers).addTo(this.map);
+          // })
         }
 
       },

@@ -15,23 +15,28 @@
       <!-- <div class="container-images">
             <img class="images" v-for="img in apartment.images " :key="img.id" :src="`${BASE_URL_IMAGES}${img.link}`">
         </div> -->
-
-
-      <div class="apartment-info">
-        <h3>{{ apartment.name }}</h3>
-        <p>{{ apartment.address }}, {{ apartment.country }}</p>
-        <p>{{ apartment.description }}</p>
-        <div class="services">
-          <div class="col-2" v-for="service in apartment.services" :key="service.id">
-            {{ service.name }}
+    </div>
+    <Loading v-else></Loading>
+    <div class="container apt-info">
+      <div class="row flex-row justify-content-between">
+        <div class="col-6">
+          <div class="apartment-info" v-if="apartment">
+            <h3>{{ apartment.name }}</h3>
+            <p>{{ apartment.address }}, {{ apartment.country }}</p>
+            <p>{{ apartment.description }}</p>
+            <div class="services">
+              <div class="col-2" v-for="service in apartment.services" :key="service.id">
+                {{ service.name }}
+              </div>
+            </div>
           </div>
+        </div>
+        <div class="col-6">
+          <div id="map"></div>
         </div>
       </div>
     </div>
-    <Loading v-else></Loading>
-    <div class="container">
-      <div id="map"></div>
-    </div>
+
   </DefaultLayout>
 </template>
 <script>
@@ -60,6 +65,7 @@ export default {
       BASE_URL_COVER_IMG: "http://127.0.0.1:8000/storage/cover_images/",
       BASE_URL_IMAGES: `http://127.0.0.1:8000/storage/images/`,
       data: {},
+      map: null,
     };
   },
   methods: {
@@ -94,13 +100,13 @@ export default {
         })
     },
     getMap() {
-      var map = L.map('map').setView([this.apartment.latitude, this.apartment.longitude], 13);
+      this.map = L.map('map').setView([this.apartment.latitude, this.apartment.longitude], 10);
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }).addTo(map);
+      }).addTo(this.map);
 
-      var marker = L.marker([this.apartment.latitude, this.apartment.longitude]).addTo(map);
+      let marker = L.marker([this.apartment.latitude, this.apartment.longitude]).addTo(this.map);
     }
   },
   created() {
@@ -109,6 +115,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.apartment-info {
+  height: 500px;
+}
+
 .container {
   max-width: 90%;
   margin: 0 auto;
@@ -158,8 +168,10 @@ export default {
 }
 
 #map {
-  border-radius: 10px;
-  width: 250px;
-  height: 250px;
+  min-width: 100px;
+  min-height: 100px;
+  max-height: 500px;
+  max-width: 500px;
+  height: 100%;
 }
 </style>
