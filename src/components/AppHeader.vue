@@ -3,29 +3,27 @@
     <div class="container">
       <nav class="nav-menu">
         <ul class="d-flex nav-items">
-          <li class="nav-item">
-            <router-link :to="{ name: 'home' }">boolbnb</router-link>
+          <li>
+            <router-link class="d-flex align-items-center home-link" :to="{ name: 'home' }">
+              <img class="logo" src="/BoolBnb.png">
+            </router-link>
           </li>
           <li class="nav-item"></li>
           <div class="btn-group dropdown-padding">
-            <button
-              class="btn btn-secondary btn-sm dropdown-toggle button-color"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
+            <button class="btn btn-secondary btn-sm dropdown-toggle button-color" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
               <a v-bind:href="BACKEND_URL"><font-awesome-icon icon="user" /></a>
             </button>
             <ul class="dropdown-menu">
               <li class="p-2 dropdown-item">
-                <a v-bind:href="BACKEND_URL_LOGIN">Login</a>
+                <a v-bind:href="BACKEND_URL_LOGIN">User Area</a>
               </li>
               <!-- <li>
                 <hr>
               </li> -->
-              <li class="p-2 dropdown-item">
+              <!-- <li class="p-2 dropdown-item">
                 <a v-bind:href="BACKEND_URL_REGISTER">Register</a>
-              </li>
+              </li> -->
             </ul>
           </div>
         </ul>
@@ -48,8 +46,16 @@ export default {
 <style lang="scss" scoped>
 @use "../styles/partials/variables" as *;
 
+.home-link {
+  height: 100%;
+}
+
 header {
   border-bottom: 1px solid $primary;
+}
+
+.logo {
+  max-width: 200px;
 }
 
 .d-flex {
@@ -58,6 +64,7 @@ header {
 }
 
 .nav-items {
+
   //   font-size: 20px;
   //   padding: 20px 0;
   .nav-item {
@@ -84,6 +91,7 @@ header {
     background-color: white !important;
     border-color: white;
     color: black;
+
     &:hover {
       background-color: $primary !important;
     }
@@ -100,7 +108,7 @@ ul {
   margin: 0 auto;
 }
 
-li:first-child {
-  border-bottom: 1px var(--bs-border-color-translucent) solid;
-}
+// li:first-child {
+//   border-bottom: 1px var(--bs-border-color-translucent) solid;
+// }
 </style>

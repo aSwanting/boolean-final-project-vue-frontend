@@ -33,6 +33,9 @@ import {
   faArrowLeftLong,
 } from "@fortawesome/free-solid-svg-icons";
 import {
+  faSquare
+} from "@fortawesome/free-regular-svg-icons";
+import {
   faFacebook,
   faTelegram,
   faInstagram,
@@ -40,6 +43,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 
 library.add(
+  faSquare,
   faHeart,
   faShare,
   faMessage,

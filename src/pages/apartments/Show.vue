@@ -1,66 +1,88 @@
 <template>
   <DefaultLayout>
-    <header class="container">
-      <ul class="topbar">
-        <li class="topbar__item message-btn" @click="showModal">
-          <i>
-            <font-awesome-icon :icon="['fas', 'message']" />
-          </i>
-          <p>
-            Message
-          </p>
-        </li>
-        <li class="topbar__item share-btn">
-          <i>
-            <font-awesome-icon :icon="['fas', 'share']" />
-          </i>
-          <p>
-            Share
-          </p>
-        </li>
-        <li class="topbar__item save-btn">
-          <i>
-            <font-awesome-icon :icon="['fas', 'heart']" />
-          </i>
-          <p>
-            Save
-          </p>
-        </li>
-      </ul>
-    </header>
     <main class="container" v-if="apartment">
-      
-      <div class="carousel">
-        <Carousel :items="apartment" />
+
+      <div class="container-carousel">
+        <div class="carousel mt-4">
+          <Carousel :items="apartment" />
+        </div>
       </div>
 
 
       <h2 class="title">{{ apartment.name }}</h2>
 
 
-      <div class="apartment-info">
-        <p>{{ apartment.address }}, {{ apartment.country }}</p>
+      <div class="apartment">
+        <p class="fw-bold">{{ apartment.address }}, {{ apartment.country }}</p>
         <p>{{ apartment.description }}</p>
-        <div class="services">
-          <div class="col-2" v-for="service in apartment.services" :key="service.id">
-            {{ service.name }}
+
+        <div class="info">
+          <p class="fw-bold">Apartment Info:</p>
+          <div class="container mb-4">
+            <div class="row justify-content-evenly">
+              <div class="col-auto d-flex align-items-center service py-1 flex-grow-1">
+                <span>
+                  <font-awesome-icon icon="bed" class="me-2" />
+                  Beds : {{ apartment.beds }}</span>
+              </div>
+              <div class="col-auto d-flex align-items-center service py-1 flex-grow-1">
+                <span>
+                  <font-awesome-icon icon="fa-regular fa-square" class="me-2" />
+                  Rooms : {{ apartment.rooms }}
+                </span>
+              </div>
+              <div class="col-auto d-flex align-items-center service py-1 flex-grow-1">
+                <span>
+                  <font-awesome-icon icon="toilet" class="me-2" />
+                  Bathrooms : {{ apartment.bathrooms }}</span>
+              </div>
+              <div class="col-auto d-flex align-items-center service py-1 flex-grow-1">
+                <span>
+                  <font-awesome-icon icon="house" class="me-2" />
+                  Square meters : {{ apartment.square_meters }}&#xb2;
+                </span>
+              </div>
+            </div>
           </div>
         </div>
+        <div class="services">
+          <p class="fw-bold">Services:</p>
+          <div class="container mb-4">
+            <div class="row justify-content-evenly">
+              <div class="col-auto d-flex align-items-center service py-1 flex-grow-1"
+                v-for="service in apartment.services" :key="service.id">
+                <span class="service-name">{{ service.name }}</span> <font-awesome-icon class="ms-1"
+                  :icon="serviceIcons[service.id - 1]" />
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
-      <MessageModal @close-modal="closeModal" v-show="isModalVisible" :items="apartment">
-        <template v-slot:header>
-          <h4>
-            Send a message to {{ apartment.user.first_name }}
-          </h4>
-        </template>
-        <template v-slot:body>   
-        </template>
-      </MessageModal>
-    </main >
+    </main>
     <Loading v-else></Loading>
     <div class="container">
       <div id="map"></div>
+      <button class="contact btn-primary text-center" @click="showModal">
+        <span class="fw-bold primary align-middle">
+          Contact
+        </span>
+        <i>
+          <font-awesome-icon class="ms-3 align-middle" :icon="['fas', 'message']" />
+        </i>
+
+      </button>
     </div>
+
+    <MessageModal @close-modal="closeModal" v-show="isModalVisible" :items="apartment">
+      <template v-slot:header>
+        <h4>
+          Send a message to {{ apartment.user.first_name }}
+        </h4>
+      </template>
+      <template v-slot:body>
+      </template>
+    </MessageModal>
   </DefaultLayout>
 </template>
 <script>
@@ -95,12 +117,25 @@ export default {
       BASE_URL_IMAGES: `http://127.0.0.1:8000/storage/images/`,
       data: {},
       isModalVisible: false,
+      serviceIcons: [
+        "wifi",
+        "water-ladder",
+        "parking",
+        "dumbbell",
+        "shield",
+        "jug-detergent",
+        "paw",
+        "mug-saucer",
+        "hammer",
+        "bell-concierge",
+      ],
     };
   },
   methods: {
     fetchApartment() {
       axios.get(`${this.BASE_URL}/apartments/${this.slug}`).then((res) => {
         this.apartment = res.data.apartment;
+        console.log(this.apartment);
         this.getIPAddress();
         this.getMap();
       });
@@ -129,13 +164,13 @@ export default {
         })
     },
     getMap() {
-      var map = L.map('map').setView([this.apartment.latitude, this.apartment.longitude], 13);
+      let map = L.map('map').setView([this.apartment.latitude, this.apartment.longitude], 13);
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(map);
 
-      var marker = L.marker([this.apartment.latitude, this.apartment.longitude]).addTo(map);
+      let marker = L.marker([this.apartment.latitude, this.apartment.longitude]).addTo(map);
     },
     closeModal() {
       this.isModalVisible = false
@@ -153,37 +188,12 @@ export default {
 <style lang="scss" scoped>
 @use "../../styles/partials/variables" as *;
 
-.container {
+
+
+.container-carousel {
   max-width: 100%;
   display: flex;
   flex-direction: column;
-
-  .topbar {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    order: -2;
-    padding: 10px 30px;
-    gap: 8px;
-    background-color: $primary;
-    flex-shrink: 0;
-    height: 50px;
-    font-weight: bold;
-
-    .message-btn {
-      flex-grow: 1;
-
-    }
-    .topbar__item:hover > i {
-      
-        font-size: 20px;
-    }
-    .topbar__item {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-    }
-  }
   min-height: 100px;
   position: relative;
 
@@ -194,13 +204,14 @@ export default {
     margin-bottom: 20px;
   }
 
+
   .title::first-letter {
     text-transform: uppercase;
 
   }
 
   .title {
-    
+
     text-align: center;
     margin-bottom: 8px;
 
@@ -211,30 +222,47 @@ export default {
   }
 
 
-  @media (min-width: 576px) {
-    .topbar {
-      margin-bottom: 8px;
-    }
-    .title {
-      order: -1;
-    }
-  }
 
 
-  @media (min-width: 768px) {}
 
-
-  @media (min-width: 992px) {}
-
-
-  @media (min-width: 1200px) {}
-
-
-  @media (min-width: 1400px) {}
 }
+
 #map {
   border-radius: 10px;
   min-width: 250px;
   min-height: 250px;
 }
+
+.service {
+
+  justify-content: center;
+  flex-direction: column-reverse;
+  min-width: 100px;
+
+}
+
+
+.contact {
+  margin-top: 20px;
+}
+
+
+
+@media (min-width: 576px) {}
+
+@media screen and (min-width: 768px) {
+  .service {
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+}
+
+
+@media (min-width: 992px) {}
+
+
+@media (min-width: 1200px) {}
+
+
+@media (min-width: 1400px) {}
 </style>

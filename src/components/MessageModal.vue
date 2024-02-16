@@ -1,32 +1,38 @@
 <template>
     <div class="modal-backdrop">
-        <header class="modal-header">
+        <!-- <header class="modal-header">
             <slot name="header">
                 Header
             </slot>
-            <button type="button" class="btn-close" @click="closeModal">
-                close
-            </button>
-        </header>
+            <button type="button" class="btn-close" @click="closeModal"></button>
+        </header> -->
         <section class="modal-body">
             <slot name="body">
+
                 <form action="POST" class="message-form" @submit.prevent="submitForm" v-show="isFormActive">
+
                     <ul class="inputs-container">
-                        <li>
-                            <label for="name" class="form-label">Your name:</label>
-                            <input type="text" class="form-control" v-model="sender" placeholder="sender" id="name">
+                        <li class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label for="name">Your name:</label><button type="button" class="btn-close"
+                                    @click="closeModal"></button>
+                            </div>
+                            <input type="text" class="form-control" v-model="sender" placeholder="Paolo Rossi" id="name">
                         </li>
-                        <li>
-                            <label for="email" class="form-label">Your email:</label>
-                            <input type="email" class="form-control" v-model="email" placeholder="Email" id="email">
+                        <li class="mb-3">
+                            <label for="email" class="mb-2">Your email:</label>
+                            <input type="email" class="form-control" v-model="email" placeholder="paolorossi@gmail.com"
+                                id="email">
                         </li>
-                        <li>
-                            <label for="subject" class="form-label">Subject:</label>
-                            <input type="text" class="form-control" v-model="subject" placeholder="subject" id="subject">
+                        <li class="mb-3">
+                            <label for="subject" class="mb-2">Subject:</label>
+                            <input type="text" class="form-control" v-model="subject"
+                                placeholder="Information about the apartment" id="subject">
                         </li>
-                        <li>
-                            <label for="message" class="form-label">Message:</label>
-                            <textarea type="text" id="message" class="form-control" v-model="message" placeholder="Write a message"></textarea>
+                        <li class="mb-3">
+                            <label for="message" class="mb-2">Message:</label>
+                            <textarea type="text" rows="3" id="message" class="form-control" v-model="message"
+                                placeholder="Write a message"></textarea>
                         </li>
                     </ul>
 
@@ -102,13 +108,13 @@ export default {
     position: absolute;
     top: 50%;
 
-    right: 0;
+    left: 50%;
     bottom: 0;
     margin: auto;
-    width: 50%;
+    max-width: 350px;
     height: 500px;
     /* Larghezza della modale */
-    background-color: rgba(255, 255, 255, 0.842);
+    background-color: white;
     /* Sfondo trasparente */
     z-index: 9999;
     /* Assicura che la modale sia sopra gli altri elementi */
@@ -128,23 +134,23 @@ export default {
         display: flex;
     }
 
+    .btn-close {
+        position: relative;
+        top: 0;
+        right: 0;
+        border: none;
+        font-size: 14px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
     .modal-header {
         position: relative;
         border-bottom: 1px solid;
         background-color: white;
         justify-content: space-between;
 
-        .btn-close {
-            position: relative;
-            top: 0;
-            right: 0;
-            color: red;
-            border: none;
-            font-size: 20px;
-            padding: 10px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+
     }
 
     .modal-footer {
@@ -155,20 +161,24 @@ export default {
 
     .modal-body {
         position: relative;
-        padding: 20px 10px;
+
         flex-grow: 1;
+
         .message-form {
 
             display: flex;
             flex-direction: column;
             height: 100%;
-            
+            padding: 20px;
+
             .inputs-container {
                 flex-grow: 1;
                 display: flex;
                 flex-direction: column;
+                padding-left: 0;
             }
         }
+
         .form-control {
             display: block;
             width: 100%;
@@ -187,17 +197,13 @@ export default {
             transition-delay: 0, 0;
             transition-property: box-shadow;
         }
+
         #message {
             height: 80%;
             overflow-y: auto;
             resize: none;
         }
 
-        .btn-send {
-            color: green;
-            border: none;
-            border-radius: 4px;
-        }
     }
 }
 
@@ -210,4 +216,34 @@ export default {
 .modal-fade-leave-active {
     transition: opacity 5s ease;
 }
+
+ul {
+    margin-bottom: 0;
+}
+
+@media (min-width: 576px) {
+    .modal-backdrop {
+        position: absolute;
+        top: 50%;
+
+        left: 50%;
+        margin: auto;
+        max-width: 500px;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+
+@media (min-width: 768px) {}
+
+
+@media (min-width: 992px) {}
+
+
+@media (min-width: 1200px) {}
+
+
+@media (min-width: 1400px) {}
 </style>
