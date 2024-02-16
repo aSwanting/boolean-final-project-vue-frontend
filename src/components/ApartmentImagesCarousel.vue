@@ -81,6 +81,7 @@ export default {
 <style lang="scss" scoped>
 .carousel-wrapper {
   position: relative;
+  background-color: white;
 
   .images-wrapper {
     display: grid;
@@ -128,6 +129,4 @@ export default {
 
   @media (min-width: 1400px) {}
 }
-
-
 </style>

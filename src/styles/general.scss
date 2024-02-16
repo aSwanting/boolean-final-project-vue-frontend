@@ -25,7 +25,7 @@ menu {
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -46,6 +46,10 @@ button,
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &:hover {
+    background-color: $primary-hover;
+  }
 }
 
 ::-webkit-scrollbar {
