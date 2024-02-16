@@ -2,24 +2,29 @@
   <header>
     <div class="container">
       <nav class="nav-menu">
-        <ul class="d-flex nav-items  ">
+        <ul class="d-flex nav-items">
           <li class="nav-item">
             <router-link :to="{ name: 'home' }">boolbnb</router-link>
           </li>
-          <li class="nav-item">
-          </li>
+          <li class="nav-item"></li>
           <div class="btn-group dropdown-padding">
-            <button class="btn btn-secondary btn-sm dropdown-toggle button-color" type="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
+            <button
+              class="btn btn-secondary btn-sm dropdown-toggle button-color"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
               <a v-bind:href="BACKEND_URL"><font-awesome-icon icon="user" /></a>
             </button>
             <ul class="dropdown-menu">
-              <li class="p-2 dropdown-item"> <a v-bind:href="BACKEND_URL_LOGIN">Login</a>
+              <li class="p-2 dropdown-item">
+                <a v-bind:href="BACKEND_URL_LOGIN">Login</a>
               </li>
               <!-- <li>
                 <hr>
               </li> -->
-              <li class="p-2 dropdown-item"> <a v-bind:href="BACKEND_URL_REGISTER">Register</a>
+              <li class="p-2 dropdown-item">
+                <a v-bind:href="BACKEND_URL_REGISTER">Register</a>
               </li>
             </ul>
           </div>
@@ -53,7 +58,6 @@ header {
 }
 
 .nav-items {
-
   //   font-size: 20px;
   //   padding: 20px 0;
   .nav-item {
@@ -72,9 +76,9 @@ header {
 .dropdown-padding {
   padding: 15px;
 
-.dropdown-item:hover {
-  background-color: $primary !important;
-}  
+  .dropdown-item:hover {
+    background-color: $primary !important;
+  }
 
   .button-color {
     background-color: white !important;
@@ -92,7 +96,7 @@ ul {
 }
 
 .container {
-  max-width: 1200px;
+  // max-width: 1200px;
   margin: 0 auto;
 }
 

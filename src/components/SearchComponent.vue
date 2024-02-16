@@ -1,35 +1,22 @@
 <template>
+  <div class="back fw-bold" @click="backToHome()">
+    <font-awesome-icon icon="arrow-left-long" />
+    Back to Home
+  </div>
   <div class="search-wrapper">
     <!-- Search Form Start -->
     <div class="search-form input-group mb-3">
       <input
         v-model="searchQuery"
-        class="form-control"
+        class="form-control search-input"
         type="search"
         name=""
         id=""
       />
-      <button class="btn btn-primary" @click="outputSearchData()">
-        search
-      </button>
-    </div>
-
-    <!-- Suggested queries -->
-    <div class="shadow border" v-if="suggestedAddresses">
-      <div
-        v-for="suggested in suggestedAddresses"
-        @click="addressSelect(suggested)"
-      >
-        {{ suggested.address.freeformAddress }}
-      </div>
-    </div>
-
-    <!-- Advanced Search Form Start -->
-    <div class="advanced-search mb-3">
       <!-- Search Range -->
-      <div class="">
-        <label class="form-label" for=""
-          >Search Range of {{ filter.search_radius }} km</label
+      <div class="range-form">
+        <label class="form-label range-label" for=""
+          >{{ filter.search_radius }} km</label
         >
         <div class="d-flex gap-3">
           <div>20</div>
@@ -45,58 +32,82 @@
           <div>200</div>
         </div>
       </div>
-      <!-- Rooms -->
-      <div class="">
-        <label class="form-label" for="">Rooms</label>
-        <input
-          v-model="filter.rooms"
-          class="form-control"
-          type="number"
-          name=""
-          id=""
-          min="1"
-          max="12"
-        />
-      </div>
-      <!-- Beds -->
-      <div class="">
-        <label class="form-label" for="">Beds</label>
-        <input
-          v-model="filter.beds"
-          class="form-control"
-          type="number"
-          name=""
-          id=""
-          min="1"
-          max="12"
-        />
-      </div>
-      <!-- Bathrooms -->
-      <div class="">
-        <label class="form-label" for="">Bathrooms</label>
-        <input
-          v-model="filter.bathrooms"
-          class="form-control"
-          type="number"
-          name=""
-          id=""
-          min="1"
-          max="12"
-        />
+      <button class="btn btn-primary" @click="outputSearchData()">
+        search
+      </button>
+    </div>
+
+    <!-- Suggested queries -->
+    <div
+      class="suggested-dropdown"
+      :class="{
+        open: suggestedAddresses && this.searchQuery != store.searchQuery,
+      }"
+    >
+      <div
+        v-for="suggested in suggestedAddresses"
+        @click="addressSelect(suggested)"
+      >
+        {{ suggested.address.freeformAddress }}
       </div>
     </div>
-    <!-- Services Start -->
-    <div class="d-flex flex-wrap justify-content-between gap-3">
-      <button
-        class="service-badge btn btn-sm rounded-pill border-primary"
-        v-for="service in store.serviceList"
-        :class="{
-          'btn-primary': filter.services.includes(service.name),
-        }"
-        @click="toggleService(service.name)"
-      >
-        {{ service.name }}
-      </button>
+
+    <!-- Advanced Search Form Start -->
+    <div class="advanced-search mb-3">
+      <div class="search-filters">
+        <!-- Rooms -->
+        <div class="">
+          <font-awesome-icon icon="house" />
+          <input
+            v-model="filter.rooms"
+            class=""
+            type="number"
+            name=""
+            id=""
+            min="1"
+            max="12"
+          />
+        </div>
+        <!-- Beds -->
+        <div class="">
+          <font-awesome-icon icon="bed" />
+          <input
+            v-model="filter.beds"
+            class=""
+            type="number"
+            name=""
+            id=""
+            min="1"
+            max="12"
+          />
+        </div>
+        <!-- Bathrooms -->
+        <div class="">
+          <font-awesome-icon icon="toilet" />
+          <input
+            v-model="filter.bathrooms"
+            class=""
+            type="number"
+            name=""
+            id=""
+            min="1"
+            max="12"
+          />
+        </div>
+      </div>
+      <!-- Services Start -->
+      <div class="search-services">
+        <button
+          class="service-badge btn btn-sm rounded-pill border-primary"
+          v-for="service in store.serviceList"
+          :class="{
+            'btn-primary': filter.services.includes(service.name),
+          }"
+          @click="toggleService(service.name)"
+        >
+          {{ service.name }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -135,6 +146,9 @@ export default {
     },
   },
   methods: {
+    backToHome() {
+      this.$router.push({ name: "home" });
+    },
     async outputSearchData() {
       const data = {
         ...this.filter,
@@ -180,16 +194,116 @@ export default {
   },
   mounted() {
     this.fetchApartments();
+    this.searchQuery = store.searchQuery;
+    this.suggestedAddresses = null;
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.advanced-search {
-  border: 2px solid magenta;
+@use "../styles/partials/variables" as *;
+.back {
+  background-color: $primary;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  padding: 4px 20px;
+  cursor: pointer;
+  opacity: 1;
+  transition: 200ms all;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+.search-form {
+  margin-top: 30px;
+  border: 1px solid rgb(174, 238, 222);
+  border-radius: 999px;
+  overflow: hidden;
   display: flex;
+  gap: 20px;
+  align-items: center;
   & > * {
-    border: 2px solid cyan;
+    // border: 2px solid cyan;
+    flex: 1 1;
+    border: none;
+    outline: none;
+    padding: 8px;
+  }
+  .search-input {
+    outline: none;
+    flex: 1 1 30%;
+    padding-left: 20px;
+    color: rgba(0, 0, 0, 0.8);
+  }
+  .range-form {
+    position: relative;
+    font-size: 14px;
+    margin-bottom: -10px;
+    color: rgba(0, 0, 0, 0.8);
+
+    .range-label {
+      position: absolute;
+      left: 50%;
+      top: 5px;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+.search-wrapper {
+  position: relative;
+  .suggested-dropdown {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(255, 255, 255, 0.295);
+    backdrop-filter: blur(8px);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+    width: 98%;
+    font-size: 14px;
+    padding: 0px;
+    overflow: auto;
+    height: 0px;
+    transition: 300ms all;
+    &.open {
+      height: 100px;
+      padding: 10px;
+    }
+  }
+}
+.advanced-search {
+  display: flex;
+  // align-items: center;
+  gap: 20px;
+  height: 32px;
+
+  .search-filters {
+    display: flex;
+    gap: 4px;
+    color: rgb(90, 90, 90);
+    align-items: center;
+    border: 1px solid $primary;
+    border-radius: 999px;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 14px;
+    & > * {
+      flex: 1 1;
+      padding-left: 10px;
+      margin-right: -10px;
+    }
+    input {
+      text-align: center;
+      border: none;
+      outline: none;
+    }
+  }
+  .search-services {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>

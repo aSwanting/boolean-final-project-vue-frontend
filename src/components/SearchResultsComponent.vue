@@ -1,9 +1,10 @@
 <template>
   <div class="pe-3" v-if="store.addressList">
-    <div v-for="apartment in store.addressList" class="apartment-card">
+    <div v-for="(apartment, index) in store.addressList" class="apartment-card">
       <div
-        class="card-inner shadow"
+        class="card-inner"
         :class="{ sponsored: !apartment.sponsored }"
+        @click="goToShow(index)"
       >
         <div class="apartment-card-image">
           <Carousel :apartment="apartment" />
@@ -41,6 +42,12 @@ export default {
       store,
     };
   },
+  methods: {
+    goToShow(index) {
+      const slug = store.addressList[index].slug;
+      this.$router.push({ path: `/apartments/${slug}` });
+    },
+  },
 };
 </script>
 
@@ -51,9 +58,16 @@ p {
 }
 .apartment-card {
   // padding: 0 25px;
+
   .card-inner {
     display: flex;
     height: 205px;
+    cursor: pointer;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.05);
+    transition: 200ms all;
+    &:hover {
+      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+    }
     &.sponsored {
       border: 3px solid $primary;
     }

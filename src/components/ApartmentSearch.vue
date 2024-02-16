@@ -30,10 +30,10 @@
     </div>
   </section>
 
-  <section class="apartment-cards">
+  <!-- <section class="apartment-cards">
     <div class="container">
       <h4 class="card-section">Featured</h4>
-      <div class="card-wrapper sponsored-cards" v-if="store.addressList[0]">
+      <div class="card-wrapper sponsored-cards" v-if="store.addressList.length">
         <ApartmentCard
           class="apartment-card"
           :class="{ sponsored: apartment.orders.length }"
@@ -48,7 +48,7 @@
         <Loading></Loading>
       </div>
     </div>
-  </section>
+  </section> -->
 </template>
 
 <script>
@@ -72,20 +72,20 @@ export default {
       searchQuery: null,
       oldQuery: "",
       searchResults: [],
-      // debouncedSearch: store.debounce(this.backendFuzzySearch, 300),
+      debouncedSearch: store.debounce(this.backendFuzzySearch, 300),
       data: {},
     };
   },
-  // watch: {
-  //   searchQuery() {
-  //     if (this.searchQuery != this.oldQuery) {
-  //       this.debouncedSearch();
-  //     }
-  //     // } else {
-  //     //   this.searchResults = [];
-  //     // }
-  //   },
-  // },
+  watch: {
+    searchQuery() {
+      if (this.searchQuery != this.oldQuery) {
+        this.debouncedSearch();
+      }
+      // } else {
+      //   this.searchResults = [];
+      // }
+    },
+  },
   methods: {
     // Take user input and suggest matched addresses
     async backendFuzzySearch() {
@@ -144,7 +144,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchApartments();
+    store.fetchApartments();
   },
 };
 </script>
@@ -160,8 +160,8 @@ export default {
   height: 500px;
 
   .container {
-    max-width: 1200px;
-    padding: 50px;
+    // max-width: 1200px;
+    // padding: 50px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -269,7 +269,7 @@ export default {
 
 .apartment-cards {
   .container {
-    max-width: 1200px;
+    // max-width: 1200px;
     padding: 50px;
     height: 100%;
     position: relative;

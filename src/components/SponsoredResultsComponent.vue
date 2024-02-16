@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div>
-      <h3 class="fs-4 mb-5 text-center">
-        Sponsor- sorry, reccomended apartments
-      </h3>
+    <div class="container">
       <div
         class="d-grid gap-3"
         style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"
@@ -13,6 +10,7 @@
           <ApartmentCard :apartment="apartment">
             <Carousel
               :apartment="apartment"
+              class="shadow"
               :class="{
                 'border border-4 border-primary': !apartment.sponsored,
               }"

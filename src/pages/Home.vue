@@ -1,46 +1,27 @@
 <template>
-  <header class="shadow">
-    <div class="container">
-      <SearchComponent />
+  <DefaultLayout>
+    <div class="mb-5">
+      <ApartmentSearch />
+      <AdvancedSearch />
     </div>
-  </header>
-  <section class="search-results">
-    <div class="container">
-      <SearchResultsWithMap />
-    </div>
-  </section>
+    <SponsoredResultsComponent />
+  </DefaultLayout>
 </template>
 
 <script>
-import SearchComponent from "../components/SearchComponent.vue";
-import SearchResultsComponent from "../components/SearchResultsComponent.vue";
+import DefaultLayout from "../layouts/DefaultLayout.vue";
+import AdvancedSearch from "../components/AdvancedSearch.vue";
+import ApartmentSearch from "../components/ApartmentSearch.vue";
 import SponsoredResultsComponent from "../components/SponsoredResultsComponent.vue";
-import ResultsMap from "../components/ResultsMap.vue";
-import SearchResultsWithMap from "../components/SearchResultsWithMap.vue";
+
 export default {
   components: {
-    SearchComponent,
-    SearchResultsComponent,
+    DefaultLayout,
+    ApartmentSearch,
+    AdvancedSearch,
     SponsoredResultsComponent,
-    ResultsMap,
-    SearchResultsWithMap,
   },
 };
 </script>
 
-<style lang="scss" scoped>
-.container {
-  padding: 0;
-  max-width: 1000px;
-}
-header {
-  padding: 20px;
-}
-.search-results {
-  padding: 20px;
-  height: 100%;
-  .container {
-    height: 100%;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

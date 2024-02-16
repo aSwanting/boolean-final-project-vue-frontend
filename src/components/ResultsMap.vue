@@ -14,6 +14,8 @@ export default {
       store,
       map: null,
       zone: null,
+      markers: null,
+      marker: null,
     };
   },
   watch: {
@@ -26,8 +28,15 @@ export default {
       },
       immediate: true,
     },
+    "store.addressList.length": {
+      handler() {
+        console.log("address list change");
+        if (this.markers) this.markers.clearLayers();
+        this.drawMarkers();
+      },
+    },
     zoom() {
-      if (this.map) {
+      if (this.zone) {
         this.map.setZoom(this.zoom);
       }
     },
@@ -40,8 +49,25 @@ export default {
       }
 
       this.zone.setLatLng([this.latitude, this.longitude]);
-      this.map.setView([this.latitude, this.longitude], this.zoom);
-      // this.map.flyTo([this.latitude, this.longitude], this.zoom);
+      // this.map.setView([this.latitude, this.longitude], this.zoom);
+      this.map.flyTo([this.latitude, this.longitude], this.zoom);
+    },
+  },
+  methods: {
+    drawMarkers() {
+      console.log("drawing markes...", store.addressList);
+      store.addressList.forEach((apartment) => {
+        this.marker = L.circleMarker(
+          [apartment.latitude, apartment.longitude],
+          {
+            radius: 5,
+            stroke: false,
+            fillColor: "#ff0000",
+            fillOpacity: 0.8,
+          }
+        ).addTo(this.markers);
+      });
+      this.markers.addTo(this.map);
     },
   },
 
@@ -61,6 +87,12 @@ export default {
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
       this.map
     );
+    this.zone = L.circle([this.latitude, this.longitude], {
+      radius: store.radius * 1000,
+      color: "#8ee9ce",
+    }).addTo(this.map);
+    this.markers = L.layerGroup();
+    this.drawMarkers();
   },
 };
 </script>

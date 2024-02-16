@@ -24,6 +24,10 @@ import {
   faPlusCircle,
   faMinusCircle,
   faFilter,
+  faBed,
+  faHouse,
+  faToilet,
+  faArrowLeftLong,
 } from "@fortawesome/free-solid-svg-icons";
 library.add(
   faUser,
@@ -42,7 +46,11 @@ library.add(
   faChevronCircleLeft,
   faPlusCircle,
   faMinusCircle,
-  faFilter
+  faFilter,
+  faBed,
+  faHouse,
+  faToilet,
+  faArrowLeftLong
 );
 
 createApp(App)
