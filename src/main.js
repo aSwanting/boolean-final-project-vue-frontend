@@ -31,6 +31,7 @@ import {
   faHouse,
   faToilet,
   faArrowLeftLong,
+  faAward,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faFacebook,
@@ -67,7 +68,8 @@ library.add(
   faFacebook,
   faTelegram,
   faInstagram,
-  faGithub
+  faGithub,
+  faAward
 );
 
 createApp(App)
