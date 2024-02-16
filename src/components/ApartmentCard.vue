@@ -70,6 +70,9 @@ export default {
     font-size: 13px;
     font-weight: 400;
     color: rgb(122, 122, 122);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
   .distance {
     font-size: 13px;

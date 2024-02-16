@@ -27,13 +27,16 @@ import {
   faPlusCircle,
   faMinusCircle,
   faFilter,
-
+  faBed,
+  faHouse,
+  faToilet,
+  faArrowLeftLong,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faFacebook,
   faTelegram,
   faInstagram,
-  faGithub
+  faGithub,
 } from "@fortawesome/free-brands-svg-icons";
 
 library.add(
@@ -57,10 +60,10 @@ library.add(
   faPlusCircle,
   faMinusCircle,
   faFilter,
-  faFacebook,
-  faTelegram,
-  faInstagram,
-  faGithub
+  faBed,
+  faHouse,
+  faToilet,
+  faArrowLeftLong
 );
 
 createApp(App)

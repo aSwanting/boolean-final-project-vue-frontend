@@ -1,7 +1,10 @@
 <template>
   <DefaultLayout>
-    <ApartmentSearch />
-    <AdvancedSearch />
+    <div class="mb-5">
+      <ApartmentSearch />
+      <AdvancedSearch />
+    </div>
+    <SponsoredResultsComponent />
   </DefaultLayout>
 </template>
 
@@ -9,12 +12,14 @@
 import DefaultLayout from "../layouts/DefaultLayout.vue";
 import AdvancedSearch from "../components/AdvancedSearch.vue";
 import ApartmentSearch from "../components/ApartmentSearch.vue";
-import Carousel from "../components/Carousel.vue";
+import SponsoredResultsComponent from "../components/SponsoredResultsComponent.vue";
+
 export default {
   components: {
     DefaultLayout,
     ApartmentSearch,
     AdvancedSearch,
+    SponsoredResultsComponent,
   },
 };
 </script>

@@ -1,7 +1,9 @@
 import { reactive } from "vue";
+import axios from "axios";
 
 const store = reactive({
   // Properties
+  BACKEND_URL: "http://127.0.0.1:8000/",
   modalOpen: false,
   searchQuery: null,
   filters: [
@@ -37,10 +39,14 @@ const store = reactive({
   lat: "",
   long: "",
   services: [],
-  addressList: [],
-  serviceList: [],
+  sponsoredAddressList: null,
+  addressList: null,
+  serviceList: null,
   queryData: null,
-  BACKEND_URL: "http://127.0.0.1:8000/",
+
+  // temp props for map
+  position: { lat: 41.9028, lon: 12.4964 },
+  radius: 20,
 
   // Methods
   debounce(fn, wait) {
@@ -54,6 +60,18 @@ const store = reactive({
         fn.apply(that, args);
       }, wait);
     };
+  },
+  async fetchApartments() {
+    const response = await axios.get(`${this.BACKEND_URL}api/apartments`);
+    this.sponsoredAddressList = response.data.results.apartments;
+    this.serviceList = response.data.results.services;
+  },
+  async searchApartments(data) {
+    const response = await axios.post(
+      `${this.BACKEND_URL}api/apartments`,
+      data
+    );
+    this.addressList = response.data.results.apartments;
   },
 });
 

@@ -106,11 +106,9 @@ img {
 
 .carousel-wrapper {
   overflow: hidden;
-  border-radius: 10px;
   height: 100%;
   margin: 0 auto;
   position: relative;
-  box-shadow: 4px 4px 18px rgba(0, 0, 0, 0.377);
   &:hover .carousel-controls .nav {
     opacity: 1;
   }
@@ -181,7 +179,6 @@ img {
       }
     }
     .carousel-icons {
-      background-color: rgba(255, 255, 255, 0);
       backdrop-filter: blur(5px);
       position: absolute;
       width: 100%;
