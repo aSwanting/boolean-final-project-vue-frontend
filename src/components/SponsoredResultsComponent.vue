@@ -1,18 +1,20 @@
 <template>
   <div>
     <div class="container">
-      <div class="d-grid gap-3" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"
-        v-if="store.sponsoredAddressList">
-        <div v-for="apartment in store.sponsoredAddressList" class="position-relative">
+      <div
+        class="d-grid gap-3"
+        style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"
+        v-if="store.sponsoredAddressList"
+      >
+        <div
+          v-for="apartment in store.sponsoredAddressList"
+          class="position-relative"
+        >
           <ApartmentCard :apartment="apartment">
-            <Carousel :apartment="apartment" class="shadow sponsored " :class="{
-              'border border-4 border-sponsored ': !apartment.sponsored,
-            }" />
+            <Carousel :apartment="apartment" class="carousel-frame" />
             <div class="icon-sponsor">
               <font-awesome-icon icon="award" />
-
             </div>
-
           </ApartmentCard>
         </div>
       </div>
@@ -39,9 +41,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.sponsored {
+.carousel-frame {
   position: relative;
-  border: 3px solid #ffbf00 !important;
+  border: 3px solid #ffbf00;
+  border-radius: 10px;
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.25);
+  transition: 200ms all;
+  &:hover {
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.5);
+  }
 }
 
 .icon-sponsor {
