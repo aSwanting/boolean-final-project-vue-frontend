@@ -1,7 +1,11 @@
 <template>
   <div class="pe-3" v-if="store.addressList">
     <div v-for="(apartment, index) in store.addressList" class="apartment-card">
-      <div class="card-inner" :class="{ sponsored: !apartment.sponsored }" @click="goToShow(index)">
+      <div
+        class="card-inner"
+        :class="{ sponsored: !apartment.sponsored }"
+        @click="goToShow(index)"
+      >
         <div class="apartment-card-image">
           <Carousel :apartment="apartment" />
           <div class="icon-sponsor d-none">
@@ -67,6 +71,8 @@ p {
     box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.05);
     transition: 200ms all;
     position: relative;
+    border-radius: 10px;
+    overflow: hidden;
 
     &:hover {
       box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
@@ -85,12 +91,12 @@ p {
       }
     }
 
-
-    &>* {
+    & > * {
       flex: 1 1 50%;
     }
 
-    .apartment-card-image {}
+    .apartment-card-image {
+    }
 
     .apartment-card-body {
       padding: 24px 18px;
