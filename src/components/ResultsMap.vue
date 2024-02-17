@@ -16,6 +16,7 @@ export default {
       zone: null,
       markers: null,
       marker: null,
+      popup: null,
     };
   },
   watch: {
@@ -54,9 +55,12 @@ export default {
         this.marker = L.marker([apartment.latitude, apartment.longitude]).addTo(
           this.markers
         );
+        this.popup = L.popup({ interactive: true }).setContent(` <div class="d-flex flex-column" style="width: 200px; margin-left: 4px;"><a href="http://localhost:5174/apartments/${apartment.slug}" ><img src="http://127.0.0.1:8000/storage/cover_images/${apartment.cover_image}" style="width: 100%;"><p>${apartment.address}</p></a></div>`);
+        this.marker.bindPopup(this.popup)
       });
       this.markers.addTo(this.map);
     },
+
   },
 
   computed: {
