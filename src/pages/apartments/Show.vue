@@ -257,7 +257,6 @@ export default {
 
 
 .contact {
-  margin-top: 20px;
   position: fixed;
   right: 20px;
   bottom: 20px;
@@ -304,8 +303,21 @@ export default {
     max-width: 1200px;
     margin: 0 auto;
   }
+
+  .contact {
+    background-color: #8ee9ce;
+  }
+
+
 }
 
 
-@media (min-width: 1400px) {}
+@media (min-width: 1400px) {
+  .contact {
+    right: 7%;
+    bottom: 7%;
+    padding: 20px;
+    font-size: 20px;
+  }
+}
 </style>
