@@ -9,13 +9,13 @@ export default {
 </script>
 
 <template >
-  <footer class="footer container">
-    <div class="">
+  <footer class="footer ">
+    <div class="container">
       <div class="text-center p-2">
         <h5 class="title-footer">Boolbnb Team-1 Boolean</h5>
         <div class="made-by">Made By:</div>
       </div>
-      <div class=" list-creator  mt-4 d-flex justify-content-between d-none  gap-2 ">
+      <div class=" list-creator  mt-4 d-flex justify-content-between   gap-2 ">
         <a href="https://github.com/aSwanting" target="_blank" class="name-creator">
           <div>Gabriel</div>
         </a>
@@ -43,6 +43,12 @@ export default {
   border-top: 2px solid #8ee9ce;
   padding: 25px;
   margin-top: 50px;
+  font-style: italic;
+
+}
+
+.list-creator>a:hover {
+  font-weight: bold;
 }
 
 
@@ -52,19 +58,5 @@ export default {
 
 .status {
   padding: 0px 10px;
-}
-
-.footer:hover {
-  .list-creator {
-    display: block !important;
-    display: flex !important;
-    font-size: 14px;
-
-    .name-creator {
-      font-weight: bold;
-    }
-  }
-
-
 }
 </style>
