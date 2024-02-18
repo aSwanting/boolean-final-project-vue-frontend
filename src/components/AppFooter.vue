@@ -23,7 +23,7 @@ export default {
           <div>Valerio</div>
         </a>
         <a href="https://github.com/EmanueleVenditti95" target="_blank" class="name-creator">
-          <div>Emenuele</div>
+          <div>Emanuele</div>
         </a>
         <a href="https://github.com/w3bd3v3lop3rNico" target="_blank" class="name-creator">
           <div>Nicola</div>
