@@ -169,7 +169,7 @@ export default {
             display: flex;
             flex-direction: column;
             height: 100%;
-            padding: 20px;
+            padding: 14px;
 
             .inputs-container {
                 flex-grow: 1;
