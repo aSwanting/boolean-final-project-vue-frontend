@@ -9,31 +9,29 @@ export default {
 </script>
 
 <template >
-  <footer class="footer ">
+  <footer class="footer">
     <div class="container">
-      <div class="text-center p-2">
-        <h5 class="title-footer">Boolbnb Team-1 Boolean</h5>
-        <div class="made-by">Made By:</div>
-      </div>
-      <div class=" list-creator  mt-4 d-flex justify-content-between   gap-2 ">
-        <a href="https://github.com/aSwanting" target="_blank" class="name-creator">
-          <div>Gabriel</div>
-        </a>
-        <a href="https://github.com/ValerioCarbone" target="_blank" class="name-creator">
-          <div>Valerio</div>
-        </a>
-        <a href="https://github.com/EmanueleVenditti95" target="_blank" class="name-creator">
-          <div>Emanuele</div>
-        </a>
-        <a href="https://github.com/w3bd3v3lop3rNico" target="_blank" class="name-creator">
-          <div>Nicola</div>
-        </a>
-        <a href="https://github.com/karimdib" target="_blank" class="name-creator">
-          <div>Karim</div>
-        </a>
+      <div class="text-center p-2 mb-0">
+        <p class="title-footer mb-1">BoolBnb made by Team 1, Boolean class 106 :</p>
+        <div class=" list-creator mt-0 d-flex justify-content-between">
+          <a href="https://github.com/aSwanting" target="_blank" class="name-creator">
+            <div>Gabriel D'Amico</div>
+          </a>
+          <a href="https://github.com/ValerioCarbone" target="_blank" class="name-creator">
+            <div>Valerio Carbone</div>
+          </a>
+          <a href="https://github.com/EmanueleVenditti95" target="_blank" class="name-creator">
+            <div>Emanuele Venditti</div>
+          </a>
+          <a href="https://github.com/w3bd3v3lop3rNico" target="_blank" class="name-creator">
+            <div>Nicola Tabai</div>
+          </a>
+          <a href="https://github.com/karimdib" target="_blank" class="name-creator">
+            <div>Karim Dib</div>
+          </a>
+        </div>
       </div>
     </div>
-
   </footer>
 </template>
 <style lang="scss" scoped>
@@ -41,7 +39,7 @@ export default {
 
 .footer {
   border-top: 2px solid #8ee9ce;
-  padding: 25px;
+  min-height: 75px;
   margin-top: 50px;
   font-style: italic;
 
