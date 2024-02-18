@@ -1,28 +1,29 @@
 <template>
-  <div class="pe-3" v-if="store.addressList">
-    <div v-for="(apartment, index) in store.addressList" class="apartment-card">
-      <div
-        class="card-inner"
-        :class="{ sponsored: !apartment.sponsored }"
-        @click="goToShow(index)"
-      >
-        <div class="apartment-card-image">
-          <Carousel :apartment="apartment" />
-          <div class="icon-sponsor d-none">
-            <font-awesome-icon icon="award" />
+  <div class="card-wrapper" v-if="store.addressList">
+    <router-link
+      v-for="(apartment, index) in store.addressList"
+      :to="{ name: 'apartments.show', params: { slug: apartment.slug } }"
+    >
+      <div class="apartment-card">
+        <div class="card-inner" :class="{ sponsored: !apartment.sponsored }">
+          <div class="apartment-card-image">
+            <Carousel :apartment="apartment" />
+            <div class="icon-sponsor d-none">
+              <font-awesome-icon icon="award" />
+            </div>
+          </div>
+          <div class="apartment-card-body">
+            <p class="location">
+              {{ apartment.region }}, {{ apartment.country }}
+            </p>
+            <p class="name">{{ apartment.name }}</p>
+            <p class="distance" v-show="apartment.distance">
+              {{ apartment.distance }} kilometers away
+            </p>
           </div>
         </div>
-        <div class="apartment-card-body">
-          <p class="location">
-            {{ apartment.region }}, {{ apartment.country }}
-          </p>
-          <p class="name">{{ apartment.name }}</p>
-          <p class="distance" v-show="apartment.distance">
-            {{ apartment.distance }} kilometers away
-          </p>
-        </div>
       </div>
-    </div>
+    </router-link>
   </div>
   <div class="position-relative h-100" v-else>
     <Loading />
@@ -59,6 +60,13 @@ export default {
 
 p {
   margin: 0;
+}
+
+.card-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+
+  gap: 20px;
 }
 
 .apartment-card {
@@ -122,13 +130,13 @@ p {
     }
   }
 
-  &::after {
-    content: "";
-    display: block;
-    background-color: rgba(0, 0, 0, 0.1);
-    height: 2px;
-    width: 80%;
-    margin: 24px auto;
-  }
+  // &::after {
+  //   content: "";
+  //   display: block;
+  //   background-color: rgba(0, 0, 0, 0.1);
+  //   height: 2px;
+  //   width: 80%;
+  //   margin: 24px auto;
+  // }
 }
 </style>
