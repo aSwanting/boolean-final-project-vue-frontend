@@ -112,7 +112,7 @@ export default {
     bottom: 0;
     margin: auto;
     max-width: 350px;
-    height: 500px;
+    max-height: 500px;
     /* Larghezza della modale */
     background-color: white;
     /* Sfondo trasparente */
