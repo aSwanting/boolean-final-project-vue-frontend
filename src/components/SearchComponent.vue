@@ -1,17 +1,20 @@
 <template>
   <div class="search-wrapper">
     <!-- Search Form Start -->
-    <div class="search-form input-group mb-3">
+
+    <div class="search-form mb-3">
       <input
         v-model="store.searchQuery"
         class="form-control search-input"
         type="search"
+        placeholder="Via Roma, Italia"
         name=""
         id=""
       />
+
       <!-- Search Range -->
       <div class="range-form">
-        <label class="form-label range-label" for=""
+        <label class="range-label" for=""
           >{{ store.filters[0].value }} km</label
         >
         <div class="d-flex gap-3">
@@ -28,6 +31,7 @@
           <div>200</div>
         </div>
       </div>
+
       <button class="btn btn-primary" @click="outputSearchData()">
         search
       </button>
@@ -102,7 +106,8 @@
           }"
           @click="service.active = !service.active"
         >
-          {{ service.name }}
+          <font-awesome-icon class="service-icon" :icon="service.icon" />
+          <span class="service-name">{{ service.name }}</span>
         </button>
       </div>
     </div>
@@ -181,43 +186,62 @@ export default {
 @use "../styles/partials/variables" as *;
 
 .search-form {
-  border: 1px solid rgb(174, 238, 222);
-  border-radius: 999px;
-  overflow: hidden;
+  // border: 1px solid rgb(174, 238, 222);
+  // padding: 20px;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  align-items: center;
+  gap: 10px;
   & > * {
-    // border: 2px solid cyan;
-    flex: 1 1;
+    border: 1px dotted;
+    width: 100%;
     border: none;
     outline: none;
-    padding: 8px;
+    // flex: 1;
   }
   .search-input {
-    outline: none;
-    flex: 1 1 30%;
-    padding-left: 20px;
-    color: rgba(0, 0, 0, 0.8);
-  }
-  .range-form {
-    position: relative;
+    width: 100%;
+    border: 1px solid $primary;
+    border-radius: 999px;
     font-size: 14px;
-    margin-bottom: -10px;
-    color: rgba(0, 0, 0, 0.8);
-
-    .range-label {
-      position: absolute;
-      left: 50%;
-      top: 5px;
-      transform: translate(-50%, -50%);
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.336);
     }
   }
+  .range-form {
+    text-align: center;
+    width: 100%;
+  }
+  // border-radius: 999px;
+  // overflow: hidden;
+  // display: flex;
+  // flex-wrap: wrap;
+  // gap: 20px;
+  // align-items: center;
+  // & > * {
+  //   // border: 2px solid cyan;
+  //   flex: 1 1;
+  //   border: none;
+  //   outline: none;
+  //   padding: 8px;
+  // }
+  // .range-form {
+  //   position: relative;
+  //   font-size: 14px;
+  //   margin-bottom: -10px;
+  //   color: rgba(0, 0, 0, 0.8);
+
+  //   .range-label {
+  //     position: absolute;
+  //     left: 50%;
+  //     top: 5px;
+  //     transform: translate(-50%, -50%);
+  //   }
+  // }
 }
 .search-wrapper {
   position: relative;
   .suggested-dropdown {
+    z-index: 9999;
     position: absolute;
     top: 50px;
     left: 50%;
@@ -235,6 +259,14 @@ export default {
       height: 100px;
       padding: 10px;
     }
+    & > * {
+      cursor: pointer;
+      color: rgb(42, 47, 48);
+      &:hover {
+        font-weight: 600;
+        color: rgb(46, 138, 118);
+      }
+    }
   }
 }
 .advanced-search {
@@ -248,23 +280,24 @@ export default {
     // border: 3px dashed green !important;
     display: flex;
     width: 100%;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    // justify-content: space-between;
+    // flex-wrap: wrap;
   }
   .search-filters {
-    // gap: 10px;
-    border: 1px;
+    gap: 10px;
     .input-group {
-      width: calc(100% / 3 - 8px);
+      flex-grow: 1;
       & > * {
         border: 1px solid $primary;
         border-radius: 20px;
       }
       // width: calc(width / 3);
       .input-group-text {
+        color: rgba(0, 0, 0, 0.6);
         width: 50px;
         display: flex;
         justify-content: center;
+        background-color: rgb(237, 255, 248);
       }
       input {
         // width: 50px;
@@ -274,10 +307,30 @@ export default {
   }
   .search-services {
     gap: 8px;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+
     .btn {
       // flex: 1 1;
       width: calc(100% / 5 - 8px);
-      font-size: 10px;
+      color: rgba(0, 0, 0, 0.6);
+      position: relative;
+      // padding-top: 10px;
+      .service-name {
+        font-size: 10px;
+        position: absolute;
+        // left: 50%;
+        width: 100%;
+        // border: 1px solid;
+        // text-align: center;
+        left: 0;
+        bottom: 0;
+      }
+      .service-icon {
+        padding-bottom: 12px;
+      }
+
+      // font-size: 10px;
     }
     // overflow: hidden;
   }
@@ -313,5 +366,75 @@ export default {
   // overflow: hidden;
   // flex-wrap: wrap;
   // }
+}
+@media (min-width: 768px) {
+  .search-form {
+    border: 1px solid rgb(174, 238, 222);
+    // padding: 20px;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    border-radius: 999px;
+    align-items: center;
+    overflow: hidden;
+    & > * {
+      width: 60%;
+      // border: none;
+      outline: none;
+      // flex: 1;
+      border-radius: 0;
+    }
+    .search-input {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      // padding-left: 20px;
+    }
+    .range-form {
+      position: relative;
+      text-align: center;
+      font-size: 14px;
+      margin-bottom: -10px;
+      color: rgba(0, 0, 0, 0.8);
+      .range-label {
+        position: absolute;
+        left: 50%;
+        top: -3px;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    // display: flex;
+    // flex-wrap: wrap;
+    // gap: 20px;
+    // & > * {
+    //   // border: 2px solid cyan;
+    //   flex: 1 1;
+    //   border: none;
+    //   outline: none;
+    //   padding: 8px;
+    // }
+    // .range-form {
+    //   position: relative;
+    //   font-size: 14px;
+    //   margin-bottom: -10px;
+    //   color: rgba(0, 0, 0, 0.8);
+
+    // }
+  }
+  .advanced-search {
+    .search-services {
+      .btn {
+        .service-name {
+          position: relative;
+          font-size: 12px;
+        }
+        .service-icon {
+          padding-bottom: 0;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
 }
 </style>

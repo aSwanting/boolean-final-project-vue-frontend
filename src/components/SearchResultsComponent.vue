@@ -13,10 +13,35 @@
             </div>
           </div>
           <div class="apartment-card-body">
-            <p class="location">
+            <div class="location">
               {{ apartment.region }}, {{ apartment.country }}
-            </p>
-            <p class="name">{{ apartment.name }}</p>
+            </div>
+            <div class="name">{{ apartment.name }}</div>
+            <div class="filters d-flex gap-4">
+              <div class="">
+                <font-awesome-icon class="me-2" icon="house" />{{
+                  apartment.rooms
+                }}
+              </div>
+              <div class="">
+                <font-awesome-icon class="me-2" icon="bed" />{{
+                  apartment.beds
+                }}
+              </div>
+              <div class="">
+                <font-awesome-icon class="me-2" icon="toilet" />{{
+                  apartment.bathrooms
+                }}
+              </div>
+            </div>
+
+            <div class="services d-flex gap-4">
+              <font-awesome-icon
+                v-for="service in apartment.services"
+                :class="{ active: store.services[service.id - 1].active }"
+                :icon="store.services[service.id - 1].icon"
+              />
+            </div>
             <p class="distance" v-show="apartment.distance">
               {{ apartment.distance }} kilometers away
             </p>
@@ -64,8 +89,7 @@ p {
 
 .card-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 20px;
 }
 
@@ -103,28 +127,35 @@ p {
       flex: 1 1 50%;
     }
 
-    .apartment-card-image {
-    }
-
     .apartment-card-body {
-      padding: 24px 18px;
+      padding: 20px 18px;
       display: flex;
       flex-direction: column;
-      justify-content: space-around;
+      justify-content: space-between;
+
+      font-size: 13px;
 
       .location {
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 800;
       }
 
       .name {
         font-weight: 300;
-        font-size: 18px;
+        font-size: 14px;
         font-style: italic;
         color: rgba(0, 0, 0, 0.473);
       }
+      .filters,
+      .services {
+        color: grey;
+        & .active {
+          color: rgb(0, 182, 142);
+        }
+      }
 
       .distance {
+        font-size: 14px;
         color: rgba(0, 0, 0, 0.8);
       }
     }
