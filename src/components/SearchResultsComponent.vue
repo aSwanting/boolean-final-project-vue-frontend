@@ -1,9 +1,7 @@
 <template>
   <div class="card-wrapper" v-if="store.addressList">
-    <router-link
-      v-for="(apartment, index) in store.addressList"
-      :to="{ name: 'apartments.show', params: { slug: apartment.slug } }"
-    >
+    <router-link v-for="(apartment, index) in store.addressList"
+      :to="{ name: 'apartments.show', params: { slug: apartment.slug } }">
       <div class="apartment-card">
         <div class="card-inner" :class="{ sponsored: !apartment.sponsored }">
           <div class="apartment-card-image">
@@ -13,8 +11,11 @@
             </div>
           </div>
           <div class="apartment-card-body">
-            <div class="location">
-              {{ apartment.region }}, {{ apartment.country }}
+            <div class="city">
+              {{ apartment.city }},
+              <span class="additional-info">
+                {{ apartment.region }}, {{ apartment.country }}
+              </span>
             </div>
             <div class="name">{{ apartment.name }}</div>
             <div class="filters d-flex gap-4">
@@ -36,11 +37,8 @@
             </div>
 
             <div class="services d-flex gap-4">
-              <font-awesome-icon
-                v-for="service in apartment.services"
-                :class="{ active: store.services[service.id - 1].active }"
-                :icon="store.services[service.id - 1].icon"
-              />
+              <font-awesome-icon v-for="service in apartment.services"
+                :class="{ active: store.services[service.id - 1].active }" :icon="store.services[service.id - 1].icon" />
             </div>
             <p class="distance" v-show="apartment.distance">
               {{ apartment.distance }} kilometers away
@@ -123,7 +121,7 @@ p {
       }
     }
 
-    & > * {
+    &>* {
       flex: 1 1 50%;
     }
 
@@ -135,10 +133,16 @@ p {
 
       font-size: 13px;
 
-      .location {
+      .city {
         font-size: 14px;
         font-weight: 800;
       }
+
+      .additional-info {
+        font-size: 14px;
+        font-weight: 600;
+      }
+
 
       .name {
         font-weight: 300;
@@ -146,9 +150,11 @@ p {
         font-style: italic;
         color: rgba(0, 0, 0, 0.473);
       }
+
       .filters,
       .services {
         color: grey;
+
         & .active {
           color: rgb(0, 182, 142);
         }

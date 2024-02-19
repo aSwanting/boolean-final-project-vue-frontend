@@ -1,13 +1,15 @@
 <template>
-  <router-link
-    :to="{ name: 'apartments.show', params: { slug: apartment.slug } }"
-  >
+  <router-link :to="{ name: 'apartments.show', params: { slug: apartment.slug } }">
     <div class="apartment-card">
       <div class="apartment-image">
         <slot></slot>
       </div>
       <div class="card-body">
-        <p class="location">{{ apartment.region }}, {{ apartment.country }}</p>
+        <p class="city">{{ apartment.city }},
+          <span class="additional-info">
+            {{ apartment.region }}, {{ apartment.country }}
+          </span>
+        </p>
         <p class="name">{{ apartment.name }}</p>
         <p class="distance" v-show="apartment.distance">
           {{ apartment.distance }} kilometers away
@@ -61,9 +63,14 @@ export default {
     padding: 0;
   }
 
-  .location {
+  .city {
     font-size: 14px;
     font-weight: 800;
+  }
+
+  .additional-info {
+    font-size: 14px;
+    font-weight: 600;
   }
 
   .name {
@@ -74,6 +81,7 @@ export default {
     overflow: hidden;
     white-space: nowrap;
   }
+
   .distance {
     font-size: 13px;
     font-weight: 500;
