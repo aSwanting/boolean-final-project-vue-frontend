@@ -1,9 +1,9 @@
 <template>
   <DefaultLayout>
-    <header class="shadow">
-      <div class="container">
-        <SearchComponent />
-      </div>
+    <header class="search-component shadow">
+      <!-- <div class="container"> -->
+      <SearchComponent />
+      <!-- </div> -->
     </header>
     <section class="search-results">
       <div class="container-fluid h-100 p-0">
@@ -33,16 +33,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .container {
-//   padding: 0;
-//   max-width: 1000px;
-// }
-header {
-  padding: 20px;
-  z-index: 99999;
+.search-component {
 }
 .search-results {
-  // padding: 20px 0;
   flex-grow: 1;
   overflow: auto;
 }

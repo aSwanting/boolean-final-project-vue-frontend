@@ -1,111 +1,120 @@
 <template>
-  <div class="search-wrapper">
-    <!-- Search Form Start -->
-
-    <div class="search-form mb-3">
-      <input
-        v-model="store.searchQuery"
-        class="form-control search-input"
-        type="search"
-        placeholder="Via Roma, Italia"
-      />
-
-      <!-- Search Range -->
-      <div class="range-form">
-        <label class="range-label">{{ store.filters[0].value }} km</label>
-        <div class="d-flex gap-3">
-          <div>20</div>
-          <input
-            v-model="store.filters[0].value"
-            placeholder="any"
-            class="form-range"
-            type="range"
-            min="20"
-            max="200"
-          />
-          <div>200</div>
-        </div>
-      </div>
-
-      <button class="btn btn-primary" @click="outputSearchData()">
-        search
-      </button>
+  <div class="container" :class="{ hidden: searchHidden }">
+    <div
+      class="btn btn-sm btn-danger position-absolute shadow"
+      style="top: 18px; left: 50%; transform: translateX(-50%)"
+      @click="searchHidden = !searchHidden"
+    >
+      search_toggle
     </div>
+    <div class="search-wrapper">
+      <!-- Search Form Start -->
 
-    <!-- Suggested queries -->
-    <div class="suggested-dropdown" :class="{ open: suggestedAddresses }">
-      <div
-        v-for="suggested in suggestedAddresses"
-        @click="addressSelect(suggested)"
-      >
-        {{ suggested.address.freeformAddress }}
-      </div>
-    </div>
-    <!-- Advanced Search Form Start -->
-    <div class="advanced-search">
-      <div class="search-filters mb-3">
-        <!-- Rooms -->
-        <div class="input-group">
-          <span class="input-group-text">
-            <font-awesome-icon icon="house" />
-          </span>
-          <div class="form-floating">
+      <div class="search-form mb-3">
+        <input
+          v-model="store.searchQuery"
+          class="form-control search-input"
+          type="search"
+          placeholder="Via Roma, Italia"
+        />
+
+        <!-- Search Range -->
+        <div class="range-form">
+          <label class="range-label">{{ store.filters[0].value }} km</label>
+          <div class="d-flex gap-3">
+            <div>20</div>
             <input
-              v-model="store.filters[1].value"
-              class="form-control"
-              type="number"
-              min="1"
-              max="12"
+              v-model="store.filters[0].value"
+              placeholder="any"
+              class="form-range"
+              type="range"
+              min="20"
+              max="200"
             />
-            <label>Rooms</label>
+            <div>200</div>
           </div>
         </div>
-        <!-- Beds -->
-        <div class="input-group">
-          <span class="input-group-text">
-            <font-awesome-icon icon="bed" />
-          </span>
-          <div class="form-floating">
-            <input
-              v-model="store.filters[2].value"
-              class="form-control"
-              type="number"
-              min="1"
-              max="12"
-            />
-            <label>Beds</label>
-          </div>
-        </div>
-        <!-- Bathrooms -->
-        <div class="input-group">
-          <span class="input-group-text">
-            <font-awesome-icon icon="toilet" />
-          </span>
-          <div class="form-floating">
-            <input
-              v-model="store.filters[3].value"
-              class="form-control"
-              type="number"
-              min="1"
-              max="12"
-            />
-            <label>Bathrooms</label>
-          </div>
-        </div>
-      </div>
-      <!-- Services Start -->
-      <div class="search-services">
-        <button
-          class="service-badge btn btn-sm rounded-pill border-primary"
-          v-for="service in store.services"
-          :class="{
-            'bg-primary': service.active,
-          }"
-          @click="service.active = !service.active"
-        >
-          <font-awesome-icon class="service-icon" :icon="service.icon" />
-          <span class="service-name">{{ service.name }}</span>
+
+        <button class="btn btn-primary" @click="outputSearchData()">
+          search
         </button>
+      </div>
+
+      <!-- Suggested queries -->
+      <div class="suggested-dropdown" :class="{ open: suggestedAddresses }">
+        <div
+          v-for="suggested in suggestedAddresses"
+          @click="addressSelect(suggested)"
+        >
+          {{ suggested.address.freeformAddress }}
+        </div>
+      </div>
+      <!-- Advanced Search Form Start -->
+      <div class="advanced-search">
+        <div class="search-filters mb-3">
+          <!-- Rooms -->
+          <div class="input-group">
+            <span class="input-group-text">
+              <font-awesome-icon icon="house" />
+            </span>
+            <div class="form-floating">
+              <input
+                v-model="store.filters[1].value"
+                class="form-control"
+                type="number"
+                min="1"
+                max="12"
+              />
+              <label>Rooms</label>
+            </div>
+          </div>
+          <!-- Beds -->
+          <div class="input-group">
+            <span class="input-group-text">
+              <font-awesome-icon icon="bed" />
+            </span>
+            <div class="form-floating">
+              <input
+                v-model="store.filters[2].value"
+                class="form-control"
+                type="number"
+                min="1"
+                max="12"
+              />
+              <label>Beds</label>
+            </div>
+          </div>
+          <!-- Bathrooms -->
+          <div class="input-group">
+            <span class="input-group-text">
+              <font-awesome-icon icon="toilet" />
+            </span>
+            <div class="form-floating">
+              <input
+                v-model="store.filters[3].value"
+                class="form-control"
+                type="number"
+                min="1"
+                max="12"
+              />
+              <label>Bathrooms</label>
+            </div>
+          </div>
+        </div>
+        <!-- Services Start -->
+        <div class="search-services">
+          <button
+            class="service-badge btn btn-sm rounded-pill border-primary"
+            v-for="service in store.services"
+            :class="{
+              'bg-primary': service.active,
+            }"
+            @click="service.active = !service.active"
+          >
+            <font-awesome-icon class="service-icon" :icon="service.icon" />
+            <span class="service-name">{{ service.name }}</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -118,6 +127,7 @@ export default {
   data() {
     return {
       store,
+      searchHidden: false,
       searchQuery: null,
       suggestedAddresses: null,
       selectedAddress: null,
@@ -181,13 +191,17 @@ export default {
 
 <style lang="scss" scoped>
 @use "../styles/partials/variables" as *;
+.container {
+  height: 260px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  transition: 200ms all;
+  &.hidden {
+    height: 0px;
+  }
+}
 .search-wrapper {
-  // display: grid;
-  // gap: 20px;
-  // grid-template-rows: 1fr 1fr;
-  // & > * {
-  //   border: 3px dashed cyan;
-  // }
   .search-form {
     // border: 1px solid rgb(174, 238, 222);
     // padding: 20px;
