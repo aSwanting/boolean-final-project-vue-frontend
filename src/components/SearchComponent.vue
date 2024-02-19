@@ -455,10 +455,12 @@ export default {
           .service-name {
             position: relative;
             font-size: 12px;
+            top: -1px;
           }
           .service-icon {
-            padding-bottom: 0;
-            margin-right: 10px;
+            padding: 0;
+            margin: 0;
+            margin-right: 8px;
           }
         }
       }

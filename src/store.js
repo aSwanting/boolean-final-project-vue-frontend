@@ -90,6 +90,17 @@ const store = reactive({
       `${this.BACKEND_URL}api/apartments/results/`
     );
     this.addressList = response.data.results.apartments;
+    const queryData = response.data.results.query;
+    this.searchQuery = queryData.query;
+    this.filters[0].value = queryData.search_radius;
+    this.filters[1].value = queryData.rooms;
+    this.filters[2].value = queryData.beds;
+    this.filters[3].value = queryData.bathrooms;
+    this.services.forEach((service, index) => {
+      if (queryData.services.includes(service.name)) {
+        service.active = true;
+      }
+    });
   },
 
   async searchApartments() {
@@ -108,6 +119,7 @@ const store = reactive({
       data
     );
     this.addressList = response.data.results.apartments;
+    this.queryData = response.data.results.query;
   },
 });
 
