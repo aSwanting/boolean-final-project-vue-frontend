@@ -3,7 +3,7 @@
     MAP VIEW
   </div>
   <div class="wrapper">
-    <div class="results" :class="{ 'map-view': mapView }">
+    <div class="results p-3" :class="{ 'map-view': mapView }">
       <SearchResults />
     </div>
     <div class="map" :class="{ 'map-view': mapView }">
@@ -85,5 +85,23 @@ export default {
   z-index: 999999;
   // padding: 10px 60px;
   width: 80%;
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    .results {
+      width: 50%;
+      // left: 0%;
+      // position: relative;
+    }
+    .map {
+      // width: 50%;
+      left: 50%;
+      // position: relative;
+    }
+  }
+  .map-toggle {
+    display: none;
+  }
 }
 </style>

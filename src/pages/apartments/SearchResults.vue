@@ -6,7 +6,7 @@
     </div>
   </header>
   <section class="search-results">
-    <div class="h-100">
+    <div class="container-fluid h-100 p-0">
       <SearchResultsWithMap />
     </div>
   </section>
@@ -45,8 +45,5 @@ header {
   // padding: 20px 0;
   flex-grow: 1;
   overflow: auto;
-  .container {
-    height: 100%;
-  }
 }
 </style>
