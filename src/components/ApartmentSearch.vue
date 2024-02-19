@@ -118,8 +118,9 @@ export default {
       width: 80%;
 
       .location-search {
-        border-radius: 9999px;
+        border-radius: 15px;
         display: flex;
+        flex-wrap: wrap;
         overflow: hidden;
         gap: 2px;
 
@@ -131,11 +132,10 @@ export default {
           outline: none;
           border: none;
           width: 0;
-          transition: 300ms all;
 
           &:nth-child(1) {
             background-color: rgba(255, 255, 255, 0.7);
-            width: 74%;
+            width: 100%;
             padding: 14px 40px;
 
             &:hover {
@@ -146,7 +146,7 @@ export default {
           &:nth-child(2) {
             background-color: rgba(255, 255, 255, 0.4);
             color: rgb(80, 80, 80);
-            width: 6%;
+            width: 20%;
             font-size: 18px;
 
             &:hover {
@@ -157,7 +157,7 @@ export default {
 
           &:nth-child(3) {
             background-color: rgba(37, 255, 164, 0.5);
-            width: 20%;
+            width: 70%;
 
             &:hover {
               background-color: rgba(30, 233, 149, 0.836);
@@ -259,27 +259,38 @@ export default {
     }
   }
 }
-</style>
 
-<!-- .card-image {
-  padding: 10px;
-  width: 100%;
-  aspect-ratio: 1;
-  background-color: $primary;
-  border-radius: 20px;
-  box-shadow: 2px 5px 6px rgba(105, 105, 105, 0.2);
-  margin-bottom: 8px;
-  overflow: hidden;
+@media (min-width: 768px) {
+  .search-hero {
+    background-color: rgb(64, 68, 67);
+    background-image: url(/search-hero-bg-3.jpg);
+    background-size: cover;
+    background-position: 0, 0;
+    height: 500px;
 
-  div {
-    height: 100%;
-    overflow: auto;
-    font-size: 12px;
-    opacity: 0.5;
+    .container {
+      .apartment-search {
+        .location-search {
+          border-radius: 999px;
+          display: flex;
+          flex-wrap: nowrap;
+          & > * {
+            &:nth-child(1) {
+              width: 74%;
+            }
+
+            &:nth-child(2) {
+              width: 6%;
+              font-size: 18px;
+            }
+
+            &:nth-child(3) {
+              width: 20%;
+            }
+          }
+        }
+      }
+    }
   }
 }
-
-.apartment-info {
-  padding: 0px 6px;
-  font-size: 14px;
-} -->
+</style>

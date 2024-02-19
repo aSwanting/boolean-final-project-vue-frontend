@@ -1,28 +1,54 @@
 <template>
-  <div class="pe-3" v-if="store.addressList">
-    <div v-for="(apartment, index) in store.addressList" class="apartment-card">
-      <div
-        class="card-inner"
-        :class="{ sponsored: !apartment.sponsored }"
-        @click="goToShow(index)"
-      >
-        <div class="apartment-card-image">
-          <Carousel :apartment="apartment" />
-          <div class="icon-sponsor d-none">
-            <font-awesome-icon icon="award" />
+  <div class="card-wrapper" v-if="store.addressList">
+    <router-link
+      v-for="(apartment, index) in store.addressList"
+      :to="{ name: 'apartments.show', params: { slug: apartment.slug } }"
+    >
+      <div class="apartment-card">
+        <div class="card-inner" :class="{ sponsored: !apartment.sponsored }">
+          <div class="apartment-card-image">
+            <Carousel :apartment="apartment" />
+            <div class="icon-sponsor d-none">
+              <font-awesome-icon icon="award" />
+            </div>
+          </div>
+          <div class="apartment-card-body">
+            <div class="location">
+              {{ apartment.region }}, {{ apartment.country }}
+            </div>
+            <div class="name">{{ apartment.name }}</div>
+            <div class="filters d-flex gap-4">
+              <div class="">
+                <font-awesome-icon class="me-2" icon="house" />{{
+                  apartment.rooms
+                }}
+              </div>
+              <div class="">
+                <font-awesome-icon class="me-2" icon="bed" />{{
+                  apartment.beds
+                }}
+              </div>
+              <div class="">
+                <font-awesome-icon class="me-2" icon="toilet" />{{
+                  apartment.bathrooms
+                }}
+              </div>
+            </div>
+
+            <div class="services d-flex gap-4">
+              <font-awesome-icon
+                v-for="service in apartment.services"
+                :class="{ active: store.services[service.id - 1].active }"
+                :icon="store.services[service.id - 1].icon"
+              />
+            </div>
+            <p class="distance" v-show="apartment.distance">
+              {{ apartment.distance }} kilometers away
+            </p>
           </div>
         </div>
-        <div class="apartment-card-body">
-          <p class="location">
-            {{ apartment.region }}, {{ apartment.country }}
-          </p>
-          <p class="name">{{ apartment.name }}</p>
-          <p class="distance" v-show="apartment.distance">
-            {{ apartment.distance }} kilometers away
-          </p>
-        </div>
       </div>
-    </div>
+    </router-link>
   </div>
   <div class="position-relative h-100" v-else>
     <Loading />
@@ -61,6 +87,12 @@ p {
   margin: 0;
 }
 
+.card-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
 .apartment-card {
   // padding: 0 25px;
 
@@ -95,40 +127,47 @@ p {
       flex: 1 1 50%;
     }
 
-    .apartment-card-image {
-    }
-
     .apartment-card-body {
-      padding: 24px 18px;
+      padding: 20px 18px;
       display: flex;
       flex-direction: column;
-      justify-content: space-around;
+      justify-content: space-between;
+
+      font-size: 13px;
 
       .location {
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 800;
       }
 
       .name {
         font-weight: 300;
-        font-size: 18px;
+        font-size: 14px;
         font-style: italic;
         color: rgba(0, 0, 0, 0.473);
       }
+      .filters,
+      .services {
+        color: grey;
+        & .active {
+          color: rgb(0, 182, 142);
+        }
+      }
 
       .distance {
+        font-size: 14px;
         color: rgba(0, 0, 0, 0.8);
       }
     }
   }
 
-  &::after {
-    content: "";
-    display: block;
-    background-color: rgba(0, 0, 0, 0.1);
-    height: 2px;
-    width: 80%;
-    margin: 24px auto;
-  }
+  // &::after {
+  //   content: "";
+  //   display: block;
+  //   background-color: rgba(0, 0, 0, 0.1);
+  //   height: 2px;
+  //   width: 80%;
+  //   margin: 24px auto;
+  // }
 }
 </style>

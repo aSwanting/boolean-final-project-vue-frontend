@@ -14,7 +14,9 @@
           </button>
           <ul class="dropdown-menu">
             <li>
+
               <a class="dropdown-item custom" :href="store.BACKEND_URL">User Area</a>
+
             </li>
           </ul>
         </div>

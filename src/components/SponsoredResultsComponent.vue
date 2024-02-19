@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mb-4">
     <div class="container">
       <div
         class="d-grid gap-3"

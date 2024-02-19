@@ -1,17 +1,20 @@
 <template>
-  <header class="shadow">
-    <div class="container">
+  <DefaultLayout>
+    <header class="search-component shadow">
+      <!-- <div class="container"> -->
       <SearchComponent />
-    </div>
-  </header>
-  <section class="search-results">
-    <div class="container">
-      <SearchResultsWithMap />
-    </div>
-  </section>
+      <!-- </div> -->
+    </header>
+    <section class="search-results">
+      <div class="container-fluid h-100 p-0">
+        <SearchResultsWithMap />
+      </div>
+    </section>
+  </DefaultLayout>
 </template>
 
 <script>
+import DefaultLayout from "../../layouts/DefaultLayout.vue";
 import SearchComponent from "../../components/SearchComponent.vue";
 import SearchResultsComponent from "../../components/SearchResultsComponent.vue";
 import SponsoredResultsComponent from "../../components/SponsoredResultsComponent.vue";
@@ -19,6 +22,7 @@ import ResultsMap from "../../components/ResultsMap.vue";
 import SearchResultsWithMap from "../../components/SearchResultsWithMap.vue";
 export default {
   components: {
+    DefaultLayout,
     SearchComponent,
     SearchResultsComponent,
     SponsoredResultsComponent,
@@ -29,20 +33,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  padding: 0;
-  max-width: 1000px;
-}
-header {
-  padding: 20px;
-  z-index: 99999;
+.search-component {
 }
 .search-results {
-  padding: 20px;
   flex-grow: 1;
-  overflow: hidden;
-  .container {
-    height: 100%;
-  }
+  overflow: auto;
 }
 </style>
