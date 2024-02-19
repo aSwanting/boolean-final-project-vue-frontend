@@ -1,16 +1,16 @@
 <template>
-  <!-- <DefaultLayout> -->
-  <header class="shadow">
-    <div class="container">
-      <SearchComponent />
-    </div>
-  </header>
-  <section class="search-results">
-    <div class="container-fluid h-100 p-0">
-      <SearchResultsWithMap />
-    </div>
-  </section>
-  <!-- </DefaultLayout> -->
+  <DefaultLayout>
+    <header class="shadow">
+      <div class="container">
+        <SearchComponent />
+      </div>
+    </header>
+    <section class="search-results">
+      <div class="container-fluid h-100 p-0">
+        <SearchResultsWithMap />
+      </div>
+    </section>
+  </DefaultLayout>
 </template>
 
 <script>
