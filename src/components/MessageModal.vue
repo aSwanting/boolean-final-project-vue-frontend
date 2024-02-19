@@ -1,5 +1,5 @@
 <template>
-    <div class="modal-backdrop" >
+    <div class="modal-backdrop">
         <section class="modal-body" :class="{ 'sended-message': messageSentSuccess }">
             <slot name="body">
 
@@ -40,9 +40,8 @@
                     <button type="submit" @click="messageSent">Send message</button>
                 </form>
                 <div class="success-message container" v-show="messageSentSuccess">
+                    <button type="button" class="btn-close " @click="closeModal"></button>
                     <p>{{ messagePositiveResponse }}</p>
-                    <button type="button" class="btn-close" @click="closeModal"></button>
-
                 </div>
 
             </slot>
@@ -227,9 +226,9 @@ export default {
     }
 
     .btn-close {
-        position: relative;
-        top: 0;
-        right: 0;
+        position: absolute;
+        right: 8px;
+        top: 8px;
         border: none;
         font-size: 14px;
         cursor: pointer;
@@ -326,8 +325,7 @@ ul {
     margin-bottom: 0;
 }
 
-@media (min-width: 576px) {
-}
+@media (min-width: 576px) {}
 
 
 @media (min-width: 768px) {}
@@ -339,4 +337,5 @@ ul {
 @media (min-width: 1200px) {}
 
 
-@media (min-width: 1400px) {}</style>
+@media (min-width: 1400px) {}
+</style>

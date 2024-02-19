@@ -59,7 +59,7 @@
     <Loading v-else></Loading>
     <div class="container">
       <div id="map"></div>
-      <button class="contact btn-primary text-center" @click="showModal">
+      <button class="contact btn-primary text-center" @click="showModal" v-show="this.isModalVisible == false">
         <span class="fw-bold primary align-middle">
           Contact
         </span>
