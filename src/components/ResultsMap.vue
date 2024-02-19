@@ -46,8 +46,12 @@ export default {
 
       this.zone.setLatLng([this.latitude, this.longitude]);
       // this.map.setView([this.latitude, this.longitude], this.zoom);
-      this.map.flyTo([this.latitude, this.longitude], this.zoom);
     },
+    "store.addressList": {
+      handler() {
+        this.map.flyTo([this.latitude, this.longitude], this.zoom);
+      }
+    }
   },
   methods: {
     drawMarkers() {

@@ -290,11 +290,6 @@ export default {
     margin: 0 auto;
   }
 
-  .contact {
-    background-color: #8ee9ce;
-  }
-
-
 }
 
 
@@ -304,6 +299,7 @@ export default {
     bottom: 7%;
     padding: 20px;
     font-size: 20px;
+    background-color: #8ee9ce;
   }
 }
 </style>
