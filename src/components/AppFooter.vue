@@ -62,7 +62,7 @@ export default {
 .footer {
   border-top: 2px solid #8ee9ce;
   min-height: 75px;
-  margin-top: 50px;
+  // margin-top: 50px;
   font-style: italic;
   font-weight: 400;
   font-size: 14px;
@@ -81,8 +81,8 @@ export default {
 }
 
 @media (min-width: 768px) {
-    .footer {
-        font-size : 18px;
-    }
-  }    
+  .footer {
+    font-size: 18px;
+  }
+}
 </style>
