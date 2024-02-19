@@ -1,12 +1,6 @@
 <template>
     <div class="modal-backdrop">
-        <!-- <header class="modal-header">
-            <slot name="header">
-                Header
-            </slot>
-            <button type="button" class="btn-close" @click="closeModal"></button>
-        </header> -->
-        <section class="modal-body">
+        <section class="modal-body" :class="{ 'sended-message': messageSentSuccess }">
             <slot name="body">
 
                 <form action="POST" class="message-form" @submit.prevent="submitForm" v-show="isFormActive">
@@ -18,21 +12,25 @@
                                     @click="closeModal"></button>
                             </div>
                             <input type="text" class="form-control" v-model="sender" placeholder="Paolo Rossi" id="name">
+                            <p v-if="errors.sender" class="error-message">{{ errors.sender }}</p>
                         </li>
                         <li class="mb-3">
                             <label for="email" class="mb-2">Your email:</label>
-                            <input type="email" class="form-control" v-model="email" placeholder="paolorossi@gmail.com"
-                                id="email">
+                            <input type="email" class="form-control" :class="{ 'error-input': errors.email }"
+                                v-model="email" @input="validateEmail" placeholder="paolorossi@gmail.com" id="email">
+                            <p v-if="errors.email" class="error-message">{{ errors.email }}</p>
                         </li>
                         <li class="mb-3">
                             <label for="subject" class="mb-2">Subject:</label>
                             <input type="text" class="form-control" v-model="subject"
                                 placeholder="Information about the apartment" id="subject">
+                            <p v-if="errors.subject" class="error-message">{{ errors.subject }}</p>
                         </li>
-                        <li class="mb-3">
+                        <li class="mb-4">
                             <label for="message" class="mb-2">Message:</label>
                             <textarea type="text" rows="3" id="message" class="form-control" v-model="message"
                                 placeholder="Write a message"></textarea>
+                            <p v-if="errors.message" class="error-message">{{ errors.message }}</p>
                         </li>
                     </ul>
 
@@ -41,7 +39,11 @@
 
                     <button type="submit" @click="messageSent">Send message</button>
                 </form>
-                <p v-show="messageSentSuccess">Your message has been sent!</p>
+                <div class="success-message container" v-show="messageSentSuccess">
+                    <button type="button" class="btn-close " @click="closeModal"></button>
+                    <p>{{ messagePositiveResponse }}</p>
+                </div>
+
             </slot>
         </section>
         <!-- <footer class="modal-footer">
@@ -55,6 +57,7 @@ import store from '../store';
 export default {
     data() {
         return {
+            messagePositiveResponse: 'Your message has been sent!',
             store,
             subject: '',
             message: '',
@@ -62,6 +65,7 @@ export default {
             email: '',
             isFormActive: true,
             messageSentSuccess: false,
+            errors: {},
         };
     },
     props: {
@@ -72,104 +76,181 @@ export default {
     },
     methods: {
         closeModal() {
-            this.$emit('close-modal')
+            this.$emit('close-modal');
+            this.messageSentSuccess = false;
+            this.isFormActive = true;
+            this.subject = '';
+            this.message = '';
+            this.sender = '';
+            this.email = '';
+            this.errors = {};
         },
         async submitForm() {
-            const data = {
+            this.validateEmail();
+            this.validateSubject();
+            this.validateSender();
+            this.validateContent();
 
-                apartment_id: this.items.id,
-                subject: this.subject,
-                content: this.message,
-                sender: this.sender,
-                email: this.email,
-            }
-            try {
-                await axios.post(`${this.store.BACKEND_URL}api/apartments/messages`, data)
+            console.log(this.isValidName(this.sender))
+
+            if (this.validateFormData()) {
+                const data = {
+
+                    apartment_id: this.items.id,
+                    subject: this.subject.trim(),
+                    content: this.message.trim(),
+                    sender: this.formatFullName(this.sender.trim()),
+                    email: this.email,
+                };
                 console.log(data)
-            } catch (error) {
-                console.error('errore durantel\'invio del modulo;', error);
-                console.log(data)
+                try {
+                    await axios.post(`${this.store.BACKEND_URL}api/apartments/messages`, data)
+                    // console.log(data)
+                } catch (error) {
+                    console.error('errore durantel\'invio del modulo;', error);
+                    // console.log(data)
+                }
+            } else {
+                this.messageNotSent()
+                console.log('Dati non validi');
+                console.log(this.errors)
             }
+
+        },
+        validateFormData() {
+            return Object.keys(this.errors).length === 0;
         },
         messageSent() {
             this.messageSentSuccess = true
             this.isFormActive = false
+        },
+        messageNotSent() {
+            this.messageSentSuccess = false
+            this.isFormActive = true
+        },
+
+        validateEmail() {
+            if (!this.email) {
+                this.errors.email = 'Email is required';
+            } else if (!this.isValidEmail(this.email)) {
+                this.errors.email = 'Email is not valid';
+            } else {
+                delete this.errors.email;
+            }
+        },
+        validateSubject() {
+            if (!this.subject) {
+                this.errors.subject = 'Subject is required';
+            } else {
+                const trimmedSubject = this.subject.trim()
+
+                if (trimmedSubject.length > 40) {
+                    this.errors.subject = 'Subject has to be < 40 characters'
+                } else {
+                    delete this.errors.subject;
+                }
+            }
+        },
+        validateSender() {
+            if (!this.sender) {
+                this.errors.sender = 'Sender is required';
+            } else {
+                const trimmedSender = this.sender.trim()
+                if (!this.isValidName(trimmedSender)) {
+                    this.errors.sender = 'Please enter a valid full name (First Name Last Name)'
+                } else if (trimmedSender.length > 40) {
+                    this.errors.sender = 'Sender has to be < 40 characters'
+                } else {
+                    delete this.errors.sender;
+                }
+
+            }
+        },
+        validateContent() {
+            if (!this.message) {
+                this.errors.message = 'Content is required';
+            } else {
+                const trimmedMessage = this.message.trim()
+
+                if (trimmedMessage.length > 500) {
+                    this.errors.message = 'Message cannot exceed 500 characters';
+                } else if (trimmedMessage.length < 10) {
+                    this.errors.message = 'Message must have > 10 characters';
+                } else {
+                    delete this.errors.message;
+                }
+            }
+
+        },
+        formatFullName(sender) {
+            const parts = sender.split(' ');
+            const formattedParts = [];
+            parts.forEach(part => {
+                if (part) {
+                    formattedParts.push(part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+                }
+            });
+            sender = formattedParts.join(' ');
+            return sender;
+        },
+        isValidEmail(email) {
+            // Implementa la tua logica di validazione dell'email
+            return /\S+@\S+\.\S+/.test(email);
+        },
+        isValidName(sender) {
+            return /^[a-zA-Z]+ [a-zA-Z]+$/.test(sender)
         }
     },
     mounted() {
-        // console.log(this.submitForm)
+        // console.log(this.isValidName(sender))
     }
 }
 </script>
 <style lang="scss" scoped>
-// @use "../styles/partials/_messageModal.scss" as *;
+@use '../styles/partials/variables' as *;
 
 .modal-backdrop {
-    position: absolute;
-    top: 50%;
-
-    left: 50%;
-    bottom: 0;
-    margin: auto;
-    max-width: 350px;
-    height: 500px;
-    /* Larghezza della modale */
-    background-color: white;
-    /* Sfondo trasparente */
-    z-index: 9999;
-    /* Assicura che la modale sia sopra gli altri elementi */
-    overflow: auto;
-    /* Abilita lo scrolling se la modale è più grande dello schermo */
-    border-radius: 10px;
-    /* Bordi arrotondati */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    /* Ombra */
-    transform: translate(-50%, -50%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-    .modal-header,
     .modal-footer {
         padding: 15px;
         display: flex;
     }
 
     .btn-close {
-        position: relative;
-        top: 0;
-        right: 0;
+        position: absolute;
+        right: 8px;
+        top: 8px;
         border: none;
         font-size: 14px;
         cursor: pointer;
         font-weight: bold;
     }
 
-    .modal-header {
-        position: relative;
-        border-bottom: 1px solid;
-        background-color: white;
-        justify-content: space-between;
-
-
-    }
-
-    .modal-footer {
-        border-top: 1px solid;
-        flex-direction: column;
-        justify-content: flex-end;
-    }
-
     .modal-body {
-        position: relative;
-
-        flex-grow: 1;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 
         .message-form {
 
             display: flex;
             flex-direction: column;
             height: 100%;
-            padding: 20px;
+            padding: 14px;
 
             .inputs-container {
                 flex-grow: 1;
@@ -205,35 +286,46 @@ export default {
         }
 
     }
+
+    .success-message {
+        display: flex;
+        padding: 10px;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+
+        p {
+            flex-grow: 1;
+            margin: 0;
+            text-align: center;
+        }
+    }
+
+    .error-input {
+        border: 1px solid red;
+        /* Aggiungi uno stile per evidenziare l'errore */
+    }
+
+    .error-message {
+        color: red;
+        /* Aggiungi uno stile per il messaggio di errore */
+    }
 }
 
-.modal-fade-enter,
-.modal-fade-leave {
-    opacity: 0;
+
+.sended-message {
+    background-color: $primary !important;
+    height: 100px;
+    font-size: 20px;
 }
 
-.modal-fade-enter-active,
-.modal-fade-leave-active {
-    transition: opacity 5s ease;
-}
+
 
 ul {
     margin-bottom: 0;
 }
 
-@media (min-width: 576px) {
-    .modal-backdrop {
-        position: absolute;
-        top: 50%;
-
-        left: 50%;
-        margin: auto;
-        max-width: 500px;
-        transform: translate(-50%, -50%);
-        display: flex;
-        flex-direction: column;
-    }
-}
+@media (min-width: 576px) {}
 
 
 @media (min-width: 768px) {}

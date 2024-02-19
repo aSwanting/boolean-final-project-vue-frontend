@@ -49,22 +49,27 @@ header {
   .logo-anchor {
     padding: 18px;
     transition: 200ms all;
+
     &:hover {
       background-color: rgba(10, 170, 90, 0.096);
     }
+
     .logo {
       max-width: 160px;
     }
   }
+
   .nav-dropdown {
     ul {
       padding: 0;
       overflow: hidden;
+
       li {
         a {
           padding: 6px;
           text-align: center;
           transition: 200ms all;
+
           &:hover {
             background-color: $primary;
           }
