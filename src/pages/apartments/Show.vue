@@ -2,61 +2,69 @@
   <DefaultLayout>
     <main class="container" v-if="apartment">
 
-      <div class="container-carousel">
-        <div class="carousel mt-4">
-          <Carousel :items="apartment" />
-        </div>
+      <div class="container-carousel" v-show="apartment.images">
+
+        <Carousel :apartment="apartment" />
+
       </div>
 
 
-      <h2 class="title">{{ apartment.name }}</h2>
+      <div class="container-show">
+        <h2 class="title">{{ apartment.name }}</h2>
 
 
-      <div class="apartment">
-        <p class="fw-bold">{{ apartment.address }}, {{ apartment.country }}</p>
-        <p>{{ apartment.description }}</p>
+        <div class="apartment">
+          <p class="fw-bold">{{ apartment.address }}, {{ apartment.country }}</p>
+          <p>{{ apartment.description }}</p>
 
-        <div class="info">
-          <p class="fw-bold">Apartment Info:</p>
-          <div class="container mb-4">
-            <div class="row justify-content-evenly">
-              <div class="col-auto d-flex align-items-center service py-1 flex-grow-1">
-                <span>
-                  <font-awesome-icon icon="bed" class="me-2" />
-                  Beds : {{ apartment.beds }}</span>
-              </div>
-              <div class="col-auto d-flex align-items-center service py-1 flex-grow-1">
-                <span>
-                  <font-awesome-icon icon="fa-regular fa-square" class="me-2" />
-                  Rooms : {{ apartment.rooms }}
-                </span>
-              </div>
-              <div class="col-auto d-flex align-items-center service py-1 flex-grow-1">
-                <span>
-                  <font-awesome-icon icon="toilet" class="me-2" />
-                  Bathrooms : {{ apartment.bathrooms }}</span>
-              </div>
-              <div class="col-auto d-flex align-items-center service py-1 flex-grow-1">
-                <span>
-                  <font-awesome-icon icon="house" class="me-2" />
-                  Square meters : {{ apartment.square_meters }}&#xb2;
-                </span>
+          <div class="info">
+            <p class="fw-bold">Apartment Info:</p>
+            <div class="mb-4">
+              <div class="d-flex flex-wrap justify-content-evenly apt-info">
+                <div class="col-auto d-flex align-items-center py-1">
+                  <span>
+                    <font-awesome-icon icon="bed" class="me-2" />
+                    <span class="info-name">Beds : </span>
+                    {{ apartment.beds }}
+                  </span>
+                </div>
+                <div class="col-auto d-flex align-items-center py-1 ">
+                  <span>
+                    <font-awesome-icon icon="fa-regular fa-square" class="me-2" />
+                    <span class="info-name">Rooms : </span>
+                    {{ apartment.rooms }}
+                  </span>
+                </div>
+                <div class="col-auto d-flex align-items-center py-1 ">
+                  <span>
+                    <font-awesome-icon icon="toilet" class="me-2" />
+                    <span class="info-name">Bathrooms : </span>
+                    {{ apartment.bathrooms }}
+                  </span>
+                </div>
+                <div class="col-auto d-flex align-items-center py-1">
+                  <span>
+                    <font-awesome-icon icon="house" class="me-2" />
+                    <span class="info-name">Square meters : </span>
+                    {{ apartment.square_meters }}&#xb2;
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="services">
-          <p class="fw-bold">Services:</p>
-          <div class="container mb-4">
-            <div class="row justify-content-evenly">
-              <div class="col-auto d-flex align-items-center service py-1 flex-grow-1"
-                v-for="service in apartment.services" :key="service.id">
-                <span class="service-name">{{ service.name }}</span> <font-awesome-icon class="ms-1"
-                  :icon="serviceIcons[service.id - 1]" />
+          <div class="services">
+            <p class="fw-bold">Services:</p>
+            <div class="container mb-4">
+              <div class="row justify-content-evenly">
+                <div class="col-auto d-flex justify-content-center align-items-center service py-1 flex-grow-1"
+                  v-for="service in apartment.services" :key="service.id">
+                  <span class="service-name">{{ service.name }}</span> <font-awesome-icon class="service-icon"
+                    :icon="serviceIcons[service.id - 1]" />
+                </div>
               </div>
             </div>
-          </div>
 
+          </div>
         </div>
       </div>
     </main>
@@ -89,7 +97,7 @@
 import axios from "axios";
 import DefaultLayout from "../../layouts/DefaultLayout.vue";
 import Loading from "../../components/Loading.vue";
-import Carousel from "../../components/ApartmentImagesCarousel.vue";
+import Carousel from "../../components/Carousel.vue";
 import store from "../../store";
 import { RouterLink } from "vue-router";
 import MessageModal from '../../components/MessageModal.vue';
@@ -138,6 +146,7 @@ export default {
         console.log(this.apartment);
         this.getIPAddress();
         this.getMap();
+        console.log(this.apartment);
       });
     },
     getIPAddress() {
@@ -191,11 +200,13 @@ export default {
 
 
 .container-carousel {
-  max-width: 100%;
-  display: flex;
-  flex-direction: column;
-  min-height: 100px;
-  position: relative;
+  height: 500px;
+  margin: 40px 0;
+  border-radius: 10px;
+
+  .carousel-wrapper {
+    border-radius: 10px;
+  }
 
   .carousel {
     overflow-x: hidden;
@@ -235,25 +246,51 @@ export default {
 
 .service {
 
-  justify-content: center;
   flex-direction: column-reverse;
   min-width: 100px;
 
 }
 
-
-.contact {
-  margin-top: 20px;
+.col {
+  flex-basis: calc(100% / 2);
 }
 
 
+.contact {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 9999;
+  background-color: #8ee9cea7;
+}
+
+.container-show {
+  margin: 0 20px;
+}
+
+.info-name {
+  display: none;
+}
 
 @media (min-width: 576px) {}
 
 @media screen and (min-width: 768px) {
   .service {
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
+  }
+
+  .col {
+    flex-basis: calc(100% / 4);
+
+  }
+
+  .info-name {
+    display: inline-block;
+  }
+
+  .service-icon {
+    margin-left: 10px;
   }
 }
 
@@ -261,8 +298,26 @@ export default {
 @media (min-width: 992px) {}
 
 
-@media (min-width: 1200px) {}
+@media (min-width: 1200px) {
+  .container-show {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .contact {
+    background-color: #8ee9ce;
+  }
 
 
-@media (min-width: 1400px) {}
+}
+
+
+@media (min-width: 1400px) {
+  .contact {
+    right: 7%;
+    bottom: 7%;
+    padding: 20px;
+    font-size: 20px;
+  }
+}
 </style>
