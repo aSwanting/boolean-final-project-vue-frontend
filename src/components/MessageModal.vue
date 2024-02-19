@@ -240,6 +240,7 @@ export default {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        width: 100%;
         background-color: white;
         padding: 20px;
         border-radius: 8px;
@@ -325,7 +326,13 @@ ul {
     margin-bottom: 0;
 }
 
-@media (min-width: 576px) {}
+@media (min-width: 576px) {
+    .modal-backdrop {
+        .modal-body {
+            max-width: 500px;
+        }
+    }
+}
 
 
 @media (min-width: 768px) {}
