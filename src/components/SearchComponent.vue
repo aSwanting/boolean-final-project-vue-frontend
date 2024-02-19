@@ -310,7 +310,7 @@ export default {
       .input-group-text {
         border: 1px solid $primary;
         color: rgba(0, 0, 0, 0.6);
-        width: 72px;
+        width: 62px;
         display: flex;
         justify-content: center;
         background-color: rgb(237, 255, 248);

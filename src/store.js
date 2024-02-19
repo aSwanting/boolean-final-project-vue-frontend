@@ -85,6 +85,13 @@ const store = reactive({
     });
   },
 
+  async jsonFetch() {
+    const response = await axios.get(
+      `${this.BACKEND_URL}api/apartments/results/`
+    );
+    this.addressList = response.data.results.apartments;
+  },
+
   async searchApartments() {
     const data = {
       search_radius: this.filters[0].value,

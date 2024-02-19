@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import store from "../../store";
 import DefaultLayout from "../../layouts/DefaultLayout.vue";
 import SearchComponent from "../../components/SearchComponent.vue";
 import SearchResultsComponent from "../../components/SearchResultsComponent.vue";
@@ -29,12 +30,23 @@ export default {
     ResultsMap,
     SearchResultsWithMap,
   },
+  data() {
+    return {
+      store,
+    };
+  },
+  mounted() {
+    if (store.addressList) {
+      console.log("results loaded");
+    } else {
+      console.log("address lost to reload");
+      store.jsonFetch();
+    }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.search-component {
-}
 .search-results {
   flex-grow: 1;
   overflow: auto;
