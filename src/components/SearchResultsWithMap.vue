@@ -95,7 +95,7 @@ export default {
       // position: relative;
     }
     .map {
-      // width: 50%;
+      width: 50%;
       left: 50%;
       // position: relative;
     }

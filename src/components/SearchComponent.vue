@@ -1,8 +1,8 @@
 <template>
   <div class="container" :class="{ hidden: searchHidden }">
     <div
-      class="btn btn-sm btn-danger position-absolute shadow"
-      style="top: 18px; left: 50%; transform: translateX(-50%)"
+      class="btn btn-sm btn-danger position-absolute"
+      style="top: 18px; left: 65%; transform: translateX(-50%)"
       @click="searchHidden = !searchHidden"
     >
       search_toggle
@@ -56,49 +56,43 @@
           <div class="input-group">
             <span class="input-group-text">
               <font-awesome-icon icon="house" />
+              <div class="icon-label">Rooms</div>
             </span>
-            <div class="form-floating">
-              <input
-                v-model="store.filters[1].value"
-                class="form-control"
-                type="number"
-                min="1"
-                max="12"
-              />
-              <label>Rooms</label>
-            </div>
+            <input
+              v-model="store.filters[1].value"
+              class="form-control"
+              type="number"
+              min="1"
+              max="12"
+            />
           </div>
           <!-- Beds -->
           <div class="input-group">
             <span class="input-group-text">
               <font-awesome-icon icon="bed" />
+              <div class="icon-label">Beds</div>
             </span>
-            <div class="form-floating">
-              <input
-                v-model="store.filters[2].value"
-                class="form-control"
-                type="number"
-                min="1"
-                max="12"
-              />
-              <label>Beds</label>
-            </div>
+            <input
+              v-model="store.filters[2].value"
+              class="form-control"
+              type="number"
+              min="1"
+              max="12"
+            />
           </div>
           <!-- Bathrooms -->
           <div class="input-group">
             <span class="input-group-text">
               <font-awesome-icon icon="toilet" />
+              <div class="icon-label">Bathrooms</div>
             </span>
-            <div class="form-floating">
-              <input
-                v-model="store.filters[3].value"
-                class="form-control"
-                type="number"
-                min="1"
-                max="12"
-              />
-              <label>Bathrooms</label>
-            </div>
+            <input
+              v-model="store.filters[3].value"
+              class="form-control"
+              type="number"
+              min="1"
+              max="12"
+            />
           </div>
         </div>
         <!-- Services Start -->
@@ -192,16 +186,21 @@ export default {
 <style lang="scss" scoped>
 @use "../styles/partials/variables" as *;
 .container {
-  height: 260px;
+  // border: 2px dashed red;
+  max-height: 350px;
+  padding: 15px;
+  // height: 100%;
   overflow: hidden;
   display: flex;
   align-items: center;
-  transition: 200ms all;
+  transition: 300ms all;
   &.hidden {
-    height: 0px;
+    max-height: 0px;
+    padding: 0px;
   }
 }
 .search-wrapper {
+  font-size: 14px;
   .search-form {
     // border: 1px solid rgb(174, 238, 222);
     // padding: 20px;
@@ -311,23 +310,24 @@ export default {
       .input-group-text {
         border: 1px solid $primary;
         color: rgba(0, 0, 0, 0.6);
-        width: 50px;
+        width: 72px;
         display: flex;
         justify-content: center;
         background-color: rgb(237, 255, 248);
-        border-top-left-radius: 999px;
-        border-bottom-left-radius: 999px;
+        border-radius: 999px;
+        padding-left: 18px;
+        padding-bottom: 15px;
+
+        .icon-label {
+          position: absolute;
+          font-size: 9px;
+          bottom: 1px;
+        }
       }
       input {
         border: 1px solid $primary;
-        border-top-right-radius: 999px;
-        border-bottom-right-radius: 999px;
-      }
-      label {
-        left: -5px;
-        &::after {
-          background-color: rgba(255, 0, 0, 0) !important;
-        }
+        padding: 0 0 0 15px;
+        border-radius: 999px;
       }
     }
   }
@@ -343,17 +343,18 @@ export default {
       position: relative;
       // padding-top: 10px;
       .service-name {
-        font-size: 10px;
+        font-size: 9px;
         position: absolute;
         // left: 50%;
         width: 100%;
         // border: 1px solid;
         // text-align: center;
         left: 0;
-        bottom: 0;
+        bottom: 3px;
       }
       .service-icon {
-        padding-bottom: 12px;
+        padding-bottom: 14px;
+        margin-bottom: -5px;
       }
 
       // font-size: 10px;
