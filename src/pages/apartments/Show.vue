@@ -19,35 +19,23 @@
 
           <div class="info">
             <p class="fw-bold">Apartment Info:</p>
-            <div class="mb-4">
-              <div class="d-flex flex-wrap justify-content-evenly apt-info">
-                <div class="col-auto d-flex align-items-center py-1">
-                  <span>
-                    <font-awesome-icon icon="bed" class="me-2" />
-                    <span class="info-name">Beds : </span>
-                    {{ apartment.beds }}
-                  </span>
+            <div class="mb-4 ">
+              <div class="d-flex flex-wrap justify-content-evenly apt-info column-gap-3 row-gap-2">
+                <div class="col-auto align-items-center py-1 apartment-info">
+                  <font-awesome-icon icon="bed" class="me-2" />
+                  <span class="info-name">Beds : {{ apartment.beds }}</span>
                 </div>
-                <div class="col-auto d-flex align-items-center py-1 ">
-                  <span>
-                    <font-awesome-icon icon="fa-regular fa-square" class="me-2" />
-                    <span class="info-name">Rooms : </span>
-                    {{ apartment.rooms }}
-                  </span>
+                <div class="col-auto align-items-center py-1 apartment-info">
+                  <font-awesome-icon icon="fa-regular fa-square" class="me-2" />
+                  <span class="info-name">Rooms : {{ apartment.rooms }}</span>
                 </div>
-                <div class="col-auto d-flex align-items-center py-1 ">
-                  <span>
-                    <font-awesome-icon icon="toilet" class="me-2" />
-                    <span class="info-name">Bathrooms : </span>
-                    {{ apartment.bathrooms }}
-                  </span>
+                <div class="col-auto align-items-center py-1 apartment-info">
+                  <font-awesome-icon icon="toilet" class="me-2" />
+                  <span class="info-name">Bathrooms : {{ apartment.bathrooms }}</span>
                 </div>
-                <div class="col-auto d-flex align-items-center py-1">
-                  <span>
-                    <font-awesome-icon icon="house" class="me-2" />
-                    <span class="info-name">Square meters : </span>
-                    {{ apartment.square_meters }}&#xb2;
-                  </span>
+                <div class="col-auto align-items-center py-1 apartment-info">
+                  <font-awesome-icon icon="house" class="me-2" />
+                  <span class="info-name">Square meters : {{ apartment.square_meters }}&#xb2;</span>
                 </div>
               </div>
             </div>
@@ -228,21 +216,20 @@ export default {
 
   }
 
-  .apartment-info {
-    padding: 0 30px;
-  }
-
-
-
-
-
 }
+
 
 #map {
   border-radius: 10px;
   min-width: 250px;
   min-height: 250px;
 }
+
+.apartment-info {
+  display: flex;
+  flex-direction: column;
+}
+
 
 .service {
 
@@ -268,9 +255,7 @@ export default {
   margin: 0 20px;
 }
 
-.info-name {
-  display: none;
-}
+
 
 @media (min-width: 576px) {}
 
@@ -285,12 +270,13 @@ export default {
 
   }
 
-  .info-name {
-    display: inline-block;
-  }
 
   .service-icon {
     margin-left: 10px;
+  }
+
+  .apartment-info {
+    flex-direction: row;
   }
 }
 
