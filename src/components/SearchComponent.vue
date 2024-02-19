@@ -8,23 +8,18 @@
         class="form-control search-input"
         type="search"
         placeholder="Via Roma, Italia"
-        name=""
-        id=""
       />
 
       <!-- Search Range -->
       <div class="range-form">
-        <label class="range-label" for=""
-          >{{ store.filters[0].value }} km</label
-        >
+        <label class="range-label">{{ store.filters[0].value }} km</label>
         <div class="d-flex gap-3">
           <div>20</div>
           <input
             v-model="store.filters[0].value"
+            placeholder="any"
             class="form-range"
             type="range"
-            name=""
-            id=""
             min="20"
             max="200"
           />
@@ -46,7 +41,6 @@
         {{ suggested.address.freeformAddress }}
       </div>
     </div>
-
     <!-- Advanced Search Form Start -->
     <div class="advanced-search">
       <div class="search-filters mb-3">
@@ -55,45 +49,48 @@
           <span class="input-group-text">
             <font-awesome-icon icon="house" />
           </span>
-          <input
-            v-model="store.filters[1].value"
-            class="form-control"
-            type="number"
-            name=""
-            id=""
-            min="1"
-            max="12"
-          />
+          <div class="form-floating">
+            <input
+              v-model="store.filters[1].value"
+              class="form-control"
+              type="number"
+              min="1"
+              max="12"
+            />
+            <label>Rooms</label>
+          </div>
         </div>
         <!-- Beds -->
         <div class="input-group">
           <span class="input-group-text">
             <font-awesome-icon icon="bed" />
           </span>
-          <input
-            v-model="store.filters[2].value"
-            class="form-control"
-            type="number"
-            name=""
-            id=""
-            min="1"
-            max="12"
-          />
+          <div class="form-floating">
+            <input
+              v-model="store.filters[2].value"
+              class="form-control"
+              type="number"
+              min="1"
+              max="12"
+            />
+            <label>Beds</label>
+          </div>
         </div>
         <!-- Bathrooms -->
         <div class="input-group">
           <span class="input-group-text">
             <font-awesome-icon icon="toilet" />
           </span>
-          <input
-            v-model="store.filters[3].value"
-            class="form-control"
-            type="number"
-            name=""
-            id=""
-            min="1"
-            max="12"
-          />
+          <div class="form-floating">
+            <input
+              v-model="store.filters[3].value"
+              class="form-control"
+              type="number"
+              min="1"
+              max="12"
+            />
+            <label>Bathrooms</label>
+          </div>
         </div>
       </div>
       <!-- Services Start -->
@@ -184,61 +181,67 @@ export default {
 
 <style lang="scss" scoped>
 @use "../styles/partials/variables" as *;
-
-.search-form {
-  // border: 1px solid rgb(174, 238, 222);
-  // padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  & > * {
-    border: 1px dotted;
-    width: 100%;
-    border: none;
-    outline: none;
-    // flex: 1;
-  }
-  .search-input {
-    width: 100%;
-    border: 1px solid $primary;
-    border-radius: 999px;
-    font-size: 14px;
-    &::placeholder {
-      color: rgba(0, 0, 0, 0.336);
-    }
-  }
-  .range-form {
-    text-align: center;
-    width: 100%;
-  }
-  // border-radius: 999px;
-  // overflow: hidden;
-  // display: flex;
-  // flex-wrap: wrap;
-  // gap: 20px;
-  // align-items: center;
-  // & > * {
-  //   // border: 2px solid cyan;
-  //   flex: 1 1;
-  //   border: none;
-  //   outline: none;
-  //   padding: 8px;
-  // }
-  // .range-form {
-  //   position: relative;
-  //   font-size: 14px;
-  //   margin-bottom: -10px;
-  //   color: rgba(0, 0, 0, 0.8);
-
-  //   .range-label {
-  //     position: absolute;
-  //     left: 50%;
-  //     top: 5px;
-  //     transform: translate(-50%, -50%);
-  //   }
-  // }
-}
 .search-wrapper {
+  // display: grid;
+  // gap: 20px;
+  // grid-template-rows: 1fr 1fr;
+  // & > * {
+  //   border: 3px dashed cyan;
+  // }
+  .search-form {
+    // border: 1px solid rgb(174, 238, 222);
+    // padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    & > * {
+      border: 1px dotted;
+      width: 100%;
+      border: none;
+      outline: none;
+      // flex: 1;
+    }
+    .search-input {
+      width: 100%;
+      border: 1px solid $primary;
+      border-radius: 999px;
+      font-size: 14px;
+      &::placeholder {
+        color: rgba(0, 0, 0, 0.336);
+      }
+    }
+    .range-form {
+      text-align: center;
+      width: 100%;
+      color: rgba(0, 0, 0, 0.6);
+    }
+    // border-radius: 999px;
+    // overflow: hidden;
+    // display: flex;
+    // flex-wrap: wrap;
+    // gap: 20px;
+    // align-items: center;
+    // & > * {
+    //   // border: 2px solid cyan;
+    //   flex: 1 1;
+    //   border: none;
+    //   outline: none;
+    //   padding: 8px;
+    // }
+    // .range-form {
+    //   position: relative;
+    //   font-size: 14px;
+    //   margin-bottom: -10px;
+    //   color: rgba(0, 0, 0, 0.8);
+
+    //   .range-label {
+    //     position: absolute;
+    //     left: 50%;
+    //     top: 5px;
+    //     transform: translate(-50%, -50%);
+    //   }
+    // }
+  }
   position: relative;
   .suggested-dropdown {
     z-index: 9999;
@@ -283,25 +286,34 @@ export default {
     // justify-content: space-between;
     // flex-wrap: wrap;
   }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
   .search-filters {
     gap: 10px;
     .input-group {
-      flex-grow: 1;
-      & > * {
-        border: 1px solid $primary;
-        border-radius: 20px;
-      }
-      // width: calc(width / 3);
       .input-group-text {
+        border: 1px solid $primary;
         color: rgba(0, 0, 0, 0.6);
         width: 50px;
         display: flex;
         justify-content: center;
         background-color: rgb(237, 255, 248);
+        border-top-left-radius: 999px;
+        border-bottom-left-radius: 999px;
       }
       input {
-        // width: 50px;
-        // flex: 0;
+        border: 1px solid $primary;
+        border-top-right-radius: 999px;
+        border-bottom-right-radius: 999px;
+      }
+      label {
+        left: -5px;
+        &::after {
+          background-color: rgba(255, 0, 0, 0) !important;
+        }
       }
     }
   }
@@ -368,70 +380,71 @@ export default {
   // }
 }
 @media (min-width: 768px) {
-  .search-form {
-    border: 1px solid rgb(174, 238, 222);
-    // padding: 20px;
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 10px;
-    border-radius: 999px;
-    align-items: center;
-    overflow: hidden;
-    & > * {
-      width: 60%;
-      // border: none;
-      outline: none;
-      // flex: 1;
-      border-radius: 0;
-    }
-    .search-input {
-      width: 100%;
-      border: none;
+  .search-wrapper {
+    .search-form {
+      border: 1px solid rgb(174, 238, 222);
+      // padding: 20px;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 10px;
       border-radius: 999px;
-      // padding-left: 20px;
-    }
-    .range-form {
-      position: relative;
-      text-align: center;
-      font-size: 14px;
-      margin-bottom: -10px;
-      color: rgba(0, 0, 0, 0.8);
-      .range-label {
-        position: absolute;
-        left: 50%;
-        top: -3px;
-        transform: translate(-50%, -50%);
+      align-items: center;
+      overflow: hidden;
+      & > * {
+        width: 60%;
+        // border: none;
+        outline: none;
+        // flex: 1;
+        border-radius: 0;
       }
-    }
-
-    // display: flex;
-    // flex-wrap: wrap;
-    // gap: 20px;
-    // & > * {
-    //   // border: 2px solid cyan;
-    //   flex: 1 1;
-    //   border: none;
-    //   outline: none;
-    //   padding: 8px;
-    // }
-    // .range-form {
-    //   position: relative;
-    //   font-size: 14px;
-    //   margin-bottom: -10px;
-    //   color: rgba(0, 0, 0, 0.8);
-
-    // }
-  }
-  .advanced-search {
-    .search-services {
-      .btn {
-        .service-name {
-          position: relative;
-          font-size: 12px;
+      .search-input {
+        width: 100%;
+        border: none;
+        border-radius: 999px;
+        // padding-left: 20px;
+      }
+      .range-form {
+        position: relative;
+        text-align: center;
+        font-size: 14px;
+        margin-bottom: -10px;
+        .range-label {
+          position: absolute;
+          left: 50%;
+          top: -3px;
+          transform: translate(-50%, -50%);
         }
-        .service-icon {
-          padding-bottom: 0;
-          margin-right: 10px;
+      }
+
+      // display: flex;
+      // flex-wrap: wrap;
+      // gap: 20px;
+      // & > * {
+      //   // border: 2px solid cyan;
+      //   flex: 1 1;
+      //   border: none;
+      //   outline: none;
+      //   padding: 8px;
+      // }
+      // .range-form {
+      //   position: relative;
+      //   font-size: 14px;
+      //   margin-bottom: -10px;
+      //   color: rgba(0, 0, 0, 0.8);
+
+      // }
+    }
+    .advanced-search {
+      .search-services {
+        .btn {
+          .service-name {
+            position: relative;
+            font-size: 12px;
+          }
+          .service-icon {
+            padding-bottom: 0;
+            margin-right: 10px;
+          }
         }
       }
     }
