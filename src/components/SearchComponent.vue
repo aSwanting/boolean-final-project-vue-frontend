@@ -1,37 +1,32 @@
 <template>
-  <div class="back fw-bold" @click="backToHome()">
-    <font-awesome-icon icon="arrow-left-long" />
-    Back to Home
-  </div>
   <div class="search-wrapper">
     <!-- Search Form Start -->
-    <div class="search-form input-group mb-3">
+
+    <div class="search-form mb-3">
       <input
         v-model="store.searchQuery"
         class="form-control search-input"
         type="search"
-        name=""
-        id=""
+        placeholder="Via Roma, Italia"
       />
+
       <!-- Search Range -->
       <div class="range-form">
-        <label class="form-label range-label" for=""
-          >{{ store.filters[0].value }} km</label
-        >
+        <label class="range-label">{{ store.filters[0].value }} km</label>
         <div class="d-flex gap-3">
           <div>20</div>
           <input
             v-model="store.filters[0].value"
+            placeholder="any"
             class="form-range"
             type="range"
-            name=""
-            id=""
             min="20"
             max="200"
           />
           <div>200</div>
         </div>
       </div>
+
       <button class="btn btn-primary" @click="outputSearchData()">
         search
       </button>
@@ -46,48 +41,56 @@
         {{ suggested.address.freeformAddress }}
       </div>
     </div>
-
     <!-- Advanced Search Form Start -->
-    <div class="advanced-search mb-3">
-      <div class="search-filters">
+    <div class="advanced-search">
+      <div class="search-filters mb-3">
         <!-- Rooms -->
-        <div class="">
-          <font-awesome-icon icon="house" />
-          <input
-            v-model="store.filters[1].value"
-            class=""
-            type="number"
-            name=""
-            id=""
-            min="1"
-            max="12"
-          />
+        <div class="input-group">
+          <span class="input-group-text">
+            <font-awesome-icon icon="house" />
+          </span>
+          <div class="form-floating">
+            <input
+              v-model="store.filters[1].value"
+              class="form-control"
+              type="number"
+              min="1"
+              max="12"
+            />
+            <label>Rooms</label>
+          </div>
         </div>
         <!-- Beds -->
-        <div class="">
-          <font-awesome-icon icon="bed" />
-          <input
-            v-model="store.filters[2].value"
-            class=""
-            type="number"
-            name=""
-            id=""
-            min="1"
-            max="12"
-          />
+        <div class="input-group">
+          <span class="input-group-text">
+            <font-awesome-icon icon="bed" />
+          </span>
+          <div class="form-floating">
+            <input
+              v-model="store.filters[2].value"
+              class="form-control"
+              type="number"
+              min="1"
+              max="12"
+            />
+            <label>Beds</label>
+          </div>
         </div>
         <!-- Bathrooms -->
-        <div class="">
-          <font-awesome-icon icon="toilet" />
-          <input
-            v-model="store.filters[3].value"
-            class=""
-            type="number"
-            name=""
-            id=""
-            min="1"
-            max="12"
-          />
+        <div class="input-group">
+          <span class="input-group-text">
+            <font-awesome-icon icon="toilet" />
+          </span>
+          <div class="form-floating">
+            <input
+              v-model="store.filters[3].value"
+              class="form-control"
+              type="number"
+              min="1"
+              max="12"
+            />
+            <label>Bathrooms</label>
+          </div>
         </div>
       </div>
       <!-- Services Start -->
@@ -96,11 +99,12 @@
           class="service-badge btn btn-sm rounded-pill border-primary"
           v-for="service in store.services"
           :class="{
-            'btn-primary': service.active,
+            'bg-primary': service.active,
           }"
           @click="service.active = !service.active"
         >
-          {{ service.name }}
+          <font-awesome-icon class="service-icon" :icon="service.icon" />
+          <span class="service-name">{{ service.name }}</span>
         </button>
       </div>
     </div>
@@ -177,58 +181,70 @@ export default {
 
 <style lang="scss" scoped>
 @use "../styles/partials/variables" as *;
-.back {
-  background-color: $primary;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  padding: 4px 20px;
-  cursor: pointer;
-  opacity: 1;
-  transition: 200ms all;
-  &:hover {
-    opacity: 0.8;
-  }
-}
-.search-form {
-  margin-top: 30px;
-  border: 1px solid rgb(174, 238, 222);
-  border-radius: 999px;
-  overflow: hidden;
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  & > * {
-    // border: 2px solid cyan;
-    flex: 1 1;
-    border: none;
-    outline: none;
-    padding: 8px;
-  }
-  .search-input {
-    outline: none;
-    flex: 1 1 30%;
-    padding-left: 20px;
-    color: rgba(0, 0, 0, 0.8);
-  }
-  .range-form {
-    position: relative;
-    font-size: 14px;
-    margin-bottom: -10px;
-    color: rgba(0, 0, 0, 0.8);
-
-    .range-label {
-      position: absolute;
-      left: 50%;
-      top: 5px;
-      transform: translate(-50%, -50%);
-    }
-  }
-}
 .search-wrapper {
+  // display: grid;
+  // gap: 20px;
+  // grid-template-rows: 1fr 1fr;
+  // & > * {
+  //   border: 3px dashed cyan;
+  // }
+  .search-form {
+    // border: 1px solid rgb(174, 238, 222);
+    // padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    & > * {
+      border: 1px dotted;
+      width: 100%;
+      border: none;
+      outline: none;
+      // flex: 1;
+    }
+    .search-input {
+      width: 100%;
+      border: 1px solid $primary;
+      border-radius: 999px;
+      font-size: 14px;
+      &::placeholder {
+        color: rgba(0, 0, 0, 0.336);
+      }
+    }
+    .range-form {
+      text-align: center;
+      width: 100%;
+      color: rgba(0, 0, 0, 0.6);
+    }
+    // border-radius: 999px;
+    // overflow: hidden;
+    // display: flex;
+    // flex-wrap: wrap;
+    // gap: 20px;
+    // align-items: center;
+    // & > * {
+    //   // border: 2px solid cyan;
+    //   flex: 1 1;
+    //   border: none;
+    //   outline: none;
+    //   padding: 8px;
+    // }
+    // .range-form {
+    //   position: relative;
+    //   font-size: 14px;
+    //   margin-bottom: -10px;
+    //   color: rgba(0, 0, 0, 0.8);
+
+    //   .range-label {
+    //     position: absolute;
+    //     left: 50%;
+    //     top: 5px;
+    //     transform: translate(-50%, -50%);
+    //   }
+    // }
+  }
   position: relative;
   .suggested-dropdown {
+    z-index: 9999;
     position: absolute;
     top: 50px;
     left: 50%;
@@ -246,39 +262,192 @@ export default {
       height: 100px;
       padding: 10px;
     }
+    & > * {
+      cursor: pointer;
+      color: rgb(42, 47, 48);
+      &:hover {
+        font-weight: 600;
+        color: rgb(46, 138, 118);
+      }
+    }
   }
 }
 .advanced-search {
+  // border: 3px solid red;
   display: flex;
-  // align-items: center;
-  gap: 20px;
-  height: 32px;
-
-  .search-filters {
+  flex-wrap: wrap;
+  align-items: center;
+  // gap: 20px;
+  // height: 32px;
+  & > * {
+    // border: 3px dashed green !important;
     display: flex;
-    gap: 4px;
-    color: rgb(90, 90, 90);
-    align-items: center;
-    border: 1px solid $primary;
-    border-radius: 999px;
-    overflow: hidden;
-    white-space: nowrap;
-    font-size: 14px;
-    & > * {
-      flex: 1 1;
-      padding-left: 10px;
-      margin-right: -10px;
-    }
-    input {
-      text-align: center;
-      border: none;
-      outline: none;
+    width: 100%;
+    // justify-content: space-between;
+    // flex-wrap: wrap;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .search-filters {
+    gap: 10px;
+    .input-group {
+      .input-group-text {
+        border: 1px solid $primary;
+        color: rgba(0, 0, 0, 0.6);
+        width: 50px;
+        display: flex;
+        justify-content: center;
+        background-color: rgb(237, 255, 248);
+        border-top-left-radius: 999px;
+        border-bottom-left-radius: 999px;
+      }
+      input {
+        border: 1px solid $primary;
+        border-top-right-radius: 999px;
+        border-bottom-right-radius: 999px;
+      }
+      label {
+        left: -5px;
+        &::after {
+          background-color: rgba(255, 0, 0, 0) !important;
+        }
+      }
     }
   }
   .search-services {
-    flex: 1;
-    display: flex;
-    justify-content: space-between;
+    gap: 8px;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+
+    .btn {
+      // flex: 1 1;
+      width: calc(100% / 5 - 8px);
+      color: rgba(0, 0, 0, 0.6);
+      position: relative;
+      // padding-top: 10px;
+      .service-name {
+        font-size: 10px;
+        position: absolute;
+        // left: 50%;
+        width: 100%;
+        // border: 1px solid;
+        // text-align: center;
+        left: 0;
+        bottom: 0;
+      }
+      .service-icon {
+        padding-bottom: 12px;
+      }
+
+      // font-size: 10px;
+    }
+    // overflow: hidden;
+  }
+
+  // .search-filters {
+  //   display: flex;
+  //   gap: 4px;
+  //   color: rgb(90, 90, 90);
+  //   align-items: center;
+  //   border: 1px solid $primary;
+  //   border-radius: 999px;
+  //   overflow: hidden;
+  //   white-space: nowrap;
+  //   font-size: 14px;
+  //   & > * {
+  //     flex: 1 1;
+  //     padding-left: 10px;
+  //     margin-right: -10px;
+  //   }
+  //   input {
+  //     text-align: center;
+  //     border: none;
+  //     outline: none;
+  //   }
+  // }
+  // .search-services {
+  //   flex: 1;
+  //   display: flex;
+  //   justify-content: space-between;
+  // display: grid;
+  // gap: 10px;
+  // grid-template-rows: repeat(1px);
+  // overflow: hidden;
+  // flex-wrap: wrap;
+  // }
+}
+@media (min-width: 768px) {
+  .search-wrapper {
+    .search-form {
+      border: 1px solid rgb(174, 238, 222);
+      // padding: 20px;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 10px;
+      border-radius: 999px;
+      align-items: center;
+      overflow: hidden;
+      & > * {
+        width: 60%;
+        // border: none;
+        outline: none;
+        // flex: 1;
+        border-radius: 0;
+      }
+      .search-input {
+        width: 100%;
+        border: none;
+        border-radius: 999px;
+        // padding-left: 20px;
+      }
+      .range-form {
+        position: relative;
+        text-align: center;
+        font-size: 14px;
+        margin-bottom: -10px;
+        .range-label {
+          position: absolute;
+          left: 50%;
+          top: -3px;
+          transform: translate(-50%, -50%);
+        }
+      }
+
+      // display: flex;
+      // flex-wrap: wrap;
+      // gap: 20px;
+      // & > * {
+      //   // border: 2px solid cyan;
+      //   flex: 1 1;
+      //   border: none;
+      //   outline: none;
+      //   padding: 8px;
+      // }
+      // .range-form {
+      //   position: relative;
+      //   font-size: 14px;
+      //   margin-bottom: -10px;
+      //   color: rgba(0, 0, 0, 0.8);
+
+      // }
+    }
+    .advanced-search {
+      .search-services {
+        .btn {
+          .service-name {
+            position: relative;
+            font-size: 12px;
+          }
+          .service-icon {
+            padding-bottom: 0;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
   }
 }
 </style>
