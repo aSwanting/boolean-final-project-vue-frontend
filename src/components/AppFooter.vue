@@ -19,35 +19,39 @@ export default {
             target="_blank"
             class="name-creator"
           >
-            <font-awesome-icon class="me-2" :icon="['fab', 'github']" />
+            <!-- <font-awesome-icon class="me-2" :icon="['fab', 'github']" /> -->
             <span>Gabriel D'Amico</span>
           </a>
           <a
             href="https://github.com/ValerioCarbone"
             target="_blank"
             class="name-creator"
-            ><font-awesome-icon class="me-2" :icon="['fab', 'github']" />
+          >
+            <!-- <font-awesome-icon class="me-2" :icon="['fab', 'github']" /> -->
             <span>Valerio Carbone</span>
           </a>
           <a
             href="https://github.com/EmanueleVenditti95"
             target="_blank"
             class="name-creator"
-            ><font-awesome-icon class="me-2" :icon="['fab', 'github']" />
+          >
+            <!-- <font-awesome-icon class="me-2" :icon="['fab', 'github']" /> -->
             <span>Emanuele Venditti</span>
           </a>
           <a
             href="https://github.com/w3bd3v3lop3rNico"
             target="_blank"
             class="name-creator"
-            ><font-awesome-icon class="me-2" :icon="['fab', 'github']" />
+          >
+            <!-- <font-awesome-icon class="me-2" :icon="['fab', 'github']" /> -->
             <span>Nicola Tabai</span>
           </a>
           <a
             href="https://github.com/karimdib"
             target="_blank"
             class="name-creator"
-            ><font-awesome-icon class="me-2" :icon="['fab', 'github']" />
+          >
+            <!-- <font-awesome-icon class="me-2" :icon="['fab', 'github']" /> -->
             <span>Karim Dib</span>
           </a>
         </div>
