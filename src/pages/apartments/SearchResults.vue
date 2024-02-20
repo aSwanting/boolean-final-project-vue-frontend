@@ -1,10 +1,10 @@
 <template>
   <DefaultLayout>
-    <header class="search-component shadow">
+    <section class="search-component shadow">
       <!-- <div class="container"> -->
       <SearchComponent />
       <!-- </div> -->
-    </header>
+    </section>
     <section class="search-results">
       <div class="container-fluid h-100 p-0">
         <SearchResultsWithMap />

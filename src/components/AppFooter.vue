@@ -12,10 +12,8 @@ export default {
   <footer class="footer">
     <div class="container">
       <div class="text-center p-2 mb-0">
-        <p class="title-footer mb-3">
-          BoolBnb made by Team 1, Boolean class 106 :
-        </p>
-        <div class="list-creator mt-0 d-flex justify-content-between">
+        <p class="title-footer">BoolBnb made by Team 1, Boolean class 106</p>
+        <div class="list-creator mt-0 justify-content-between">
           <a
             href="https://github.com/aSwanting"
             target="_blank"
@@ -59,37 +57,62 @@ export default {
 </template>
 <style lang="scss" scoped>
 @use "../styles/partials/variables" as *;
-.title-footer {
-  font-size: 14px;
-  font-style: italic;
+
+footer {
   color: grey;
-}
-
-.footer {
-  border-top: 2px solid #8ee9ce;
-  // min-height: 75px;
-  // margin-top: 50px;
-  // font-style: italic;
-  font-weight: 400;
-  font-size: 14px;
-  padding: 8px;
-}
-
-.list-creator > a:hover {
-  color: $primary-hover;
-}
-
-.made-by {
-  font-weight: bold;
-}
-
-.status {
-  // padding: 0px 10px;
-}
-
-@media (min-width: 768px) {
-  .footer {
-    font-size: 14px;
+  font-size: 10px;
+  border-top: 2px solid $primary;
+  .title-footer {
+    margin: 0;
+  }
+  .list-creator {
+    display: none;
   }
 }
+@media (min-width: 768px) {
+  footer {
+    font-size: 12px;
+    border-top: 2px solid $primary;
+    padding: 10px;
+
+    .title-footer {
+      margin-bottom: 10px;
+    }
+    .list-creator {
+      display: flex;
+    }
+  }
+}
+// .title-footer {
+//   font-size: 14px;
+//   font-style: italic;
+//   color: grey;
+// }
+
+// .footer {
+//   // min-height: 75px;
+//   // margin-top: 50px;
+//   // font-style: italic;
+//   font-weight: 400;
+//   font-size: 14px;
+//   padding: 8px;
+// }
+
+// .list-creator > a:hover {
+//   color: $primary-hover;
+// }
+
+// .made-by {
+//   font-weight: bold;
+// }
+
+// .status {
+//   // padding: 0px 10px;
+// }
+
+// @media (min-width: 768px) {
+//   .footer {
+//     font-size: 14px;
+//   }
+// }
 </style>

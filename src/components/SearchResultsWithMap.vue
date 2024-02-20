@@ -1,6 +1,6 @@
 <template>
   <div class="map-toggle btn btn-primary shadow" @click="viewToggle()">
-    MAP VIEW
+    {{ mapButtonText }}
   </div>
   <div class="wrapper">
     <div class="results p-3" :class="{ 'map-view': mapView }">
@@ -30,6 +30,11 @@ export default {
   methods: {
     viewToggle() {
       return (this.mapView = !this.mapView);
+    },
+  },
+  computed: {
+    mapButtonText() {
+      return this.mapView ? "List View" : "Map View";
     },
   },
 };
@@ -79,7 +84,7 @@ export default {
 }
 .map-toggle {
   position: absolute;
-  top: 95%;
+  top: 92%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 999999;
@@ -91,13 +96,19 @@ export default {
   .wrapper {
     .results {
       width: 50%;
-      // left: 0%;
+      left: 0%;
       // position: relative;
+      &.map-view {
+        left: 0%;
+      }
     }
     .map {
       width: 50%;
       left: 50%;
       // position: relative;
+      &.map-view {
+        left: 50%;
+      }
     }
   }
   .map-toggle {

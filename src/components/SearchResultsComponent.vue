@@ -1,7 +1,9 @@
 <template>
   <div class="card-wrapper" v-if="store.addressList">
-    <router-link v-for="(apartment, index) in store.addressList"
-      :to="{ name: 'apartments.show', params: { slug: apartment.slug } }">
+    <router-link
+      v-for="(apartment, index) in store.addressList"
+      :to="{ name: 'apartments.show', params: { slug: apartment.slug } }"
+    >
       <div class="apartment-card">
         <div class="card-inner" :class="{ sponsored: !apartment.sponsored }">
           <div class="apartment-card-image">
@@ -18,7 +20,7 @@
               </span>
             </div>
             <div class="name">{{ apartment.name }}</div>
-            <div class="filters d-flex gap-4">
+            <div class="filters">
               <div class="">
                 <font-awesome-icon class="me-2" icon="house" />{{
                   apartment.rooms
@@ -36,9 +38,12 @@
               </div>
             </div>
 
-            <div class="services d-flex gap-4">
-              <font-awesome-icon v-for="service in apartment.services"
-                :class="{ active: store.services[service.id - 1].active }" :icon="store.services[service.id - 1].icon" />
+            <div class="services">
+              <font-awesome-icon
+                v-for="service in apartment.services"
+                :class="{ active: store.services[service.id - 1].active }"
+                :icon="store.services[service.id - 1].icon"
+              />
             </div>
             <p class="distance" v-show="apartment.distance">
               {{ apartment.distance }} kilometers away
@@ -121,7 +126,7 @@ p {
       }
     }
 
-    &>* {
+    & > * {
       flex: 1 1 50%;
     }
 
@@ -143,7 +148,6 @@ p {
         font-weight: 600;
       }
 
-
       .name {
         font-weight: 300;
         font-size: 14px;
@@ -154,6 +158,8 @@ p {
       .filters,
       .services {
         color: grey;
+        display: flex;
+        justify-content: space-between;
 
         & .active {
           color: rgb(0, 182, 142);

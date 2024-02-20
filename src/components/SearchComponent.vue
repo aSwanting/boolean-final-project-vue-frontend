@@ -1,16 +1,14 @@
 <template>
   <div class="container" :class="{ hidden: searchHidden }">
-    <div
-      class="btn btn-sm btn-danger position-absolute"
-      style="top: 18px; left: 65%; transform: translateX(-50%)"
-      @click="searchHidden = !searchHidden"
-    >
-      search_toggle
-    </div>
     <div class="search-wrapper">
       <!-- Search Form Start -->
-
       <div class="search-form mb-3">
+        <div
+          class="search-toggle btn btn-sm btn-primary position-absolute"
+          @click="searchHidden = !searchHidden"
+        >
+          <font-awesome-icon icon="filter" />
+        </div>
         <input
           v-model="store.searchQuery"
           class="form-control search-input"
@@ -121,7 +119,7 @@ export default {
   data() {
     return {
       store,
-      searchHidden: false,
+      searchHidden: true,
       searchQuery: null,
       suggestedAddresses: null,
       selectedAddress: null,
@@ -186,76 +184,50 @@ export default {
 <style lang="scss" scoped>
 @use "../styles/partials/variables" as *;
 .container {
-  // border: 2px dashed red;
-  max-height: 350px;
-  padding: 15px;
-  // height: 100%;
+  max-height: 300px;
   overflow: hidden;
-  display: flex;
-  align-items: center;
   transition: 300ms all;
+
   &.hidden {
-    max-height: 0px;
-    padding: 0px;
+    max-height: 55px;
   }
 }
 .search-wrapper {
+  position: relative;
   font-size: 14px;
+  padding: 10px 15px;
   .search-form {
-    // border: 1px solid rgb(174, 238, 222);
-    // padding: 20px;
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    & > * {
-      border: 1px dotted;
-      width: 100%;
-      border: none;
-      outline: none;
-      // flex: 1;
-    }
+    row-gap: 5px;
     .search-input {
-      width: 100%;
+      order: 0;
+      flex: 1;
       border: 1px solid $primary;
       border-radius: 999px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
       font-size: 14px;
       &::placeholder {
         color: rgba(0, 0, 0, 0.336);
       }
     }
     .range-form {
+      order: 2;
       text-align: center;
       width: 100%;
       color: rgba(0, 0, 0, 0.6);
     }
-    // border-radius: 999px;
-    // overflow: hidden;
-    // display: flex;
-    // flex-wrap: wrap;
-    // gap: 20px;
-    // align-items: center;
-    // & > * {
-    //   // border: 2px solid cyan;
-    //   flex: 1 1;
-    //   border: none;
-    //   outline: none;
-    //   padding: 8px;
-    // }
-    // .range-form {
-    //   position: relative;
-    //   font-size: 14px;
-    //   margin-bottom: -10px;
-    //   color: rgba(0, 0, 0, 0.8);
-
-    //   .range-label {
-    //     position: absolute;
-    //     left: 50%;
-    //     top: 5px;
-    //     transform: translate(-50%, -50%);
-    //   }
-    // }
+    button {
+      order: 1;
+      border-radius: 999px;
+      padding: 0 10px;
+      font-size: 14px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      // width: 100%;
+    }
   }
-  position: relative;
   .suggested-dropdown {
     z-index: 9999;
     position: absolute;
@@ -286,18 +258,12 @@ export default {
   }
 }
 .advanced-search {
-  // border: 3px solid red;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  // gap: 20px;
-  // height: 32px;
   & > * {
-    // border: 3px dashed green !important;
     display: flex;
     width: 100%;
-    // justify-content: space-between;
-    // flex-wrap: wrap;
   }
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
@@ -335,20 +301,14 @@ export default {
     gap: 8px;
     justify-content: space-evenly;
     flex-wrap: wrap;
-
     .btn {
-      // flex: 1 1;
       width: calc(100% / 5 - 8px);
       color: rgba(0, 0, 0, 0.6);
       position: relative;
-      // padding-top: 10px;
       .service-name {
         font-size: 9px;
         position: absolute;
-        // left: 50%;
         width: 100%;
-        // border: 1px solid;
-        // text-align: center;
         left: 0;
         bottom: 3px;
       }
@@ -356,43 +316,15 @@ export default {
         padding-bottom: 14px;
         margin-bottom: -5px;
       }
-
-      // font-size: 10px;
     }
-    // overflow: hidden;
   }
+}
 
-  // .search-filters {
-  //   display: flex;
-  //   gap: 4px;
-  //   color: rgb(90, 90, 90);
-  //   align-items: center;
-  //   border: 1px solid $primary;
-  //   border-radius: 999px;
-  //   overflow: hidden;
-  //   white-space: nowrap;
-  //   font-size: 14px;
-  //   & > * {
-  //     flex: 1 1;
-  //     padding-left: 10px;
-  //     margin-right: -10px;
-  //   }
-  //   input {
-  //     text-align: center;
-  //     border: none;
-  //     outline: none;
-  //   }
-  // }
-  // .search-services {
-  //   flex: 1;
-  //   display: flex;
-  //   justify-content: space-between;
-  // display: grid;
-  // gap: 10px;
-  // grid-template-rows: repeat(1px);
-  // overflow: hidden;
-  // flex-wrap: wrap;
-  // }
+.search-toggle {
+  top: 5%;
+  left: 72%;
+  transform: translateX(-50%) scale(85%);
+  z-index: 9999;
 }
 @media (min-width: 768px) {
   .search-wrapper {
@@ -403,13 +335,13 @@ export default {
       flex-wrap: nowrap;
       gap: 10px;
       border-radius: 999px;
-      align-items: center;
+      // align-items: center;
       overflow: hidden;
       & > * {
         width: 60%;
         // border: none;
         outline: none;
-        // flex: 1;
+        flex: 1;
         border-radius: 0;
       }
       .search-input {
@@ -423,12 +355,26 @@ export default {
         text-align: center;
         font-size: 14px;
         margin-bottom: -10px;
+        top: 11px;
         .range-label {
           position: absolute;
           left: 50%;
           top: -3px;
           transform: translate(-50%, -50%);
         }
+      }
+      button {
+        order: 3;
+        flex: 0;
+        padding: 0 20px;
+      }
+
+      .search-toggle {
+        width: 30px;
+        left: 290px;
+        top: 13px;
+        border-radius: 10px;
+        aspect-ratio: 1;
       }
 
       // display: flex;

@@ -140,7 +140,7 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: space-around;
-      padding: 30px;
+      // padding: 30px;
 
       // & > * {
       //   padding: 10px 0;
