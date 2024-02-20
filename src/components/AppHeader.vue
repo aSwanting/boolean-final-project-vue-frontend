@@ -10,7 +10,7 @@
         <!-- Nav Right -->
         <div class="nav-dropdown dropdown">
           <button
-            class="btn btn-sm btn-outline-primary dropdown-toggle"
+            class="btn btn-outline-primary dropdown-toggle"
             type="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
@@ -60,6 +60,10 @@ header {
   }
 
   .nav-dropdown {
+    button {
+      transform: scale(80%);
+    }
+
     ul {
       padding: 0;
       overflow: hidden;
@@ -96,6 +100,9 @@ header {
     }
 
     .nav-dropdown {
+      button {
+        transform: scale(100%);
+      }
       ul {
         padding: 0;
         overflow: hidden;

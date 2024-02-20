@@ -1,11 +1,14 @@
 <template>
-  <router-link :to="{ name: 'apartments.show', params: { slug: apartment.slug } }">
+  <router-link
+    :to="{ name: 'apartments.show', params: { slug: apartment.slug } }"
+  >
     <div class="apartment-card">
       <div class="apartment-image">
         <slot></slot>
       </div>
       <div class="card-body">
-        <p class="city">{{ apartment.city }},
+        <p class="city">
+          {{ apartment.city }},
           <span class="additional-info">
             {{ apartment.region }}, {{ apartment.country }}
           </span>
@@ -65,7 +68,7 @@ export default {
 
   .city {
     font-size: 14px;
-    font-weight: 800;
+    font-weight: 700;
   }
 
   .additional-info {
