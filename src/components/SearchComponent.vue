@@ -322,7 +322,7 @@ export default {
 
 .search-toggle {
   top: 5%;
-  left: 79%;
+  left: 72%;
   transform: translateX(-50%) scale(85%);
   z-index: 9999;
 }
